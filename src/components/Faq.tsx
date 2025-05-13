@@ -10,24 +10,24 @@ import {
 const Faq: React.FC = () => {
   const faqs = [
     {
-      question: "Como o DizAi consegue analisar precisamente minha comida?",
-      answer: "O DizAi usa inteligência artificial avançada para reconhecer alimentos e ingredientes a partir de fotos. Nossa tecnologia foi treinada com milhões de imagens de alimentos diferentes para garantir análises nutricionais precisas."
+      question: "How does DizAi accurately analyze my food?",
+      answer: "DizAi uses advanced artificial intelligence to recognize foods and ingredients from photos. Our technology is trained on millions of different food images to ensure accurate nutritional analysis."
     },
     {
-      question: "Preciso pagar para usar o DizAi?",
-      answer: "Oferecemos um plano gratuito com análises básicas. Para acesso a recursos avançados como histórico completo, planos nutricionais personalizados e suporte prioritário, temos planos premium acessíveis."
+      question: "Do I need to pay to use DizAi?",
+      answer: "We offer a free plan with basic analysis. For access to advanced features like complete history, personalized nutrition plans, and priority support, we have affordable premium plans."
     },
     {
-      question: "Quanto tempo leva para receber a análise?",
-      answer: "Na maioria dos casos, você recebe os resultados em segundos! Em momentos de alto tráfego, pode levar até 30 segundos, mas trabalhamos continuamente para garantir a resposta mais rápida possível."
+      question: "How long does it take to receive the analysis?",
+      answer: "In most cases, you receive results in seconds! During high traffic times, it may take up to 30 seconds, but we continuously work to ensure the fastest possible response."
     },
     {
-      question: "O DizAi funciona com qualquer tipo de comida?",
-      answer: "Sim! O DizAi foi treinado com uma ampla variedade de culinárias e pratos de todo o mundo, incluindo pratos brasileiros tradicionais, fast food, refeições caseiras e muito mais."
+      question: "Does DizAi work with any type of food?",
+      answer: "Yes! DizAi has been trained with a wide variety of cuisines and dishes from around the world, including traditional Brazilian dishes, fast food, home-cooked meals, and much more."
     },
     {
-      question: "Minhas informações e fotos são seguras?",
-      answer: "Absolutamente. Sua privacidade é nossa prioridade. Todas as fotos enviadas são processadas com segurança e não são compartilhadas com terceiros. Usamos criptografia avançada e seguimos rigorosas políticas de privacidade."
+      question: "Are my information and photos secure?",
+      answer: "Absolutely. Your privacy is our priority. All submitted photos are securely processed and not shared with third parties. We use advanced encryption and follow strict privacy policies."
     }
   ];
 
@@ -35,10 +35,10 @@ const Faq: React.FC = () => {
     <section id="faq" className="py-16 md:py-24 px-4 md:px-8 bg-dizai-deep-purple/30">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Perguntas <span className="gradient-text">Frequentes</span>
+          Frequently Asked <span className="gradient-text">Questions</span>
         </h2>
         <p className="text-foreground/80 max-w-2xl mx-auto">
-          Tire suas dúvidas sobre o DizAi e comece a usar hoje mesmo.
+          Get answers about DizAi and start using it today.
         </p>
       </div>
       
@@ -59,13 +59,13 @@ const Faq: React.FC = () => {
       
       <div className="mt-16 text-center">
         <p className="text-foreground/70 mb-4">
-          Ainda tem dúvidas? Entre em contato com nosso suporte
+          Still have questions? Contact our support
         </p>
         <a 
           href="#" 
           className="inline-flex items-center text-dizai-neon-green hover:underline"
         >
-          Fale Conosco
+          Contact Us
           <svg 
             className="ml-2 w-4 h-4" 
             fill="none" 

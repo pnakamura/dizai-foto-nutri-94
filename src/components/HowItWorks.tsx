@@ -18,10 +18,10 @@ const HowItWorks: React.FC = () => {
     <section id="how-it-works" className="py-16 md:py-24 px-4 md:px-8 bg-dizai-deep-purple/30">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Como <span className="gradient-text">Funciona</span>
+          How It <span className="gradient-text">Works</span>
         </h2>
         <p className="text-foreground/80 max-w-2xl mx-auto">
-          São apenas três passos simples para obter uma análise nutricional completa.
+          Just three simple steps to get a complete nutritional analysis.
         </p>
       </div>
       
@@ -29,18 +29,18 @@ const HowItWorks: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <StepItem 
             number={1} 
-            title="Tire uma foto do seu prato" 
-            description="Use seu smartphone para fotografar a sua refeição com a câmera do WhatsApp."
+            title="Snap a photo of your meal" 
+            description="Use your smartphone to photograph your meal with WhatsApp's camera."
           />
           <StepItem 
             number={2} 
-            title="Envie para o DizAi no WhatsApp" 
-            description="Envie a imagem para nosso número e deixe nossa IA fazer a análise."
+            title="Send it to DizAi on WhatsApp" 
+            description="Send the image to our number and let our AI do the analysis."
           />
           <StepItem 
             number={3} 
-            title="Receba os detalhes nutricionais" 
-            description="Instantaneamente receba valores nutricionais e dicas de emagrecimento personalizadas."
+            title="Receive nutritional details" 
+            description="Instantly receive nutritional values and personalized weight loss tips."
           />
         </div>
         
@@ -49,30 +49,30 @@ const HowItWorks: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1">
                 <h3 className="text-2xl font-semibold mb-4">
-                  Acompanhamento <span className="text-dizai-neon-green text-neon">Simplificado</span>
+                  Simplified <span className="text-dizai-neon-green text-neon">Tracking</span>
                 </h3>
                 <p className="text-foreground/80 mb-6">
-                  O DizAi armazena seu histórico de refeições e fornece insights sobre seus hábitos alimentares ao longo do tempo, ajudando você a fazer ajustes para alcançar seus objetivos.
+                  DizAi stores your meal history and provides insights about your eating habits over time, helping you make adjustments to reach your goals.
                 </p>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-dizai-neon-green"></div>
-                  <span className="text-sm text-foreground/70">Inteligência artificial avançada</span>
+                  <span className="text-sm text-foreground/70">Advanced artificial intelligence</span>
                 </div>
                 <div className="flex items-center space-x-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-dizai-neon-green"></div>
-                  <span className="text-sm text-foreground/70">Análise precisa de alimentos</span>
+                  <span className="text-sm text-foreground/70">Accurate food analysis</span>
                 </div>
                 <div className="flex items-center space-x-2 mt-2">
                   <div className="w-2 h-2 rounded-full bg-dizai-neon-green"></div>
-                  <span className="text-sm text-foreground/70">Suporte nutricional 24/7</span>
+                  <span className="text-sm text-foreground/70">24/7 nutritional support</span>
                 </div>
               </div>
               <div className="w-full md:w-auto">
                 <div className="border border-dizai-light-purple/20 rounded-lg p-1 shadow-neon">
                   <div className="bg-black rounded-md p-4">
-                    <div className="text-xs text-dizai-neon-purple mb-1">DizAi • Agora</div>
+                    <div className="text-xs text-dizai-neon-purple mb-1">DizAi • Now</div>
                     <div className="bg-dizai-deep-purple/50 rounded-lg p-3 max-w-[260px]">
-                      <p className="text-sm">Sua refeição tem aproximadamente 520 calorias, 30g de proteína, 15g de gorduras e 50g de carboidratos. Para melhorar os resultados, considere reduzir os carboidratos na próxima refeição. 💪</p>
+                      <p className="text-sm">Your meal has approximately 520 calories, 30g of protein, 15g of fat, and 50g of carbs. To improve results, consider reducing carbs in your next meal. 💪</p>
                     </div>
                   </div>
                 </div>

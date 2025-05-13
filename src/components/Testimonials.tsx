@@ -29,19 +29,19 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ quote, author, role }) =>
 const Testimonials: React.FC = () => {
   const testimonials = [
     {
-      quote: "Com o DizAi, mudei minha relação com a comida. Agora sei exatamente o que estou consumindo sem precisar de aplicativos complicados.",
+      quote: "DizAi changed my relationship with food. I now know exactly what I'm consuming without complicated apps.",
       author: "Mariana Silva",
-      role: "Perdeu 15kg em 6 meses"
+      role: "Lost 33lbs in 6 months"
     },
     {
-      quote: "Como profissional ocupado, ter análises nutricionais precisas direto no WhatsApp fez toda a diferença na minha dieta.",
-      author: "Ricardo Oliveira",
-      role: "Empresário, 42 anos"
+      quote: "As a busy professional, having precise nutritional analysis right in WhatsApp made all the difference in my diet.",
+      author: "Richard Oliveira",
+      role: "Entrepreneur, 42"
     },
     {
-      quote: "O DizAi me ajudou a entender meus hábitos alimentares. As dicas personalizadas são sempre relevantes para o meu objetivo.",
+      quote: "DizAi helped me understand my eating habits. The personalized tips are always relevant to my goal.",
       author: "Camila Santos",
-      role: "Professora, 35 anos"
+      role: "Teacher, 35"
     },
   ];
 
@@ -49,10 +49,10 @@ const Testimonials: React.FC = () => {
     <section id="testimonials" className="py-16 md:py-24 px-4 md:px-8">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          O que Nossos <span className="gradient-text">Usuários Dizem</span>
+          What Our <span className="gradient-text">Users Say</span>
         </h2>
         <p className="text-foreground/80 max-w-2xl mx-auto">
-          Histórias reais de pessoas que transformaram sua alimentação com o DizAi.
+          Real stories from people who transformed their eating habits with DizAi.
         </p>
       </div>
       
@@ -77,7 +77,7 @@ const Testimonials: React.FC = () => {
               </svg>
             ))}
           </div>
-          <span className="text-foreground/70 text-sm">+10.000 usuários satisfeitos</span>
+          <span className="text-foreground/70 text-sm">+10,000 satisfied users</span>
         </div>
       </div>
     </section>

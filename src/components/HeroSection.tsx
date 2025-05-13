@@ -8,17 +8,17 @@ const HeroSection: React.FC = () => {
     <section className="py-16 md:py-24 px-4 md:px-8 flex flex-col md:flex-row items-center gap-12">
       <div className="flex-1 space-y-6 animate-fade-in">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-          Rastreamento Nutricional <span className="gradient-text">Sem Esforço.</span> Resultados Reais. Tudo pelo WhatsApp.
+          Effortless Nutrition Tracking. <span className="gradient-text">Real Results.</span> All on WhatsApp.
         </h1>
         <p className="text-lg md:text-xl text-foreground/80 max-w-2xl">
-          Basta tirar e enviar uma foto do seu prato pelo WhatsApp. Descubra instantaneamente calorias, gorduras, carboidratos e receba dicas personalizadas para emagrecer, tudo no seu app de mensagens favorito.
+          Snap your meal. Instantly receive calories, fat, carbs, and customized insights to help you lose weight — without leaving your favorite chat app.
         </p>
         <Button 
           size="lg" 
           className="bg-[#25D366] hover:bg-[#128C7E] text-white whatsapp-button mt-6 px-8 py-6 text-lg"
         >
           <MessageSquare className="mr-2 h-6 w-6" />
-          Comece Agora no WhatsApp
+          Start Now on WhatsApp
         </Button>
       </div>
       <div className="flex-1 flex justify-center md:justify-end">
@@ -28,13 +28,13 @@ const HeroSection: React.FC = () => {
             <div className="relative bg-black rounded-2xl overflow-hidden border border-dizai-light-purple/30">
               <img 
                 src="/placeholder.svg" 
-                alt="DizAi em ação" 
+                alt="DizAi in action" 
                 className="w-full max-w-[300px] h-auto"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-futuristic bg-opacity-80 p-4 text-xs">
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-dizai-neon-green animate-pulse"></div>
-                  <span className="text-dizai-neon-green font-medium">Analisando... 245 kcal, 15g carbs</span>
+                  <span className="text-dizai-neon-green font-medium">Analyzing... 245 kcal, 15g carbs</span>
                 </div>
               </div>
             </div>
