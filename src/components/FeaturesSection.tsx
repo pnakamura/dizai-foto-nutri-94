@@ -10,7 +10,7 @@ type FeatureCardProps = {
 
 const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
   return (
-    <div className="glass-card rounded-xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:border-dizai-neon-green">
+    <div className="glass-card rounded-xl p-6 flex flex-col items-center text-center transition-all duration-300 hover:border-dizai-neon-green hover:translate-y-[-5px]">
       <div className="p-3 rounded-full bg-dizai-deep-purple border border-dizai-light-purple/30 mb-4 border-glow">
         {icon}
       </div>
@@ -24,23 +24,23 @@ const FeaturesSection: React.FC = () => {
   const features = [
     {
       icon: <Camera className="h-8 w-8 text-dizai-neon-green" />,
-      title: "Instant meal image analysis",
-      description: "Take a photo of your meal and send it directly through WhatsApp for instant analysis."
+      title: "Análise instantânea de imagens",
+      description: "Tire uma foto do seu prato e envie diretamente pelo WhatsApp para análise instantânea."
     },
     {
       icon: <ChartBar className="h-8 w-8 text-dizai-neon-green" />,
-      title: "Effortless nutritional breakdown",
-      description: "Get detailed information about calories, fats, carbs, and proteins in seconds."
+      title: "Detalhamento nutricional sem esforço",
+      description: "Obtenha informações detalhadas sobre calorias, gorduras, carboidratos e proteínas em segundos."
     },
     {
       icon: <Lightbulb className="h-8 w-8 text-dizai-neon-green" />,
-      title: "Personalized weight loss insights",
-      description: "Receive suggestions tailored to your profile for more effective results."
+      title: "Dicas personalizadas para emagrecer",
+      description: "Receba sugestões personalizadas ao seu perfil para resultados mais eficazes."
     },
     {
       icon: <Smartphone className="h-8 w-8 text-dizai-neon-green" />,
-      title: "No downloads needed",
-      description: "Works directly in WhatsApp, without the need to install additional applications."
+      title: "Sem downloads necessários",
+      description: "Funciona diretamente no WhatsApp, sem necessidade de instalar aplicativos adicionais."
     }
   ];
 
@@ -48,10 +48,10 @@ const FeaturesSection: React.FC = () => {
     <section id="features" className="py-16 md:py-24 px-4 md:px-8">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          Innovative <span className="gradient-text">Features</span>
+          Recursos <span className="gradient-text">Inovadores</span>
         </h2>
         <p className="text-foreground/80 max-w-2xl mx-auto">
-          Cutting-edge technology to simplify your nutritional control and help you achieve your goals.
+          Tecnologia de ponta para simplificar seu controle nutricional e ajudar você a alcançar seus objetivos.
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -63,6 +63,12 @@ const FeaturesSection: React.FC = () => {
             description={feature.description}
           />
         ))}
+      </div>
+      
+      <div className="mt-16 text-center">
+        <p className="text-xl text-dizai-neon-purple italic">
+          "Capacite seus clientes com a simplicidade do WhatsApp – sem barreiras tecnológicas."
+        </p>
       </div>
     </section>
   );

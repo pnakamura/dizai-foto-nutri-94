@@ -9,7 +9,7 @@ type TestimonialProps = {
 
 const TestimonialCard: React.FC<TestimonialProps> = ({ quote, author, role }) => {
   return (
-    <div className="glass-card rounded-xl p-6 transition-all duration-300 hover:border-dizai-neon-green">
+    <div className="glass-card rounded-xl p-6 transition-all duration-300 hover:border-dizai-neon-green hover:scale-105">
       <div className="flex mb-4">
         {[...Array(5)].map((_, i) => (
           <svg key={i} className="w-5 h-5 text-dizai-neon-green" fill="currentColor" viewBox="0 0 20 20">
@@ -29,19 +29,19 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ quote, author, role }) =>
 const Testimonials: React.FC = () => {
   const testimonials = [
     {
-      quote: "DizAi changed my relationship with food. I now know exactly what I'm consuming without complicated apps.",
+      quote: "O DizAi mudou minha relação com a comida. Agora sei exatamente o que estou consumindo sem aplicativos complicados.",
       author: "Mariana Silva",
-      role: "Lost 33lbs in 6 months"
+      role: "Perdeu 15kg em 6 meses"
     },
     {
-      quote: "As a busy professional, having precise nutritional analysis right in WhatsApp made all the difference in my diet.",
-      author: "Richard Oliveira",
-      role: "Entrepreneur, 42"
+      quote: "Como profissional ocupado, ter análise nutricional precisa diretamente no WhatsApp fez toda a diferença na minha dieta.",
+      author: "Ricardo Oliveira",
+      role: "Empresário, 42 anos"
     },
     {
-      quote: "DizAi helped me understand my eating habits. The personalized tips are always relevant to my goal.",
+      quote: "O DizAi me ajudou a entender meus hábitos alimentares. As dicas personalizadas são sempre relevantes para o meu objetivo.",
       author: "Camila Santos",
-      role: "Teacher, 35"
+      role: "Professora, 35 anos"
     },
   ];
 
@@ -49,10 +49,10 @@ const Testimonials: React.FC = () => {
     <section id="testimonials" className="py-16 md:py-24 px-4 md:px-8">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          What Our <span className="gradient-text">Users Say</span>
+          O Que Nossos <span className="gradient-text">Usuários Dizem</span>
         </h2>
         <p className="text-foreground/80 max-w-2xl mx-auto">
-          Real stories from people who transformed their eating habits with DizAi.
+          Histórias reais de pessoas que transformaram seus hábitos alimentares com o DizAi.
         </p>
       </div>
       
@@ -68,7 +68,7 @@ const Testimonials: React.FC = () => {
       </div>
       
       <div className="mt-16 text-center">
-        <div className="inline-flex items-center justify-center space-x-2 bg-dizai-deep-purple/30 rounded-full py-2 px-4 border border-dizai-light-purple/20">
+        <div className="inline-flex items-center justify-center space-x-2 bg-dizai-deep-purple/30 rounded-full py-2 px-4 border border-dizai-light-purple/20 animate-pulse-subtle">
           <span className="text-dizai-neon-green font-medium">4.9</span>
           <div className="flex">
             {[...Array(5)].map((_, i) => (
@@ -77,7 +77,7 @@ const Testimonials: React.FC = () => {
               </svg>
             ))}
           </div>
-          <span className="text-foreground/70 text-sm">+10,000 satisfied users</span>
+          <span className="text-foreground/70 text-sm">+10.000 usuários satisfeitos</span>
         </div>
       </div>
     </section>

@@ -91,3 +91,36 @@
     box-shadow: 0 10px 20px rgba(76, 250, 123, 0.3);
   }
 }
+
+@layer utilities {
+  /* New animation: subtle pulse */
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s infinite ease-in-out;
+  }
+  
+  /* Enhanced float animation */
+  @keyframes enhanced-float {
+    0%, 100% {
+      transform: translateY(0) rotate(0);
+    }
+    25% {
+      transform: translateY(-5px) rotate(1deg);
+    }
+    75% {
+      transform: translateY(-8px) rotate(-1deg);
+    }
+  }
+  
+  .animate-enhanced-float {
+    animation: enhanced-float 6s infinite ease-in-out;
+  }
+}
