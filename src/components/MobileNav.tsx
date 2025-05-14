@@ -29,7 +29,7 @@ const MobileNav: React.FC = () => {
       {/* Overlay with animation and solid background */}
       <div 
         className={cn(
-          "fixed inset-0 z-50 bg-dizai-dark-blue backdrop-blur-sm transition-all duration-300 ease-in-out",
+          "fixed inset-0 z-50 bg-dizai-dark-blue/95 backdrop-blur-md transition-all duration-300 ease-in-out",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
@@ -47,35 +47,35 @@ const MobileNav: React.FC = () => {
         <nav className="flex flex-col items-center gap-6 px-4 py-8 text-lg">
           <a 
             href="#features" 
-            className="w-full text-center py-4 text-foreground/80 hover:text-dizai-neon-green transition-colors touch-manipulation"
+            className="w-full text-center py-4 text-foreground hover:text-dizai-neon-green transition-colors touch-manipulation"
             onClick={closeMenu}
           >
             Recursos
           </a>
           <a 
             href="#how-it-works" 
-            className="w-full text-center py-4 text-foreground/80 hover:text-dizai-neon-green transition-colors touch-manipulation"
+            className="w-full text-center py-4 text-foreground hover:text-dizai-neon-green transition-colors touch-manipulation"
             onClick={closeMenu}
           >
             Como Funciona
           </a>
           <a 
             href="#testimonials" 
-            className="w-full text-center py-4 text-foreground/80 hover:text-dizai-neon-green transition-colors touch-manipulation"
+            className="w-full text-center py-4 text-foreground hover:text-dizai-neon-green transition-colors touch-manipulation"
             onClick={closeMenu}
           >
             Depoimentos
           </a>
           <a 
             href="#faq" 
-            className="w-full text-center py-4 text-foreground/80 hover:text-dizai-neon-green transition-colors touch-manipulation"
+            className="w-full text-center py-4 text-foreground hover:text-dizai-neon-green transition-colors touch-manipulation"
             onClick={closeMenu}
           >
             FAQ
           </a>
           <a 
             href="#pricing" 
-            className="w-full text-center py-4 text-foreground/80 hover:text-dizai-neon-green transition-colors touch-manipulation"
+            className="w-full text-center py-4 text-foreground hover:text-dizai-neon-green transition-colors touch-manipulation"
             onClick={closeMenu}
           >
             Planos e Preços
