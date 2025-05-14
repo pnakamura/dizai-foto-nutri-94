@@ -26,7 +26,7 @@ const MobileNav: React.FC = () => {
         <Menu className="h-6 w-6" />
       </Button>
 
-      {/* Overlay com animação e fundo sólido */}
+      {/* Overlay with animation and solid background */}
       <div 
         className={cn(
           "fixed inset-0 z-50 bg-dizai-dark-blue backdrop-blur-sm transition-all duration-300 ease-in-out",
