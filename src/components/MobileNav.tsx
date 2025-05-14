@@ -26,10 +26,10 @@ const MobileNav: React.FC = () => {
         <Menu className="h-6 w-6" />
       </Button>
 
-      {/* Overlay com animação */}
+      {/* Overlay com animação e fundo sólido */}
       <div 
         className={cn(
-          "fixed inset-0 z-50 bg-dizai-dark-blue/95 backdrop-blur-sm transition-all duration-300 ease-in-out",
+          "fixed inset-0 z-50 bg-dizai-dark-blue backdrop-blur-sm transition-all duration-300 ease-in-out",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
@@ -72,6 +72,13 @@ const MobileNav: React.FC = () => {
             onClick={closeMenu}
           >
             FAQ
+          </a>
+          <a 
+            href="#pricing" 
+            className="w-full text-center py-4 text-foreground/80 hover:text-dizai-neon-green transition-colors touch-manipulation"
+            onClick={closeMenu}
+          >
+            Planos e Preços
           </a>
           
           <Button 
