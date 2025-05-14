@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import MobileNav from '@/components/MobileNav';
-import { WhatsApp } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const Header: React.FC = () => {
@@ -20,7 +20,7 @@ const Header: React.FC = () => {
       </nav>
       <div className="hidden md:block">
         <Button className="bg-gradient-button hover:opacity-90 whatsapp-button animate-pulse-subtle flex items-center gap-2">
-          <WhatsApp className="h-5 w-5" />
+          <MessageSquare className="h-5 w-5" />
           Comece Agora
           <Badge variant="outline" className="bg-dizai-neon-green text-dizai-dark-blue border-none ml-1 px-2">
             Grátis
