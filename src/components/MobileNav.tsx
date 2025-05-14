@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, WhatsApp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 const MobileNav: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,49 +45,56 @@ const MobileNav: React.FC = () => {
           </Button>
         </div>
         
-        <nav className="flex flex-col items-center gap-6 px-4 py-8 text-lg">
-          <a 
-            href="#features" 
-            className="w-full text-center py-4 bg-dizai-dark-blue/70 rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-dark-blue/90 transition-colors touch-manipulation"
-            onClick={closeMenu}
-          >
-            Recursos
-          </a>
-          <a 
-            href="#how-it-works" 
-            className="w-full text-center py-4 bg-dizai-dark-blue/70 rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-dark-blue/90 transition-colors touch-manipulation"
-            onClick={closeMenu}
-          >
-            Como Funciona
-          </a>
-          <a 
-            href="#testimonials" 
-            className="w-full text-center py-4 bg-dizai-dark-blue/70 rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-dark-blue/90 transition-colors touch-manipulation"
-            onClick={closeMenu}
-          >
-            Depoimentos
-          </a>
-          <a 
-            href="#faq" 
-            className="w-full text-center py-4 bg-dizai-dark-blue/70 rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-dark-blue/90 transition-colors touch-manipulation"
-            onClick={closeMenu}
-          >
-            FAQ
-          </a>
-          <a 
-            href="#pricing" 
-            className="w-full text-center py-4 bg-dizai-dark-blue/70 rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-dark-blue/90 transition-colors touch-manipulation"
-            onClick={closeMenu}
-          >
-            Planos e Preços
-          </a>
-          
-          <Button 
-            className="mt-6 w-full bg-gradient-button hover:opacity-90 whatsapp-button"
-            onClick={closeMenu}
-          >
-            Comece Agora
-          </Button>
+        {/* Added glass-effect container for menu items */}
+        <nav className="mx-4 glass-card rounded-lg border border-dizai-light-purple/30 border-glow p-4">
+          <div className="flex flex-col items-center gap-4 px-2 py-4 text-lg">
+            <a 
+              href="#features" 
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple transition-colors touch-manipulation"
+              onClick={closeMenu}
+            >
+              Recursos
+            </a>
+            <a 
+              href="#how-it-works" 
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple transition-colors touch-manipulation"
+              onClick={closeMenu}
+            >
+              Como Funciona
+            </a>
+            <a 
+              href="#testimonials" 
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple transition-colors touch-manipulation"
+              onClick={closeMenu}
+            >
+              Depoimentos
+            </a>
+            <a 
+              href="#faq" 
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple transition-colors touch-manipulation"
+              onClick={closeMenu}
+            >
+              FAQ
+            </a>
+            <a 
+              href="#pricing" 
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple transition-colors touch-manipulation"
+              onClick={closeMenu}
+            >
+              Planos e Preços
+            </a>
+            
+            <Button 
+              className="mt-6 w-full bg-gradient-button hover:opacity-90 whatsapp-button flex items-center justify-center gap-2"
+              onClick={closeMenu}
+            >
+              <WhatsApp className="h-5 w-5" />
+              Comece Agora 
+              <Badge variant="outline" className="bg-dizai-neon-green text-dizai-dark-blue border-none ml-1 px-2">
+                Grátis
+              </Badge>
+            </Button>
+          </div>
         </nav>
       </div>
     </div>
