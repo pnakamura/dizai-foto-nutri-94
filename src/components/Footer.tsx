@@ -120,7 +120,8 @@ const Footer: React.FC = () => {
           </div>
           <div className="mt-6 text-center">
             <Button 
-              className="bg-gradient-button hover:opacity-90 whatsapp-button w-full md:w-auto text-sm md:text-base"
+              size="lg"
+              className="bg-dizai-light-purple hover:bg-dizai-light-purple/90 text-white transition-colors px-6 md:px-8 py-5 md:py-6 text-sm md:text-base w-full md:w-auto"
             >
               Saiba mais sobre o Programa para Profissionais
             </Button>

@@ -16,13 +16,21 @@ const HeroSection: React.FC = () => {
         <p className="text-lg md:text-xl italic text-dizai-neon-green">
           "Revolucione sua jornada de saúde com apenas uma foto enviada no WhatsApp. Sem apps extras, apenas resultados."
         </p>
-        <Button 
-          size="lg" 
-          className="bg-[#25D366] hover:bg-[#128C7E] text-white whatsapp-button mt-4 md:mt-6 px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full md:w-auto animate-pulse-subtle"
-        >
-          <MessageSquare className="mr-2 h-5 w-5 md:h-6 md:w-6" />
-          Comece Agora no WhatsApp
-        </Button>
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 mt-4 md:mt-6">
+          <Button 
+            size="lg" 
+            className="bg-dizai-neon-green hover:bg-dizai-neon-green/90 text-dizai-dark-blue font-semibold px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full md:w-auto"
+          >
+            Teste Gratuito Agora
+          </Button>
+          <Button 
+            size="lg" 
+            className="bg-[#25D366] hover:bg-[#128C7E] text-white whatsapp-button px-6 md:px-8 py-5 md:py-6 text-base md:text-lg w-full md:w-auto animate-pulse-subtle"
+          >
+            <MessageSquare className="mr-2 h-5 w-5 md:h-6 md:w-6" />
+            Comece Agora no WhatsApp
+          </Button>
+        </div>
       </div>
       <div className="flex-1 flex justify-center md:justify-end mt-6 md:mt-0">
         <div className="relative animate-float w-full max-w-[280px] md:max-w-[300px]">
