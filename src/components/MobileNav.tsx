@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, MessageSquare } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const MobileNav: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,7 @@ const MobileNav: React.FC = () => {
           </Button>
         </div>
         
-        {/* Replaced glass-card with solid background */}
+        {/* Solid background for better visibility */}
         <nav className="mx-4 bg-dizai-deep-purple rounded-lg border border-dizai-light-purple/30 border-glow p-4 shadow-lg">
           <div className="flex flex-col items-center gap-4 px-2 py-4 text-lg">
             <a 
@@ -84,16 +84,12 @@ const MobileNav: React.FC = () => {
               Planos e Preços
             </a>
             
-            <Button 
-              className="mt-6 w-full bg-gradient-button hover:opacity-90 whatsapp-button flex items-center justify-center gap-2"
+            <WhatsAppButton 
+              showBadge={true}
+              fullWidth={true}
+              className="mt-6"
               onClick={closeMenu}
-            >
-              <MessageSquare className="h-5 w-5" />
-              Comece Agora 
-              <Badge variant="outline" className="bg-dizai-neon-green text-dizai-dark-blue border-none ml-1 px-2">
-                Grátis
-              </Badge>
-            </Button>
+            />
           </div>
         </nav>
       </div>

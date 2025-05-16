@@ -2,8 +2,15 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const PricingSection = () => {
+  // URL codificado com mensagem específica para cada plano
+  const whatsappBasicMessage = encodeURIComponent("Olá! Quero saber mais sobre o plano Básico do Diz aí.");
+  const whatsappPremiumMessage = encodeURIComponent("Olá! Quero saber mais sobre o plano Premium do Diz aí.");
+  const whatsappProfessionalMessage = encodeURIComponent("Olá! Quero saber mais sobre o plano Profissional do Diz aí.");
+  const whatsappTrialMessage = encodeURIComponent("Olá! Quero experimentar o teste grátis por 7 dias do Diz aí.");
+
   return (
     <section id="pricing" className="py-16 md:py-24 px-4">
       <div className="container mx-auto max-w-7xl">
@@ -47,8 +54,13 @@ const PricingSection = () => {
               </ul>
             </div>
             
-            <Button className="w-full bg-gradient-button hover:opacity-90">
-              Começar Grátis
+            <Button 
+              asChild
+              className="w-full bg-gradient-button hover:opacity-90"
+            >
+              <a href={`https://wa.me/555189457133?text=${whatsappBasicMessage}`}>
+                Começar Grátis
+              </a>
             </Button>
           </div>
           
@@ -96,8 +108,13 @@ const PricingSection = () => {
               </ul>
             </div>
             
-            <Button className="w-full bg-dizai-neon-green text-black hover:bg-dizai-neon-green/90">
-              Assinar Agora
+            <Button 
+              asChild
+              className="w-full bg-dizai-neon-green text-black hover:bg-dizai-neon-green/90"
+            >
+              <a href={`https://wa.me/555189457133?text=${whatsappPremiumMessage}`}>
+                Assinar Agora
+              </a>
             </Button>
           </div>
           
@@ -141,8 +158,13 @@ const PricingSection = () => {
               </ul>
             </div>
             
-            <Button className="w-full bg-gradient-button hover:opacity-90">
-              Fale com um Consultor
+            <Button 
+              asChild
+              className="w-full bg-gradient-button hover:opacity-90"
+            >
+              <a href={`https://wa.me/555189457133?text=${whatsappProfessionalMessage}`}>
+                Fale com um Consultor
+              </a>
             </Button>
           </div>
         </div>
@@ -151,8 +173,13 @@ const PricingSection = () => {
           <p className="text-foreground/60 text-sm md:text-base mb-6">
             Não tem certeza qual plano escolher? Experimente gratuitamente por 7 dias sem compromisso.
           </p>
-          <Button className="bg-dizai-neon-green text-black hover:bg-dizai-neon-green/90">
-            Teste Grátis por 7 Dias
+          <Button 
+            asChild
+            className="bg-dizai-neon-green text-black hover:bg-dizai-neon-green/90"
+          >
+            <a href={`https://wa.me/555189457133?text=${whatsappTrialMessage}`}>
+              Teste Grátis por 7 Dias
+            </a>
           </Button>
         </div>
       </div>

@@ -71,6 +71,8 @@ export default {
 					'neon-green': '#4CFA7B',
 					'neon-purple': '#8B5CF6',
 					'accent-pink': '#D946EF',
+					'whatsapp': '#25D366',
+					'whatsapp-dark': '#128C7E',
 				}
 			},
 			borderRadius: {
@@ -141,7 +143,8 @@ export default {
 			backgroundImage: {
 				'gradient-futuristic': 'linear-gradient(180deg, #1A1F2C 0%, #2D1E4F 100%)',
 				'gradient-neon': 'linear-gradient(90deg, #9b87f5 0%, #4CFA7B 100%)',
-				'gradient-button': 'linear-gradient(90deg, #8B5CF6 0%, #D946EF 100%)'
+				'gradient-button': 'linear-gradient(90deg, #8B5CF6 0%, #D946EF 100%)',
+				'gradient-whatsapp': 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)'
 			},
 			boxShadow: {
 				'neon': '0 0 5px rgba(76, 250, 123, 0.6), 0 0 10px rgba(76, 250, 123, 0.4)',
