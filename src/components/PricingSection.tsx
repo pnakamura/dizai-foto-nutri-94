@@ -4,8 +4,8 @@ import { Check } from 'lucide-react';
 import WhatsAppButton from '@/components/WhatsAppButton';
 const PricingSection = () => {
   // URL codificado com mensagem específica para cada plano
-  const whatsappBasicMessage = encodeURIComponent("Olá! Quero saber mais sobre o plano Básico do Diz aí.");
-  const whatsappPremiumMessage = encodeURIComponent("Olá! Quero saber mais sobre o plano Premium do Diz aí.");
+  const whatsappBasicMessage = encodeURIComponent("Olá! Quero assinar o plano Básico do Diz aí.");
+  const whatsappPremiumMessage = encodeURIComponent("Olá! Quero assinar o plano Premium do Diz aí.");
   const whatsappProfessionalMessage = encodeURIComponent("Olá! Quero saber mais sobre o plano Profissional do Diz aí.");
   const whatsappTrialMessage = encodeURIComponent("Olá! Quero experimentar o teste grátis por 7 dias do Diz aí.");
   return <section id="pricing" className="py-16 md:py-24 px-4">
