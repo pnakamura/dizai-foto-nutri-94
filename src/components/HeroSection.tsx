@@ -27,8 +27,8 @@ const HeroSection: React.FC = () => {
           <div className="relative bg-dizai-dark-blue border border-dizai-light-purple/20 rounded-3xl p-2 shadow-lg transform rotate-3">
             <div className="relative bg-black rounded-2xl overflow-hidden border border-dizai-light-purple/30">
               <img 
-                src="/placeholder.svg" 
-                alt="DizAi em ação" 
+                src="/lovable-uploads/a8e49f70-19a6-49f6-97ea-520d6e630e15.png" 
+                alt="Mulher fotografando comida para análise nutricional no WhatsApp" 
                 className="w-full h-auto"
                 loading="eager"
               />
