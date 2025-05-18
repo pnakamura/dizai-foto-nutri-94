@@ -50,7 +50,7 @@ const FeaturesSection: React.FC = () => {
       </div>
       
       <div className="mt-10 md:mt-16 text-center">
-        <p className="text-lg text-dizai-neon-purple italic text-dizai-whatsapp md:text-3xl">"Tão fácil como tirar uma selfie!!"</p>
+        <p className="text-lg text-dizai-neon-purple italic text-dizai-whatsapp md:text-3xl">"Tão fácil quanto tirar uma selfie!!"</p>
       </div>
     </section>;
 };
