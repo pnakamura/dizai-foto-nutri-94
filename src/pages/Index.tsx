@@ -9,13 +9,16 @@ import Testimonials from '@/components/Testimonials';
 import Faq from '@/components/Faq';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
+import ScrollIndicator from '@/components/ScrollIndicator';
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="container mx-auto max-w-7xl">
         <Header />
-        <HeroSection />
+        <section id="hero">
+          <HeroSection />
+        </section>
       </div>
       <FeaturesSection />
       <div className="container mx-auto max-w-7xl">
@@ -26,6 +29,7 @@ const Index = () => {
       <Faq />
       <Footer />
       <ScrollToTop />
+      <ScrollIndicator />
     </div>
   );
 };

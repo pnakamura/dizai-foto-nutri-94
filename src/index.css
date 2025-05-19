@@ -54,6 +54,12 @@
     font-family: 'Poppins', sans-serif;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Adiciona um espaço para headers fixos */
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     @apply bg-dizai-dark-blue text-foreground;
     background-image: radial-gradient(circle at 50% 50%, rgba(76, 250, 123, 0.05) 0%, rgba(45, 30, 79, 0.2) 50%, rgba(26, 31, 44, 0.05) 100%);
@@ -104,7 +110,7 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    @apply outline-none ring-2 ring-dizai-neon-green;
+    @apply outline-none ring-2 ring-dizai-neon-green ring-offset-2 ring-offset-dizai-dark-blue;
   }
   
   .whatsapp-button:hover {
@@ -112,14 +118,19 @@
     box-shadow: 0 10px 20px rgba(76, 250, 123, 0.3);
   }
   
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-  }
-  
   /* Prevent text size adjustment on orientation change */
   html {
     -webkit-text-size-adjust: 100%;
+  }
+
+  /* Section transitions */
+  section {
+    @apply transition-opacity duration-500 ease-in-out;
+  }
+
+  /* Better interactive elements */
+  .interactive {
+    @apply transition-all duration-300 hover:scale-105 active:scale-95;
   }
 }
 
@@ -158,5 +169,46 @@
   /* Mobile optimizations */
   .touch-feedback:active {
     @apply opacity-70 transition-opacity duration-150;
+  }
+
+  /* Reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-subtle,
+    .animate-enhanced-float,
+    .animate-float,
+    .animate-bounce,
+    .animate-pulse {
+      animation: none !important;
+    }
+    
+    .whatsapp-button:hover {
+      transform: none !important;
+    }
+    
+    * {
+      transition-duration: 0.01ms !important;
+    }
+    
+    html {
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  /* Enhanced accessibility classes */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  /* Soft shadow effect */
+  .shadow-soft {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   }
 }

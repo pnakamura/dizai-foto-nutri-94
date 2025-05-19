@@ -107,6 +107,26 @@ export default {
 						transform: 'translateY(0)'
 					}
 				},
+				'fade-in-right': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateX(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateX(0)'
+					}
+				},
+				'fade-in-left': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateX(-20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateX(0)'
+					}
+				},
 				'pulse-glow': {
 					'0%, 100%': {
 						boxShadow: '0 0 5px rgba(76, 250, 123, 0.6), 0 0 10px rgba(76, 250, 123, 0.4)'
@@ -136,6 +156,8 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
+				'fade-in-right': 'fade-in-right 0.5s ease-out',
+				'fade-in-left': 'fade-in-left 0.5s ease-out',
 				'pulse-glow': 'pulse-glow 2s infinite',
 				'float': 'float 6s ease-in-out infinite',
 				'pulse-subtle': 'pulse-subtle 3s infinite ease-in-out'
@@ -148,7 +170,9 @@ export default {
 			},
 			boxShadow: {
 				'neon': '0 0 5px rgba(76, 250, 123, 0.6), 0 0 10px rgba(76, 250, 123, 0.4)',
-				'neon-hover': '0 0 15px rgba(76, 250, 123, 0.8), 0 0 20px rgba(76, 250, 123, 0.6)'
+				'neon-hover': '0 0 15px rgba(76, 250, 123, 0.8), 0 0 20px rgba(76, 250, 123, 0.6)',
+				'whatsapp': '0 0 10px rgba(37, 211, 102, 0.5)',
+				'card': '0 10px 30px -5px rgba(0, 0, 0, 0.3)',
 			}
 		}
 	},
