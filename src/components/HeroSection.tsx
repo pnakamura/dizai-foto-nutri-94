@@ -20,7 +20,7 @@ const HeroSection: React.FC = () => {
         <p className="text-sm sm:text-base md:text-xl text-foreground/90 max-w-2xl leading-relaxed break-words">
           Tire uma foto do seu prato. Receba instantaneamente calorias, gorduras, carboidratos e dicas personalizadas para emagrecer — sem sair do seu aplicativo de mensagens favorito.
         </p>
-        <p className="text-base sm:text-lg md:text-xl italic text-dizai-neon-green font-medium leading-relaxed break-words">
+        <p className="text-base sm:text-lg md:text-xl italic text-dizai-brand-green font-medium leading-relaxed break-words">
           "Revolucione sua jornada de saúde com apenas uma foto enviada no WhatsApp. Sem apps extras, apenas resultados."
         </p>
         <WhatsAppButton 
@@ -33,7 +33,7 @@ const HeroSection: React.FC = () => {
         <div className="hidden md:flex justify-center md:justify-start pt-4">
           <button 
             onClick={scrollToFeatures} 
-            className="flex items-center gap-2 text-dizai-neon-green hover:text-dizai-neon-green/80 transition-colors focus:outline-none focus:ring-2 focus:ring-dizai-neon-green/50 focus:ring-offset-2 focus:ring-offset-dizai-dark-blue rounded-md p-1"
+            className="flex items-center gap-2 text-dizai-brand-green hover:text-dizai-brand-orange transition-colors focus:outline-none focus:ring-2 focus:ring-dizai-brand-green/50 focus:ring-offset-2 focus:ring-offset-dizai-dark-blue rounded-md p-1"
             aria-label="Veja os recursos"
           >
             <span className="text-sm font-medium break-words">Ver recursos</span>
@@ -44,9 +44,9 @@ const HeroSection: React.FC = () => {
       
       <div className="flex-1 flex justify-center md:justify-end mt-6 md:mt-0">
         <div className="relative animate-float w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[380px]">
-          <div className="absolute inset-0 bg-dizai-neon-purple/20 blur-3xl rounded-full"></div>
-          <div className="relative bg-dizai-dark-blue border border-dizai-light-purple/30 rounded-3xl p-2 shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
-            <div className="relative bg-black rounded-2xl overflow-hidden border border-dizai-light-purple/30">
+          <div className="absolute inset-0 bg-dizai-brand-orange/20 blur-3xl rounded-full"></div>
+          <div className="relative bg-dizai-dark-blue border border-dizai-brand-green/30 rounded-3xl p-2 shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
+            <div className="relative bg-black rounded-2xl overflow-hidden border border-dizai-brand-green/30">
               <img 
                 src="/lovable-uploads/a8e49f70-19a6-49f6-97ea-520d6e630e15.png" 
                 alt="Mulher fotografando comida para análise nutricional no WhatsApp" 
@@ -55,8 +55,8 @@ const HeroSection: React.FC = () => {
               />
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-futuristic bg-opacity-90 p-2 md:p-3 text-xs md:text-sm">
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-dizai-neon-green animate-pulse flex-shrink-0"></div>
-                  <span className="text-dizai-neon-green font-medium break-words">Analisando... 245 kcal, 15g carboidratos</span>
+                  <div className="w-2 h-2 rounded-full bg-dizai-brand-green animate-pulse flex-shrink-0"></div>
+                  <span className="text-dizai-brand-green font-medium break-words">Analisando... 245 kcal, 15g carboidratos</span>
                 </div>
               </div>
             </div>

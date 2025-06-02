@@ -63,13 +63,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for DizAi
+				// Novas cores baseadas no logo DizAi
 				dizai: {
 					'dark-blue': '#1A1F2C',
 					'deep-purple': '#2D1E4F',
 					'light-purple': '#9b87f5',
-					'neon-green': '#4CFA7B',
-					'neon-purple': '#8B5CF6',
+					'brand-green': '#22C55E',      // Verde vibrante do logo
+					'brand-orange': '#F97316',     // Laranja do logo
+					'brand-red': '#EF4444',        // Vermelho do logo
+					'neon-green': '#22C55E',       // Verde principal
+					'neon-orange': '#F97316',      // Laranja vibrante
 					'accent-pink': '#D946EF',
 					'whatsapp': '#25D366',
 					'whatsapp-dark': '#128C7E',
@@ -164,13 +167,15 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-futuristic': 'linear-gradient(180deg, #1A1F2C 0%, #2D1E4F 100%)',
-				'gradient-neon': 'linear-gradient(90deg, #9b87f5 0%, #4CFA7B 100%)',
-				'gradient-button': 'linear-gradient(90deg, #8B5CF6 0%, #D946EF 100%)',
+				'gradient-neon': 'linear-gradient(90deg, #22C55E 0%, #F97316 100%)',
+				'gradient-brand': 'linear-gradient(135deg, #22C55E 0%, #F97316 50%, #EF4444 100%)',
+				'gradient-button': 'linear-gradient(90deg, #22C55E 0%, #F97316 100%)',
 				'gradient-whatsapp': 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)'
 			},
 			boxShadow: {
-				'neon': '0 0 5px rgba(76, 250, 123, 0.6), 0 0 10px rgba(76, 250, 123, 0.4)',
-				'neon-hover': '0 0 15px rgba(76, 250, 123, 0.8), 0 0 20px rgba(76, 250, 123, 0.6)',
+				'neon': '0 0 5px rgba(34, 197, 94, 0.6), 0 0 10px rgba(34, 197, 94, 0.4)',
+				'neon-hover': '0 0 15px rgba(34, 197, 94, 0.8), 0 0 20px rgba(34, 197, 94, 0.6)',
+				'brand': '0 0 10px rgba(249, 115, 22, 0.5)',
 				'whatsapp': '0 0 10px rgba(37, 211, 102, 0.5)',
 				'card': '0 10px 30px -5px rgba(0, 0, 0, 0.3)',
 			}

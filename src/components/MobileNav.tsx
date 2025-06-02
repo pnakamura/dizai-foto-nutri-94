@@ -46,39 +46,39 @@ const MobileNav: React.FC = () => {
         </div>
         
         {/* Solid background for better visibility */}
-        <nav className="mx-4 bg-dizai-deep-purple rounded-lg border border-dizai-light-purple/30 border-glow p-4 shadow-lg">
+        <nav className="mx-4 bg-dizai-deep-purple rounded-lg border border-dizai-brand-green/30 border-glow p-4 shadow-lg">
           <div className="flex flex-col items-center gap-4 px-2 py-4 text-lg">
             <a 
               href="#features" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
               onClick={closeMenu}
             >
               Recursos
             </a>
             <a 
               href="#how-it-works" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
               onClick={closeMenu}
             >
               Como Funciona
             </a>
             <a 
               href="#testimonials" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
               onClick={closeMenu}
             >
               Depoimentos
             </a>
             <a 
               href="#faq" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
               onClick={closeMenu}
             >
               FAQ
             </a>
             <a 
               href="#pricing" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-neon-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
               onClick={closeMenu}
             >
               Planos e Preços
