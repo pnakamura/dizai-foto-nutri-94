@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 type TestimonialProps = {
@@ -17,10 +16,10 @@ const TestimonialCard: React.FC<TestimonialProps> = ({ quote, author, role }) =>
           </svg>
         ))}
       </div>
-      <p className="text-foreground/90 italic mb-6 text-sm md:text-base">{quote}</p>
+      <p className="text-foreground/80 italic mb-6 text-sm md:text-base">{quote}</p>
       <div>
-        <p className="font-semibold">{author}</p>
-        <p className="text-foreground/70 text-xs md:text-sm">{role}</p>
+        <p className="font-semibold text-foreground">{author}</p>
+        <p className="text-foreground/60 text-xs md:text-sm">{role}</p>
       </div>
     </div>
   );
@@ -113,7 +112,7 @@ const Testimonials: React.FC = () => {
             <button 
               key={index}
               className={`w-3 h-3 rounded-full transition-colors ${
-                index === activeIndex ? 'bg-dizai-brand-green' : 'bg-dizai-light-purple/30'
+                index === activeIndex ? 'bg-dizai-brand-green' : 'bg-gray-300'
               }`}
               onClick={() => setActiveIndex(index)}
               aria-label={`Ver depoimento ${index + 1}`}
@@ -127,10 +126,10 @@ const Testimonials: React.FC = () => {
   return (
     <section id="testimonials" className="py-12 md:py-24 px-4 md:px-8">
       <div className="text-center mb-10 md:mb-16">
-        <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
+        <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-foreground">
           O Que Nossos <span className="gradient-text">Usuários Dizem</span>
         </h2>
-        <p className="text-foreground/80 max-w-2xl mx-auto text-sm md:text-base">
+        <p className="text-foreground/70 max-w-2xl mx-auto text-sm md:text-base">
           Histórias reais de pessoas que transformaram seus hábitos alimentares com o DizAi.
         </p>
       </div>
@@ -138,7 +137,7 @@ const Testimonials: React.FC = () => {
       {renderTestimonials()}
       
       <div className="mt-10 md:mt-16 text-center">
-        <div className="inline-flex items-center justify-center space-x-2 bg-dizai-deep-purple/30 rounded-full py-2 px-4 border border-dizai-brand-green/20 animate-pulse-subtle">
+        <div className="inline-flex items-center justify-center space-x-2 bg-white/80 rounded-full py-2 px-4 border border-dizai-brand-green/20 animate-pulse-subtle shadow-sm">
           <span className="text-dizai-brand-green font-medium">4.9</span>
           <div className="flex">
             {[...Array(5)].map((_, i) => (
@@ -147,7 +146,7 @@ const Testimonials: React.FC = () => {
               </svg>
             ))}
           </div>
-          <span className="text-foreground/70 text-xs md:text-sm">+10.000 usuários satisfeitos</span>
+          <span className="text-foreground/60 text-xs md:text-sm">+10.000 usuários satisfeitos</span>
         </div>
       </div>
     </section>

@@ -40,12 +40,12 @@ const Faq: React.FC = () => {
   ];
 
   return (
-    <section id="faq" className="py-12 md:py-24 px-4 md:px-8 bg-dizai-deep-purple/30">
+    <section id="faq" className="py-12 md:py-24 px-4 md:px-8 bg-gray-50/50">
       <div className="text-center mb-10 md:mb-16">
-        <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
+        <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-foreground">
           Perguntas <span className="gradient-text">Frequentes</span>
         </h2>
-        <p className="text-foreground/80 max-w-2xl mx-auto text-sm md:text-base">
+        <p className="text-foreground/70 max-w-2xl mx-auto text-sm md:text-base">
           Obtenha respostas sobre o DizAi e comece a usá-lo hoje.
         </p>
       </div>
@@ -53,11 +53,11 @@ const Faq: React.FC = () => {
       <div className="max-w-3xl mx-auto">
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="border-b border-dizai-light-purple/20">
-              <AccordionTrigger className="text-left py-3 md:py-4 hover:text-dizai-neon-green transition-colors text-sm md:text-base pr-2">
+            <AccordionItem key={index} value={`item-${index}`} className="border-b border-gray-300">
+              <AccordionTrigger className="text-left py-3 md:py-4 hover:text-dizai-brand-green transition-colors text-sm md:text-base pr-2 text-foreground">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-foreground/80 pb-3 md:pb-4 text-xs md:text-sm">
+              <AccordionContent className="text-foreground/70 pb-3 md:pb-4 text-xs md:text-sm">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
@@ -66,12 +66,12 @@ const Faq: React.FC = () => {
       </div>
       
       <div className="mt-10 md:mt-16 text-center">
-        <p className="text-foreground/70 mb-3 md:mb-4 text-sm md:text-base">
+        <p className="text-foreground/60 mb-3 md:mb-4 text-sm md:text-base">
           Ainda tem dúvidas? Entre em contato com nosso suporte
         </p>
         <a 
           href="#" 
-          className="inline-flex items-center text-dizai-neon-green hover:underline text-sm md:text-base"
+          className="inline-flex items-center text-dizai-brand-green hover:underline text-sm md:text-base font-medium"
         >
           Fale Conosco
           <svg 

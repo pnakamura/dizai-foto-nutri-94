@@ -20,24 +20,24 @@ const MobileNav: React.FC = () => {
     <div className="md:hidden">
       <Button 
         variant="ghost"
-        className="p-2" 
+        className="p-2 text-foreground hover:text-dizai-brand-green" 
         onClick={toggleMenu}
         aria-label="Menu de navegação"
       >
         <Menu className="h-6 w-6" />
       </Button>
 
-      {/* Overlay with fully opaque background */}
+      {/* Overlay with light background */}
       <div 
         className={cn(
-          "fixed inset-0 z-50 bg-dizai-dark-blue transition-all duration-300 ease-in-out",
+          "fixed inset-0 z-50 bg-white transition-all duration-300 ease-in-out",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
         <div className="flex justify-end p-4">
           <Button 
             variant="ghost" 
-            className="p-2" 
+            className="p-2 text-foreground hover:text-dizai-brand-green" 
             onClick={closeMenu}
             aria-label="Fechar menu"
           >
@@ -45,40 +45,40 @@ const MobileNav: React.FC = () => {
           </Button>
         </div>
         
-        {/* Solid background for better visibility */}
-        <nav className="mx-4 bg-dizai-deep-purple rounded-lg border border-dizai-brand-green/30 border-glow p-4 shadow-lg">
+        {/* Menu with light theme */}
+        <nav className="mx-4 bg-white/95 rounded-lg border border-dizai-brand-green/30 border-glow p-4 shadow-lg">
           <div className="flex flex-col items-center gap-4 px-2 py-4 text-lg">
             <a 
               href="#features" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
               onClick={closeMenu}
             >
               Recursos
             </a>
             <a 
               href="#how-it-works" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
               onClick={closeMenu}
             >
               Como Funciona
             </a>
             <a 
               href="#testimonials" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
               onClick={closeMenu}
             >
               Depoimentos
             </a>
             <a 
               href="#faq" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
               onClick={closeMenu}
             >
               FAQ
             </a>
             <a 
               href="#pricing" 
-              className="w-full text-center py-4 bg-dizai-dark-blue rounded-md text-foreground hover:text-dizai-brand-green hover:bg-dizai-deep-purple/80 transition-colors touch-manipulation"
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
               onClick={closeMenu}
             >
               Planos e Preços
