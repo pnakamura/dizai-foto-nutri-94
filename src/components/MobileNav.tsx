@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from 'react-router-dom';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
 const MobileNav: React.FC = () => {
@@ -69,6 +70,20 @@ const MobileNav: React.FC = () => {
             >
               Depoimentos
             </a>
+            <Link 
+              to="/dashboard" 
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
+              onClick={closeMenu}
+            >
+              Dashboard
+            </Link>
+            <Link 
+              to="/professional" 
+              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
+              onClick={closeMenu}
+            >
+              Profissionais
+            </Link>
             <a 
               href="#faq" 
               className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
@@ -84,12 +99,18 @@ const MobileNav: React.FC = () => {
               Planos e Preços
             </a>
             
-            <WhatsAppButton 
-              showBadge={true}
-              fullWidth={true}
-              className="mt-6"
-              onClick={closeMenu}
-            />
+            <div className="w-full flex flex-col gap-3 mt-6">
+              <Link to="/login" onClick={closeMenu}>
+                <Button variant="outline" className="w-full">
+                  Login
+                </Button>
+              </Link>
+              <WhatsAppButton 
+                showBadge={true}
+                fullWidth={true}
+                onClick={closeMenu}
+              />
+            </div>
           </div>
         </nav>
       </div>
