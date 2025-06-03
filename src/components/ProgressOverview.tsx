@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, Target, Zap } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 
 const ProgressOverview = () => {
   const stats = [
@@ -11,7 +12,8 @@ const ProgressOverview = () => {
       target: '2,000',
       icon: Zap,
       trend: 'up',
-      percentage: '92%'
+      percentage: 92,
+      color: 'bg-green-500'
     },
     {
       title: 'Peso Atual',
@@ -19,7 +21,8 @@ const ProgressOverview = () => {
       change: '-0.8kg',
       icon: TrendingDown,
       trend: 'down',
-      percentage: '↓ 1.2%'
+      percentage: 88,
+      color: 'bg-blue-500'
     },
     {
       title: 'Meta Semanal',
@@ -27,7 +30,8 @@ const ProgressOverview = () => {
       target: 'dias',
       icon: Target,
       trend: 'up',
-      percentage: '71%'
+      percentage: 71,
+      color: 'bg-orange-500'
     },
     {
       title: 'Sequência',
@@ -35,30 +39,42 @@ const ProgressOverview = () => {
       target: 'dias',
       icon: TrendingUp,
       trend: 'up',
-      percentage: '+2'
+      percentage: 85,
+      color: 'bg-purple-500'
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat, index) => (
-        <Card key={index}>
+        <Card key={index} className="relative overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
               {stat.title}
             </CardTitle>
-            <stat.icon className="h-4 w-4 text-muted-foreground" />
+            <div className={`p-2 rounded-lg ${stat.color} bg-opacity-10`}>
+              <stat.icon className={`h-4 w-4 ${stat.color.replace('bg-', 'text-')}`} />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stat.value}</div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              {stat.target && <span>de {stat.target}</span>}
-              {stat.change && <span>{stat.change}</span>}
-              <span className={`ml-1 ${
-                stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
-              }`}>
-                {stat.percentage}
-              </span>
+          <CardContent className="space-y-3">
+            <div className="flex items-baseline justify-between">
+              <div className="text-2xl font-bold">{stat.value}</div>
+              <div className="text-xs text-muted-foreground">
+                {stat.target && <span>de {stat.target}</span>}
+                {stat.change && <span>{stat.change}</span>}
+              </div>
+            </div>
+            
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Progresso</span>
+                <span className={`font-medium ${
+                  stat.trend === 'up' ? 'text-green-600' : 'text-blue-600'
+                }`}>
+                  {stat.percentage}%
+                </span>
+              </div>
+              <Progress value={stat.percentage} className="h-2" />
             </div>
           </CardContent>
         </Card>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -17,10 +17,21 @@ const MobileNav: React.FC = () => {
     setIsOpen(false);
   };
 
+  const navItems = [
+    { href: "#features", label: "Recursos" },
+    { href: "#how-it-works", label: "Como Funciona" },
+    { href: "#testimonials", label: "Depoimentos" },
+    { href: "/dashboard", label: "Dashboard", isRoute: true },
+    { href: "/professional", label: "Profissionais", isRoute: true },
+    { href: "#faq", label: "FAQ" },
+    { href: "#pricing", label: "Planos e Preços" }
+  ];
+
   return (
     <div className="md:hidden">
       <Button 
         variant="ghost"
+        size="sm"
         className="p-2 text-foreground hover:text-dizai-brand-green" 
         onClick={toggleMenu}
         aria-label="Menu de navegação"
@@ -28,16 +39,21 @@ const MobileNav: React.FC = () => {
         <Menu className="h-6 w-6" />
       </Button>
 
-      {/* Overlay with light background */}
+      {/* Overlay with improved design */}
       <div 
         className={cn(
-          "fixed inset-0 z-50 bg-white transition-all duration-300 ease-in-out",
+          "fixed inset-0 z-50 bg-background transition-all duration-300 ease-in-out",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
-        <div className="flex justify-end p-4">
+        {/* Header */}
+        <div className="flex justify-between items-center p-4 border-b border-border">
+          <Link to="/" onClick={closeMenu}>
+            <h1 className="text-xl font-bold gradient-text">DizAi</h1>
+          </Link>
           <Button 
             variant="ghost" 
+            size="sm"
             className="p-2 text-foreground hover:text-dizai-brand-green" 
             onClick={closeMenu}
             aria-label="Fechar menu"
@@ -46,71 +62,46 @@ const MobileNav: React.FC = () => {
           </Button>
         </div>
         
-        {/* Menu with light theme */}
-        <nav className="mx-4 bg-white/95 rounded-lg border border-dizai-brand-green/30 border-glow p-4 shadow-lg">
-          <div className="flex flex-col items-center gap-4 px-2 py-4 text-lg">
-            <a 
-              href="#features" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
-              onClick={closeMenu}
-            >
-              Recursos
-            </a>
-            <a 
-              href="#how-it-works" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
-              onClick={closeMenu}
-            >
-              Como Funciona
-            </a>
-            <a 
-              href="#testimonials" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
-              onClick={closeMenu}
-            >
-              Depoimentos
-            </a>
-            <Link 
-              to="/dashboard" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
-              onClick={closeMenu}
-            >
-              Dashboard
+        {/* Navigation Menu */}
+        <nav className="flex flex-col h-full">
+          <div className="flex-1 px-4 py-6 space-y-2">
+            {navItems.map((item, index) => (
+              item.isRoute ? (
+                <Link 
+                  key={index}
+                  to={item.href} 
+                  className="flex items-center justify-between w-full p-4 rounded-lg text-foreground hover:bg-muted hover:text-dizai-brand-green transition-colors touch-manipulation font-medium"
+                  onClick={closeMenu}
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              ) : (
+                <a 
+                  key={index}
+                  href={item.href} 
+                  className="flex items-center justify-between w-full p-4 rounded-lg text-foreground hover:bg-muted hover:text-dizai-brand-green transition-colors touch-manipulation font-medium"
+                  onClick={closeMenu}
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight className="h-4 w-4" />
+                </a>
+              )
+            ))}
+          </div>
+          
+          {/* Bottom Actions */}
+          <div className="p-4 border-t border-border space-y-3">
+            <Link to="/login" onClick={closeMenu} className="block">
+              <Button variant="outline" size="lg" className="w-full">
+                Login
+              </Button>
             </Link>
-            <Link 
-              to="/professional" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
+            <WhatsAppButton 
+              showBadge={true}
+              fullWidth={true}
               onClick={closeMenu}
-            >
-              Profissionais
-            </Link>
-            <a 
-              href="#faq" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
-              onClick={closeMenu}
-            >
-              FAQ
-            </a>
-            <a 
-              href="#pricing" 
-              className="w-full text-center py-4 bg-gray-50 rounded-md text-foreground hover:text-dizai-brand-green hover:bg-gray-100 transition-colors touch-manipulation font-medium"
-              onClick={closeMenu}
-            >
-              Planos e Preços
-            </a>
-            
-            <div className="w-full flex flex-col gap-3 mt-6">
-              <Link to="/login" onClick={closeMenu}>
-                <Button variant="outline" className="w-full">
-                  Login
-                </Button>
-              </Link>
-              <WhatsAppButton 
-                showBadge={true}
-                fullWidth={true}
-                onClick={closeMenu}
-              />
-            </div>
+            />
           </div>
         </nav>
       </div>
