@@ -47,16 +47,15 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     try {
       console.log('Chamando signUp...');
       const result = await signUp(email, password, {
-        nome,
-        telefone,
-        tipo
+        nome: nome,
+        telefone: telefone,
+        tipo: tipo
       });
       
       console.log('Resultado do signUp:', result);
       
       if (!result.error) {
         console.log('=== CADASTRO REALIZADO COM SUCESSO ===');
-        console.log('User criado:', result);
         
         toast({
           title: "Conta criada!",
@@ -74,8 +73,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       } else {
         console.error('=== ERRO NO CADASTRO ===');
         console.error('Erro completo:', result.error);
-        console.error('Message:', result.error.message);
-        console.error('Code:', result.error.code);
         
         let errorMessage = "Erro ao criar conta";
         
@@ -98,7 +95,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     } catch (error: any) {
       console.error('=== ERRO INESPERADO NO CADASTRO ===');
       console.error('Erro completo:', error);
-      console.error('Stack:', error.stack);
       
       toast({
         title: "Erro inesperado",

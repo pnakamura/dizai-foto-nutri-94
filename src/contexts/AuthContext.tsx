@@ -57,20 +57,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       console.log('=== DADOS ENVIADOS PARA SUPABASE ===');
       console.log('Email:', email);
-      console.log('UserData:', userData);
+      console.log('UserData completo:', userData);
       console.log('RedirectUrl:', redirectUrl);
       
-      const { data, error } = await supabase.auth.signUp({
+      const signUpData = {
         email,
         password,
         options: {
           emailRedirectTo: redirectUrl,
-          data: userData // Aqui enviamos os dados extras
+          data: {
+            nome: userData?.nome || '',
+            telefone: userData?.telefone || '',
+            tipo: userData?.tipo || 'cliente'
+          }
         }
-      });
+      };
+      
+      console.log('=== DADOS FORMATADOS PARA SIGNUP ===');
+      console.log('SignUp data:', signUpData);
+      
+      const { data, error } = await supabase.auth.signUp(signUpData);
 
       console.log('=== RESPOSTA DO SUPABASE ===');
       console.log('Data:', data);
+      console.log('User criado:', data?.user);
       console.log('Error:', error);
 
       if (error) {
@@ -82,6 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
       } else {
         console.log('SignUp realizado com sucesso!');
+        console.log('User metadata:', data?.user?.user_metadata);
         toast({
           title: "Cadastro realizado!",
           description: "Verifique seu email para confirmar sua conta.",
