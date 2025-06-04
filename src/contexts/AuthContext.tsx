@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -56,22 +55,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
       
-      const { error } = await supabase.auth.signUp({
+      console.log('=== DADOS ENVIADOS PARA SUPABASE ===');
+      console.log('Email:', email);
+      console.log('UserData:', userData);
+      console.log('RedirectUrl:', redirectUrl);
+      
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: redirectUrl,
-          data: userData
+          data: userData // Aqui enviamos os dados extras
         }
       });
 
+      console.log('=== RESPOSTA DO SUPABASE ===');
+      console.log('Data:', data);
+      console.log('Error:', error);
+
       if (error) {
+        console.error('Erro no signUp:', error);
         toast({
           title: "Erro no cadastro",
           description: error.message,
           variant: "destructive",
         });
       } else {
+        console.log('SignUp realizado com sucesso!');
         toast({
           title: "Cadastro realizado!",
           description: "Verifique seu email para confirmar sua conta.",
@@ -80,6 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return { error };
     } catch (error: any) {
+      console.error('Erro inesperado no signUp:', error);
       toast({
         title: "Erro no cadastro",
         description: error.message,
