@@ -35,20 +35,29 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       return;
     }
 
+    if (!nome.trim()) {
+      toast({
+        title: "Nome obrigatório",
+        description: "Por favor, informe seu nome completo",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log('=== INÍCIO DO CADASTRO ===');
-    console.log('Dados sendo enviados:', { 
-      email, 
-      nome, 
-      telefone, 
+    console.log('Dados do formulário:', { 
+      email: email.trim(), 
+      nome: nome.trim(), 
+      telefone: telefone.trim(), 
       tipo,
       passwordLength: password.length 
     });
     
     try {
       console.log('Chamando signUp...');
-      const result = await signUp(email, password, {
-        nome: nome,
-        telefone: telefone,
+      const result = await signUp(email.trim(), password, {
+        nome: nome.trim(),
+        telefone: telefone.trim(),
         tipo: tipo
       });
       
@@ -59,7 +68,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         
         toast({
           title: "Conta criada!",
-          description: "Verifique seu email para confirmar sua conta.",
+          description: "Verifique seu email para confirmar sua conta e aguarde o processamento do perfil.",
         });
         
         // Limpar formulário
@@ -107,7 +116,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   return (
     <form onSubmit={handleSignUp} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="nome">Nome Completo</Label>
+        <Label htmlFor="nome">Nome Completo *</Label>
         <Input
           id="nome"
           type="text"
@@ -119,7 +128,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="register-email">Email</Label>
+        <Label htmlFor="register-email">Email *</Label>
         <Input
           id="register-email"
           type="email"
@@ -142,7 +151,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="tipo">Tipo de Conta</Label>
+        <Label htmlFor="tipo">Tipo de Conta *</Label>
         <Select value={tipo} onValueChange={(value: 'cliente' | 'profissional') => setTipo(value)}>
           <SelectTrigger>
             <SelectValue />
@@ -155,7 +164,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="register-password">Senha</Label>
+        <Label htmlFor="register-password">Senha *</Label>
         <div className="relative">
           <Input
             id="register-password"

@@ -55,44 +55,78 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
       
-      console.log('=== DADOS ENVIADOS PARA SUPABASE ===');
+      console.log('=== DADOS PARA CADASTRO ===');
       console.log('Email:', email);
-      console.log('UserData completo:', userData);
+      console.log('Nome:', userData?.nome);
+      console.log('Telefone:', userData?.telefone);
+      console.log('Tipo:', userData?.tipo);
       console.log('RedirectUrl:', redirectUrl);
       
+      // Garantir que os dados estão no formato correto
+      const metaData = {
+        nome: userData?.nome?.trim() || '',
+        telefone: userData?.telefone?.trim() || '',
+        tipo: userData?.tipo || 'cliente'
+      };
+      
+      console.log('=== METADATA PREPARADO ===');
+      console.log('MetaData:', metaData);
+      
       const signUpData = {
-        email,
+        email: email.trim(),
         password,
         options: {
           emailRedirectTo: redirectUrl,
-          data: {
-            nome: userData?.nome || '',
-            telefone: userData?.telefone || '',
-            tipo: userData?.tipo || 'cliente'
-          }
+          data: metaData
         }
       };
       
-      console.log('=== DADOS FORMATADOS PARA SIGNUP ===');
-      console.log('SignUp data:', signUpData);
+      console.log('=== DADOS FINAIS PARA SUPABASE ===');
+      console.log('SignUp data completo:', JSON.stringify(signUpData, null, 2));
       
       const { data, error } = await supabase.auth.signUp(signUpData);
 
       console.log('=== RESPOSTA DO SUPABASE ===');
       console.log('Data:', data);
       console.log('User criado:', data?.user);
+      console.log('User ID:', data?.user?.id);
+      console.log('User metadata:', data?.user?.user_metadata);
       console.log('Error:', error);
 
       if (error) {
-        console.error('Erro no signUp:', error);
+        console.error('=== ERRO NO SIGNUP ===');
+        console.error('Erro completo:', error);
         toast({
           title: "Erro no cadastro",
           description: error.message,
           variant: "destructive",
         });
       } else {
-        console.log('SignUp realizado com sucesso!');
-        console.log('User metadata:', data?.user?.user_metadata);
+        console.log('=== SIGNUP REALIZADO COM SUCESSO ===');
+        console.log('Aguardando trigger criar perfil...');
+        
+        // Pequeno delay para aguardar o trigger processar
+        setTimeout(async () => {
+          if (data?.user?.id) {
+            console.log('Verificando se perfil foi criado...');
+            try {
+              const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', data.user.id)
+                .single();
+              
+              if (profile) {
+                console.log('✅ Perfil criado com sucesso:', profile);
+              } else {
+                console.log('❌ Perfil não encontrado:', profileError);
+              }
+            } catch (err) {
+              console.log('Erro ao verificar perfil:', err);
+            }
+          }
+        }, 2000);
+        
         toast({
           title: "Cadastro realizado!",
           description: "Verifique seu email para confirmar sua conta.",
@@ -101,7 +135,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return { error };
     } catch (error: any) {
-      console.error('Erro inesperado no signUp:', error);
+      console.error('=== ERRO INESPERADO NO SIGNUP ===');
+      console.error('Erro completo:', error);
       toast({
         title: "Erro no cadastro",
         description: error.message,
