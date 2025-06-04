@@ -6,9 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useProfileManager } from '@/hooks/useProfileManager';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 interface SignUpFormProps {
   onSuccess: () => void;
@@ -23,7 +21,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   const [tipo, setTipo] = useState<'cliente' | 'profissional'>('cliente');
   
   const { signUp, loading } = useAuth();
-  const { ensureProfile, isCreatingProfile } = useProfileManager();
   const { toast } = useToast();
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -57,8 +54,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     });
     
     try {
-      // Passo 1: Fazer signup no Supabase Auth
-      console.log('🔄 Passo 1: Executando signUp...');
+      console.log('🔄 Executando signUp...');
       const result = await signUp(email.trim(), password, {
         nome: nome.trim(),
         telefone: telefone.trim(),
@@ -83,37 +79,9 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         return;
       }
 
-      console.log('✅ Passo 1 concluído: SignUp realizado com sucesso');
+      console.log('✅ SignUp realizado com sucesso');
       
-      // Passo 2: Aguardar um pouco e verificar se precisa criar perfil manualmente
-      console.log('🔄 Passo 2: Aguardando e verificando perfil...');
-      
-      setTimeout(async () => {
-        try {
-          // Obter o usuário atual
-          const { data: { user } } = await supabase.auth.getUser();
-          
-          if (user) {
-            console.log('🔄 Passo 3: Garantindo que perfil existe...');
-            
-            const profileCreated = await ensureProfile(user.id, {
-              nome: nome.trim(),
-              telefone: telefone.trim(),
-              tipo: tipo
-            });
-            
-            if (profileCreated) {
-              console.log('✅ PROCESSO COMPLETO: Usuário e perfil criados com sucesso');
-            } else {
-              console.error('❌ Falha ao garantir criação do perfil');
-            }
-          }
-        } catch (error) {
-          console.error('Erro no processo de verificação:', error);
-        }
-      }, 2000);
-      
-      // Limpar formulário e mostrar sucesso
+      // Limpar formulário
       setEmail('');
       setPassword('');
       setNome('');
@@ -139,8 +107,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     }
   };
 
-  const isSubmitting = loading || isCreatingProfile;
-
   return (
     <form onSubmit={handleSignUp} className="space-y-4">
       <div className="space-y-2">
@@ -152,7 +118,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           required
-          disabled={isSubmitting}
+          disabled={loading}
         />
       </div>
 
@@ -165,7 +131,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          disabled={isSubmitting}
+          disabled={loading}
         />
       </div>
 
@@ -177,7 +143,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           placeholder="(11) 99999-9999"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
-          disabled={isSubmitting}
+          disabled={loading}
         />
       </div>
 
@@ -186,7 +152,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         <Select 
           value={tipo} 
           onValueChange={(value: 'cliente' | 'profissional') => setTipo(value)}
-          disabled={isSubmitting}
+          disabled={loading}
         >
           <SelectTrigger>
             <SelectValue />
@@ -209,7 +175,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             onChange={(e) => setPassword(e.target.value)}
             minLength={6}
             required
-            disabled={isSubmitting}
+            disabled={loading}
           />
           <Button
             type="button"
@@ -217,7 +183,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             size="sm"
             className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
             onClick={() => setShowPassword(!showPassword)}
-            disabled={isSubmitting}
+            disabled={loading}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -231,9 +197,9 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       <Button 
         type="submit" 
         className="w-full bg-gradient-button hover:opacity-90"
-        disabled={isSubmitting}
+        disabled={loading}
       >
-        {isSubmitting ? 'Criando conta...' : 'Criar Conta'}
+        {loading ? 'Criando conta...' : 'Criar Conta'}
       </Button>
     </form>
   );

@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -59,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Email:', email);
       console.log('UserData recebido:', userData);
       
-      // Preparar metadata de forma mais robusta
+      // Preparar metadata
       const metaData = {
         nome: userData?.nome?.trim() || email.split('@')[0],
         telefone: userData?.telefone?.trim() || '',
@@ -95,25 +96,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('=== SIGNUP REALIZADO COM SUCESSO ===');
         console.log('Usuário criado com ID:', data.user.id);
         console.log('Metadata enviado:', data.user.user_metadata);
-        
-        // Aguardar um pouco para o trigger processar
-        setTimeout(async () => {
-          try {
-            const { data: profile, error: profileError } = await supabase
-              .from('profiles')
-              .select('*')
-              .eq('id', data.user.id)
-              .single();
-            
-            if (profile) {
-              console.log('✅ Perfil criado pelo trigger:', profile);
-            } else {
-              console.log('❌ Perfil não foi criado pelo trigger, erro:', profileError);
-            }
-          } catch (err) {
-            console.log('Erro ao verificar perfil:', err);
-          }
-        }, 3000);
         
         toast({
           title: "Cadastro realizado!",
