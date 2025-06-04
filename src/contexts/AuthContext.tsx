@@ -55,42 +55,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
       
-      console.log('=== DADOS PARA CADASTRO ===');
+      console.log('=== INICIANDO SIGNUP ===');
       console.log('Email:', email);
-      console.log('Nome:', userData?.nome);
-      console.log('Telefone:', userData?.telefone);
-      console.log('Tipo:', userData?.tipo);
-      console.log('RedirectUrl:', redirectUrl);
+      console.log('UserData recebido:', userData);
       
-      // Garantir que os dados estão no formato correto
+      // Preparar metadata de forma mais robusta
       const metaData = {
-        nome: userData?.nome?.trim() || '',
+        nome: userData?.nome?.trim() || email.split('@')[0],
         telefone: userData?.telefone?.trim() || '',
         tipo: userData?.tipo || 'cliente'
       };
       
-      console.log('=== METADATA PREPARADO ===');
-      console.log('MetaData:', metaData);
+      console.log('=== METADATA FINAL ===');
+      console.log('MetaData completo:', JSON.stringify(metaData, null, 2));
       
-      const signUpData = {
+      const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: {
           emailRedirectTo: redirectUrl,
           data: metaData
         }
-      };
-      
-      console.log('=== DADOS FINAIS PARA SUPABASE ===');
-      console.log('SignUp data completo:', JSON.stringify(signUpData, null, 2));
-      
-      const { data, error } = await supabase.auth.signUp(signUpData);
+      });
 
-      console.log('=== RESPOSTA DO SUPABASE ===');
+      console.log('=== RESPOSTA DO SUPABASE AUTH ===');
       console.log('Data:', data);
       console.log('User criado:', data?.user);
-      console.log('User ID:', data?.user?.id);
-      console.log('User metadata:', data?.user?.user_metadata);
       console.log('Error:', error);
 
       if (error) {
@@ -101,31 +91,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           description: error.message,
           variant: "destructive",
         });
-      } else {
+      } else if (data?.user) {
         console.log('=== SIGNUP REALIZADO COM SUCESSO ===');
-        console.log('Aguardando trigger criar perfil...');
+        console.log('Usuário criado com ID:', data.user.id);
+        console.log('Metadata enviado:', data.user.user_metadata);
         
-        // Pequeno delay para aguardar o trigger processar
+        // Aguardar um pouco para o trigger processar
         setTimeout(async () => {
-          if (data?.user?.id) {
-            console.log('Verificando se perfil foi criado...');
-            try {
-              const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('*')
-                .eq('id', data.user.id)
-                .single();
-              
-              if (profile) {
-                console.log('✅ Perfil criado com sucesso:', profile);
-              } else {
-                console.log('❌ Perfil não encontrado:', profileError);
-              }
-            } catch (err) {
-              console.log('Erro ao verificar perfil:', err);
+          try {
+            const { data: profile, error: profileError } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', data.user.id)
+              .single();
+            
+            if (profile) {
+              console.log('✅ Perfil criado pelo trigger:', profile);
+            } else {
+              console.log('❌ Perfil não foi criado pelo trigger, erro:', profileError);
             }
+          } catch (err) {
+            console.log('Erro ao verificar perfil:', err);
           }
-        }, 2000);
+        }, 3000);
         
         toast({
           title: "Cadastro realizado!",

@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useProfileManager } from '@/hooks/useProfileManager';
 import { useToast } from '@/hooks/use-toast';
 
 interface SignUpFormProps {
@@ -21,6 +22,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   const [tipo, setTipo] = useState<'cliente' | 'profissional'>('cliente');
   
   const { signUp, loading } = useAuth();
+  const { ensureProfile, isCreatingProfile } = useProfileManager();
   const { toast } = useToast();
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -44,7 +46,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       return;
     }
 
-    console.log('=== INÍCIO DO CADASTRO ===');
+    console.log('=== INÍCIO DO PROCESSO DE CADASTRO ===');
     console.log('Dados do formulário:', { 
       email: email.trim(), 
       nome: nome.trim(), 
@@ -54,45 +56,22 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
     });
     
     try {
-      console.log('Chamando signUp...');
+      // Passo 1: Fazer signup no Supabase Auth
+      console.log('🔄 Passo 1: Executando signUp...');
       const result = await signUp(email.trim(), password, {
         nome: nome.trim(),
         telefone: telefone.trim(),
         tipo: tipo
       });
       
-      console.log('Resultado do signUp:', result);
-      
-      if (!result.error) {
-        console.log('=== CADASTRO REALIZADO COM SUCESSO ===');
-        
-        toast({
-          title: "Conta criada!",
-          description: "Verifique seu email para confirmar sua conta e aguarde o processamento do perfil.",
-        });
-        
-        // Limpar formulário
-        setEmail('');
-        setPassword('');
-        setNome('');
-        setTelefone('');
-        setTipo('cliente');
-        
-        onSuccess();
-      } else {
-        console.error('=== ERRO NO CADASTRO ===');
-        console.error('Erro completo:', result.error);
+      if (result.error) {
+        console.error('❌ Erro no signUp:', result.error);
         
         let errorMessage = "Erro ao criar conta";
-        
         if (result.error.message.includes('User already registered')) {
           errorMessage = "Este email já está cadastrado";
         } else if (result.error.message.includes('Invalid email')) {
           errorMessage = "Email inválido";
-        } else if (result.error.message.includes('Password')) {
-          errorMessage = "Erro na senha";
-        } else if (result.error.message.includes('Database error')) {
-          errorMessage = "Erro no banco de dados - verifique os logs";
         }
         
         toast({
@@ -100,18 +79,66 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           description: `${errorMessage}: ${result.error.message}`,
           variant: "destructive",
         });
+        return;
       }
+
+      console.log('✅ Passo 1 concluído: SignUp realizado com sucesso');
+      
+      // Passo 2: Aguardar um pouco e verificar se precisa criar perfil manualmente
+      console.log('🔄 Passo 2: Aguardando e verificando perfil...');
+      
+      setTimeout(async () => {
+        try {
+          // Obter o usuário atual
+          const { data: { user } } = await supabase.auth.getUser();
+          
+          if (user) {
+            console.log('🔄 Passo 3: Garantindo que perfil existe...');
+            
+            const profileCreated = await ensureProfile(user.id, {
+              nome: nome.trim(),
+              telefone: telefone.trim(),
+              tipo: tipo
+            });
+            
+            if (profileCreated) {
+              console.log('✅ PROCESSO COMPLETO: Usuário e perfil criados com sucesso');
+            } else {
+              console.error('❌ Falha ao garantir criação do perfil');
+            }
+          }
+        } catch (error) {
+          console.error('Erro no processo de verificação:', error);
+        }
+      }, 2000);
+      
+      // Limpar formulário e mostrar sucesso
+      setEmail('');
+      setPassword('');
+      setNome('');
+      setTelefone('');
+      setTipo('cliente');
+      
+      toast({
+        title: "Conta criada!",
+        description: "Verifique seu email para confirmar sua conta.",
+      });
+      
+      onSuccess();
+      
     } catch (error: any) {
-      console.error('=== ERRO INESPERADO NO CADASTRO ===');
+      console.error('=== ERRO INESPERADO NO PROCESSO ===');
       console.error('Erro completo:', error);
       
       toast({
         title: "Erro inesperado",
-        description: `Tente novamente em alguns instantes: ${error.message}`,
+        description: `Tente novamente: ${error.message}`,
         variant: "destructive",
       });
     }
   };
+
+  const isSubmitting = loading || isCreatingProfile;
 
   return (
     <form onSubmit={handleSignUp} className="space-y-4">
@@ -124,6 +151,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           required
+          disabled={isSubmitting}
         />
       </div>
 
@@ -136,6 +164,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          disabled={isSubmitting}
         />
       </div>
 
@@ -147,12 +176,17 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           placeholder="(11) 99999-9999"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
+          disabled={isSubmitting}
         />
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="tipo">Tipo de Conta *</Label>
-        <Select value={tipo} onValueChange={(value: 'cliente' | 'profissional') => setTipo(value)}>
+        <Select 
+          value={tipo} 
+          onValueChange={(value: 'cliente' | 'profissional') => setTipo(value)}
+          disabled={isSubmitting}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -174,6 +208,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             onChange={(e) => setPassword(e.target.value)}
             minLength={6}
             required
+            disabled={isSubmitting}
           />
           <Button
             type="button"
@@ -181,6 +216,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
             size="sm"
             className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
             onClick={() => setShowPassword(!showPassword)}
+            disabled={isSubmitting}
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -194,9 +230,9 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       <Button 
         type="submit" 
         className="w-full bg-gradient-button hover:opacity-90"
-        disabled={loading}
+        disabled={isSubmitting}
       >
-        {loading ? 'Criando conta...' : 'Criar Conta'}
+        {isSubmitting ? 'Criando conta...' : 'Criar Conta'}
       </Button>
     </form>
   );
