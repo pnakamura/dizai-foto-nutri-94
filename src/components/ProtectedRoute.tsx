@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredUserType?: 'cliente' | 'profissional';
+  requiredUserType?: 'cliente' | 'profissional' | 'admin';
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredUserType }) => {
@@ -27,14 +27,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredUserT
     );
   }
 
-  // Temporariamente permitir acesso sem login para testes
-  // TODO: Reativar verificação de autenticação quando necessário
-  // if (!user || !session) {
-  //   return <Navigate to="/auth" replace />;
-  // }
+  if (!user || !session) {
+    return <Navigate to="/auth" replace />;
+  }
 
-  // TODO: Check user type when profile data is available
-  // For now, allow all users
+  // TODO: Implementar verificação de tipo de usuário quando necessário
+  // if (requiredUserType && userType !== requiredUserType) {
+  //   return <Navigate to="/dashboard" replace />;
+  // }
 
   return <>{children}</>;
 };

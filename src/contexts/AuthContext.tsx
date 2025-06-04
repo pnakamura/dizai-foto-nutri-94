@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -54,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔍 Verificando se perfil existe para user:', userId);
       
-      // Primeiro, verificar se o perfil já existe
+      // Verificar se o perfil já existe
       const { data: existingProfile, error: checkError } = await supabase
         .from('profiles')
         .select('id')
@@ -77,6 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const profileData = {
         id: userId,
         nome: userData?.nome?.trim() || 'Usuário',
+        email: userData?.email?.trim() || null,
         telefone: userData?.telefone?.trim() || null,
         tipo: userData?.tipo || 'cliente'
       };
@@ -111,6 +113,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Preparar metadata limpa
       const metaData = {
         nome: userData?.nome?.trim() || email.split('@')[0],
+        email: email.trim(),
         telefone: userData?.telefone?.trim() || '',
         tipo: userData?.tipo || 'cliente'
       };

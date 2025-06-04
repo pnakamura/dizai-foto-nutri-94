@@ -15,10 +15,8 @@ export type Database = {
           data_mudanca: string | null
           id: string
           motivo: string | null
-          status_anterior:
-            | Database["public"]["Enums"]["payment_status_v2"]
-            | null
-          status_novo: Database["public"]["Enums"]["payment_status_v2"]
+          status_anterior: Database["public"]["Enums"]["payment_status"] | null
+          status_novo: Database["public"]["Enums"]["payment_status"]
           usuario_id: string
         }
         Insert: {
@@ -26,10 +24,8 @@ export type Database = {
           data_mudanca?: string | null
           id?: string
           motivo?: string | null
-          status_anterior?:
-            | Database["public"]["Enums"]["payment_status_v2"]
-            | null
-          status_novo: Database["public"]["Enums"]["payment_status_v2"]
+          status_anterior?: Database["public"]["Enums"]["payment_status"] | null
+          status_novo: Database["public"]["Enums"]["payment_status"]
           usuario_id: string
         }
         Update: {
@@ -37,10 +33,8 @@ export type Database = {
           data_mudanca?: string | null
           id?: string
           motivo?: string | null
-          status_anterior?:
-            | Database["public"]["Enums"]["payment_status_v2"]
-            | null
-          status_novo?: Database["public"]["Enums"]["payment_status_v2"]
+          status_anterior?: Database["public"]["Enums"]["payment_status"] | null
+          status_novo?: Database["public"]["Enums"]["payment_status"]
           usuario_id?: string
         }
         Relationships: [
@@ -90,130 +84,111 @@ export type Database = {
           unidade?: string
           valor_alvo?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "metas_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      perfis_clientes: {
+      profiles: {
         Row: {
           altura: number | null
+          biografia: string | null
+          configuracoes: Json | null
+          configuracoes_consulta: Json | null
           dados_nutricionais: Json | null
+          data_criacao: string | null
+          data_expiracao_teste: string | null
           data_inicio: string | null
+          data_proxima_cobranca: string | null
+          data_ultimo_status: string | null
+          email: string | null
+          especialidade: string | null
           id: string
           meta_agua_ml: number | null
           meta_calorias: number | null
           meta_peso: number | null
+          metadados: Json | null
+          nome: string
           peso_atual: number | null
           preferencias: Json | null
           progresso_semanal: number | null
-          sequencia_dias: number | null
-          usuario_id: string
-        }
-        Insert: {
-          altura?: number | null
-          dados_nutricionais?: Json | null
-          data_inicio?: string | null
-          id?: string
-          meta_agua_ml?: number | null
-          meta_calorias?: number | null
-          meta_peso?: number | null
-          peso_atual?: number | null
-          preferencias?: Json | null
-          progresso_semanal?: number | null
-          sequencia_dias?: number | null
-          usuario_id: string
-        }
-        Update: {
-          altura?: number | null
-          dados_nutricionais?: Json | null
-          data_inicio?: string | null
-          id?: string
-          meta_agua_ml?: number | null
-          meta_calorias?: number | null
-          meta_peso?: number | null
-          peso_atual?: number | null
-          preferencias?: Json | null
-          progresso_semanal?: number | null
-          sequencia_dias?: number | null
-          usuario_id?: string
-        }
-        Relationships: []
-      }
-      perfis_profissionais: {
-        Row: {
-          biografia: string | null
-          configuracoes_consulta: Json | null
-          especialidade: string | null
-          id: string
           registro_profissional: string | null
+          sequencia_dias: number | null
+          status_conta: Database["public"]["Enums"]["account_status"]
+          status_pagamento: Database["public"]["Enums"]["payment_status"]
           taxa_sucesso: number | null
-          total_clientes: number | null
-          usuario_id: string
-        }
-        Insert: {
-          biografia?: string | null
-          configuracoes_consulta?: Json | null
-          especialidade?: string | null
-          id?: string
-          registro_profissional?: string | null
-          taxa_sucesso?: number | null
-          total_clientes?: number | null
-          usuario_id: string
-        }
-        Update: {
-          biografia?: string | null
-          configuracoes_consulta?: Json | null
-          especialidade?: string | null
-          id?: string
-          registro_profissional?: string | null
-          taxa_sucesso?: number | null
-          total_clientes?: number | null
-          usuario_id?: string
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          configuracoes: Json | null
-          data_criacao: string | null
-          data_expiracao_teste: string | null
-          data_proxima_cobranca: string | null
-          data_ultimo_status: string | null
-          id: string
-          metadados: Json | null
-          nome: string
-          status_conta: Database["public"]["Enums"]["account_status_v2"]
-          status_pagamento: Database["public"]["Enums"]["payment_status_v2"]
           telefone: string | null
-          tipo: Database["public"]["Enums"]["user_type_v2"]
+          tipo: Database["public"]["Enums"]["user_type"]
+          total_clientes: number | null
           ultima_atualizacao: string | null
         }
         Insert: {
+          altura?: number | null
+          biografia?: string | null
           configuracoes?: Json | null
+          configuracoes_consulta?: Json | null
+          dados_nutricionais?: Json | null
           data_criacao?: string | null
           data_expiracao_teste?: string | null
+          data_inicio?: string | null
           data_proxima_cobranca?: string | null
           data_ultimo_status?: string | null
+          email?: string | null
+          especialidade?: string | null
           id: string
+          meta_agua_ml?: number | null
+          meta_calorias?: number | null
+          meta_peso?: number | null
           metadados?: Json | null
           nome: string
-          status_conta?: Database["public"]["Enums"]["account_status_v2"]
-          status_pagamento?: Database["public"]["Enums"]["payment_status_v2"]
+          peso_atual?: number | null
+          preferencias?: Json | null
+          progresso_semanal?: number | null
+          registro_profissional?: string | null
+          sequencia_dias?: number | null
+          status_conta?: Database["public"]["Enums"]["account_status"]
+          status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          taxa_sucesso?: number | null
           telefone?: string | null
-          tipo?: Database["public"]["Enums"]["user_type_v2"]
+          tipo?: Database["public"]["Enums"]["user_type"]
+          total_clientes?: number | null
           ultima_atualizacao?: string | null
         }
         Update: {
+          altura?: number | null
+          biografia?: string | null
           configuracoes?: Json | null
+          configuracoes_consulta?: Json | null
+          dados_nutricionais?: Json | null
           data_criacao?: string | null
           data_expiracao_teste?: string | null
+          data_inicio?: string | null
           data_proxima_cobranca?: string | null
           data_ultimo_status?: string | null
+          email?: string | null
+          especialidade?: string | null
           id?: string
+          meta_agua_ml?: number | null
+          meta_calorias?: number | null
+          meta_peso?: number | null
           metadados?: Json | null
           nome?: string
-          status_conta?: Database["public"]["Enums"]["account_status_v2"]
-          status_pagamento?: Database["public"]["Enums"]["payment_status_v2"]
+          peso_atual?: number | null
+          preferencias?: Json | null
+          progresso_semanal?: number | null
+          registro_profissional?: string | null
+          sequencia_dias?: number | null
+          status_conta?: Database["public"]["Enums"]["account_status"]
+          status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          taxa_sucesso?: number | null
           telefone?: string | null
-          tipo?: Database["public"]["Enums"]["user_type_v2"]
+          tipo?: Database["public"]["Enums"]["user_type"]
+          total_clientes?: number | null
           ultima_atualizacao?: string | null
         }
         Relationships: []
@@ -246,7 +221,15 @@ export type Database = {
           quantidade_ml?: number
           tipo_registro?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "registros_agua_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       registros_alimentares: {
         Row: {
@@ -294,7 +277,15 @@ export type Database = {
           proteinas?: number | null
           tipo_refeicao?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "registros_alimentares_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       registros_peso: {
         Row: {
@@ -321,7 +312,15 @@ export type Database = {
           notas?: string | null
           peso?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "registros_peso_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       relacionamento_profissional_cliente: {
         Row: {
@@ -348,24 +347,46 @@ export type Database = {
           profissional_id?: string
           status?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "relacionamento_profissional_cliente_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relacionamento_profissional_cliente_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_current_user_type: {
+        Args: Record<PropertyKey, never>
+        Returns: Database["public"]["Enums"]["user_type"]
+      }
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
-      account_status_v2: "ativo" | "inativo" | "pausado"
-      payment_status_v2:
+      account_status: "ativo" | "inativo" | "pausado"
+      payment_status:
         | "primeira_vez"
         | "teste"
         | "normal"
         | "assinatura"
         | "pendente"
-      user_type_v2: "cliente" | "profissional"
+      user_type: "cliente" | "profissional" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -481,15 +502,15 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      account_status_v2: ["ativo", "inativo", "pausado"],
-      payment_status_v2: [
+      account_status: ["ativo", "inativo", "pausado"],
+      payment_status: [
         "primeira_vez",
         "teste",
         "normal",
         "assinatura",
         "pendente",
       ],
-      user_type_v2: ["cliente", "profissional"],
+      user_type: ["cliente", "profissional", "admin"],
     },
   },
 } as const
