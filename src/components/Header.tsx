@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import MobileNav from '@/components/MobileNav';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Header: React.FC = () => {
+  const { user, signOut } = useAuth();
+
   return (
     <header className="py-4 md:py-6 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-border">
       <div className="flex items-center">
@@ -28,9 +31,11 @@ const Header: React.FC = () => {
         <a href="#pricing" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
           Planos e Preços
         </a>
-        <Link to="/dashboard" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
-          Dashboard
-        </Link>
+        {user && (
+          <Link to="/dashboard" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
+            Dashboard
+          </Link>
+        )}
         <Link to="/professional" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
           Profissionais
         </Link>
@@ -41,9 +46,20 @@ const Header: React.FC = () => {
       
       {/* Desktop Actions */}
       <div className="hidden md:flex items-center gap-3">
-        <Link to="/login">
-          <Button variant="outline" size="sm">Login</Button>
-        </Link>
+        {user ? (
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
+              Olá, {user.email}
+            </span>
+            <Button variant="outline" size="sm" onClick={signOut}>
+              Sair
+            </Button>
+          </div>
+        ) : (
+          <Link to="/auth">
+            <Button variant="outline" size="sm">Login</Button>
+          </Link>
+        )}
         <WhatsAppButton showBadge={true} className="animate-pulse-subtle" />
       </div>
       

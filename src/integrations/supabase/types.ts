@@ -9,16 +9,423 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      historico_status_pagamento: {
+        Row: {
+          dados_n8n: Json | null
+          data_mudanca: string | null
+          id: string
+          motivo: string | null
+          status_anterior: Database["public"]["Enums"]["payment_status"] | null
+          status_novo: Database["public"]["Enums"]["payment_status"]
+          usuario_id: string
+        }
+        Insert: {
+          dados_n8n?: Json | null
+          data_mudanca?: string | null
+          id?: string
+          motivo?: string | null
+          status_anterior?: Database["public"]["Enums"]["payment_status"] | null
+          status_novo: Database["public"]["Enums"]["payment_status"]
+          usuario_id: string
+        }
+        Update: {
+          dados_n8n?: Json | null
+          data_mudanca?: string | null
+          id?: string
+          motivo?: string | null
+          status_anterior?: Database["public"]["Enums"]["payment_status"] | null
+          status_novo?: Database["public"]["Enums"]["payment_status"]
+          usuario_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "historico_status_pagamento_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      metas: {
+        Row: {
+          cliente_id: string
+          dados_n8n: Json | null
+          data_fim: string | null
+          data_inicio: string | null
+          id: string
+          progresso: number | null
+          status: string | null
+          tipo: string
+          unidade: string
+          valor_alvo: number
+        }
+        Insert: {
+          cliente_id: string
+          dados_n8n?: Json | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          progresso?: number | null
+          status?: string | null
+          tipo: string
+          unidade: string
+          valor_alvo: number
+        }
+        Update: {
+          cliente_id?: string
+          dados_n8n?: Json | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          progresso?: number | null
+          status?: string | null
+          tipo?: string
+          unidade?: string
+          valor_alvo?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metas_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      perfis_clientes: {
+        Row: {
+          altura: number | null
+          dados_nutricionais: Json | null
+          data_inicio: string | null
+          id: string
+          meta_agua_ml: number | null
+          meta_calorias: number | null
+          meta_peso: number | null
+          peso_atual: number | null
+          preferencias: Json | null
+          progresso_semanal: number | null
+          sequencia_dias: number | null
+          usuario_id: string
+        }
+        Insert: {
+          altura?: number | null
+          dados_nutricionais?: Json | null
+          data_inicio?: string | null
+          id?: string
+          meta_agua_ml?: number | null
+          meta_calorias?: number | null
+          meta_peso?: number | null
+          peso_atual?: number | null
+          preferencias?: Json | null
+          progresso_semanal?: number | null
+          sequencia_dias?: number | null
+          usuario_id: string
+        }
+        Update: {
+          altura?: number | null
+          dados_nutricionais?: Json | null
+          data_inicio?: string | null
+          id?: string
+          meta_agua_ml?: number | null
+          meta_calorias?: number | null
+          meta_peso?: number | null
+          peso_atual?: number | null
+          preferencias?: Json | null
+          progresso_semanal?: number | null
+          sequencia_dias?: number | null
+          usuario_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "perfis_clientes_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      perfis_profissionais: {
+        Row: {
+          biografia: string | null
+          configuracoes_consulta: Json | null
+          especialidade: string | null
+          id: string
+          registro_profissional: string | null
+          taxa_sucesso: number | null
+          total_clientes: number | null
+          usuario_id: string
+        }
+        Insert: {
+          biografia?: string | null
+          configuracoes_consulta?: Json | null
+          especialidade?: string | null
+          id?: string
+          registro_profissional?: string | null
+          taxa_sucesso?: number | null
+          total_clientes?: number | null
+          usuario_id: string
+        }
+        Update: {
+          biografia?: string | null
+          configuracoes_consulta?: Json | null
+          especialidade?: string | null
+          id?: string
+          registro_profissional?: string | null
+          taxa_sucesso?: number | null
+          total_clientes?: number | null
+          usuario_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "perfis_profissionais_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          configuracoes: Json | null
+          data_criacao: string | null
+          data_expiracao_teste: string | null
+          data_proxima_cobranca: string | null
+          data_ultimo_status: string | null
+          id: string
+          metadados: Json | null
+          nome: string
+          status_conta: Database["public"]["Enums"]["account_status"]
+          status_pagamento: Database["public"]["Enums"]["payment_status"]
+          telefone: string | null
+          tipo: Database["public"]["Enums"]["user_type"]
+          ultima_atualizacao: string | null
+        }
+        Insert: {
+          configuracoes?: Json | null
+          data_criacao?: string | null
+          data_expiracao_teste?: string | null
+          data_proxima_cobranca?: string | null
+          data_ultimo_status?: string | null
+          id: string
+          metadados?: Json | null
+          nome: string
+          status_conta?: Database["public"]["Enums"]["account_status"]
+          status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          telefone?: string | null
+          tipo?: Database["public"]["Enums"]["user_type"]
+          ultima_atualizacao?: string | null
+        }
+        Update: {
+          configuracoes?: Json | null
+          data_criacao?: string | null
+          data_expiracao_teste?: string | null
+          data_proxima_cobranca?: string | null
+          data_ultimo_status?: string | null
+          id?: string
+          metadados?: Json | null
+          nome?: string
+          status_conta?: Database["public"]["Enums"]["account_status"]
+          status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          telefone?: string | null
+          tipo?: Database["public"]["Enums"]["user_type"]
+          ultima_atualizacao?: string | null
+        }
+        Relationships: []
+      }
+      registros_agua: {
+        Row: {
+          cliente_id: string
+          dados_n8n: Json | null
+          data_hora: string | null
+          id: string
+          notas: string | null
+          quantidade_ml: number
+          tipo_registro: string | null
+        }
+        Insert: {
+          cliente_id: string
+          dados_n8n?: Json | null
+          data_hora?: string | null
+          id?: string
+          notas?: string | null
+          quantidade_ml: number
+          tipo_registro?: string | null
+        }
+        Update: {
+          cliente_id?: string
+          dados_n8n?: Json | null
+          data_hora?: string | null
+          id?: string
+          notas?: string | null
+          quantidade_ml?: number
+          tipo_registro?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registros_agua_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      registros_alimentares: {
+        Row: {
+          analise_ia: Json | null
+          calorias: number | null
+          carboidratos: number | null
+          cliente_id: string
+          dados_n8n: Json | null
+          data_hora: string | null
+          descricao: string | null
+          feedback_profissional: string | null
+          foto_url: string | null
+          gorduras: number | null
+          id: string
+          proteinas: number | null
+          tipo_refeicao: string | null
+        }
+        Insert: {
+          analise_ia?: Json | null
+          calorias?: number | null
+          carboidratos?: number | null
+          cliente_id: string
+          dados_n8n?: Json | null
+          data_hora?: string | null
+          descricao?: string | null
+          feedback_profissional?: string | null
+          foto_url?: string | null
+          gorduras?: number | null
+          id?: string
+          proteinas?: number | null
+          tipo_refeicao?: string | null
+        }
+        Update: {
+          analise_ia?: Json | null
+          calorias?: number | null
+          carboidratos?: number | null
+          cliente_id?: string
+          dados_n8n?: Json | null
+          data_hora?: string | null
+          descricao?: string | null
+          feedback_profissional?: string | null
+          foto_url?: string | null
+          gorduras?: number | null
+          id?: string
+          proteinas?: number | null
+          tipo_refeicao?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registros_alimentares_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      registros_peso: {
+        Row: {
+          cliente_id: string
+          dados_n8n: Json | null
+          data_registro: string | null
+          id: string
+          notas: string | null
+          peso: number
+        }
+        Insert: {
+          cliente_id: string
+          dados_n8n?: Json | null
+          data_registro?: string | null
+          id?: string
+          notas?: string | null
+          peso: number
+        }
+        Update: {
+          cliente_id?: string
+          dados_n8n?: Json | null
+          data_registro?: string | null
+          id?: string
+          notas?: string | null
+          peso?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registros_peso_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      relacionamento_profissional_cliente: {
+        Row: {
+          cliente_id: string
+          configuracoes: Json | null
+          data_inicio: string | null
+          notas: string | null
+          profissional_id: string
+          status: string | null
+        }
+        Insert: {
+          cliente_id: string
+          configuracoes?: Json | null
+          data_inicio?: string | null
+          notas?: string | null
+          profissional_id: string
+          status?: string | null
+        }
+        Update: {
+          cliente_id?: string
+          configuracoes?: Json | null
+          data_inicio?: string | null
+          notas?: string | null
+          profissional_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "relacionamento_profissional_cliente_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "relacionamento_profissional_cliente_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_type: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_type"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      account_status: "ativo" | "inativo" | "pausado"
+      payment_status:
+        | "primeira_vez"
+        | "teste"
+        | "normal"
+        | "assinatura"
+        | "pendente"
+      user_type: "cliente" | "profissional"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +540,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      account_status: ["ativo", "inativo", "pausado"],
+      payment_status: [
+        "primeira_vez",
+        "teste",
+        "normal",
+        "assinatura",
+        "pendente",
+      ],
+      user_type: ["cliente", "profissional"],
+    },
   },
 } as const
