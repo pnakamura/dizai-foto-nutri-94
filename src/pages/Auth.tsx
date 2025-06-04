@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -73,17 +72,29 @@ const Auth = () => {
       return;
     }
 
-    console.log('Tentando criar conta com:', { email, nome, telefone, tipo });
+    console.log('=== INÍCIO DO CADASTRO ===');
+    console.log('Dados sendo enviados:', { 
+      email, 
+      nome, 
+      telefone, 
+      tipo,
+      passwordLength: password.length 
+    });
     
     try {
-      const { error } = await signUp(email, password, {
+      console.log('Chamando signUp...');
+      const result = await signUp(email, password, {
         nome,
         telefone,
         tipo
       });
       
-      if (!error) {
-        console.log('Conta criada com sucesso');
+      console.log('Resultado do signUp:', result);
+      
+      if (!result.error) {
+        console.log('=== CADASTRO REALIZADO COM SUCESSO ===');
+        console.log('User criado:', result.data?.user);
+        
         toast({
           title: "Conta criada!",
           description: "Verifique seu email para confirmar sua conta.",
@@ -96,28 +107,37 @@ const Auth = () => {
         setTelefone('');
         setTipo('cliente');
       } else {
-        console.error('Erro no cadastro:', error);
+        console.error('=== ERRO NO CADASTRO ===');
+        console.error('Erro completo:', result.error);
+        console.error('Message:', result.error.message);
+        console.error('Code:', result.error.code);
+        
         let errorMessage = "Erro ao criar conta";
         
-        if (error.message.includes('User already registered')) {
+        if (result.error.message.includes('User already registered')) {
           errorMessage = "Este email já está cadastrado";
-        } else if (error.message.includes('Invalid email')) {
+        } else if (result.error.message.includes('Invalid email')) {
           errorMessage = "Email inválido";
-        } else if (error.message.includes('Password')) {
+        } else if (result.error.message.includes('Password')) {
           errorMessage = "Erro na senha";
+        } else if (result.error.message.includes('Database error')) {
+          errorMessage = "Erro no banco de dados - verifique os logs";
         }
         
         toast({
           title: "Erro no cadastro",
-          description: errorMessage,
+          description: `${errorMessage}: ${result.error.message}`,
           variant: "destructive",
         });
       }
     } catch (error: any) {
-      console.error('Erro inesperado no cadastro:', error);
+      console.error('=== ERRO INESPERADO NO CADASTRO ===');
+      console.error('Erro completo:', error);
+      console.error('Stack:', error.stack);
+      
       toast({
         title: "Erro inesperado",
-        description: "Tente novamente em alguns instantes",
+        description: `Tente novamente em alguns instantes: ${error.message}`,
         variant: "destructive",
       });
     }
