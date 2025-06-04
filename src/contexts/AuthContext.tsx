@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -51,6 +50,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
+  const ensureProfileExists = async (userId: string, userData: any) => {
+    try {
+      console.log('🔍 Verificando se perfil existe para user:', userId);
+      
+      // Primeiro, verificar se o perfil já existe
+      const { data: existingProfile, error: checkError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (checkError) {
+        console.error('Erro ao verificar perfil existente:', checkError);
+        return false;
+      }
+
+      if (existingProfile) {
+        console.log('✅ Perfil já existe, não precisa criar');
+        return true;
+      }
+
+      console.log('🔄 Perfil não encontrado, criando via fallback...');
+      
+      // Se não existe, criar via fallback
+      const profileData = {
+        id: userId,
+        nome: userData?.nome?.trim() || 'Usuário',
+        telefone: userData?.telefone?.trim() || null,
+        tipo: userData?.tipo || 'cliente'
+      };
+
+      const { error: insertError } = await supabase
+        .from('profiles')
+        .insert(profileData);
+
+      if (insertError) {
+        console.error('❌ Erro no fallback de criação de perfil:', insertError);
+        return false;
+      }
+
+      console.log('✅ Perfil criado com sucesso via fallback');
+      return true;
+      
+    } catch (error: any) {
+      console.error('❌ Erro inesperado no fallback:', error);
+      return false;
+    }
+  };
+
   const signUp = async (email: string, password: string, userData?: any) => {
     try {
       setLoading(true);
@@ -58,17 +106,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       console.log('=== INICIANDO SIGNUP ===');
       console.log('Email:', email);
-      console.log('UserData recebido:', userData);
+      console.log('UserData:', userData);
       
-      // Preparar metadata
+      // Preparar metadata limpa
       const metaData = {
         nome: userData?.nome?.trim() || email.split('@')[0],
         telefone: userData?.telefone?.trim() || '',
         tipo: userData?.tipo || 'cliente'
       };
       
-      console.log('=== METADATA FINAL ===');
-      console.log('MetaData completo:', JSON.stringify(metaData, null, 2));
+      console.log('MetaData para envio:', metaData);
       
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
@@ -79,34 +126,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       });
 
-      console.log('=== RESPOSTA DO SUPABASE AUTH ===');
-      console.log('Data:', data);
-      console.log('User criado:', data?.user);
-      console.log('Error:', error);
+      console.log('Resposta do signUp:', { data, error });
 
       if (error) {
-        console.error('=== ERRO NO SIGNUP ===');
-        console.error('Erro completo:', error);
+        console.error('Erro no signUp:', error);
         toast({
           title: "Erro no cadastro",
           description: error.message,
           variant: "destructive",
         });
-      } else if (data?.user) {
-        console.log('=== SIGNUP REALIZADO COM SUCESSO ===');
-        console.log('Usuário criado com ID:', data.user.id);
-        console.log('Metadata enviado:', data.user.user_metadata);
+        return { error };
+      }
+
+      if (data?.user) {
+        console.log('✅ Usuário criado:', data.user.id);
         
-        toast({
-          title: "Cadastro realizado!",
-          description: "Verifique seu email para confirmar sua conta.",
-        });
+        // Aguardar um pouco para o trigger processar
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Verificar e garantir que o perfil foi criado
+        const profileCreated = await ensureProfileExists(data.user.id, metaData);
+        
+        if (!profileCreated) {
+          console.warn('⚠️ Falha no fallback de perfil, mas signup foi realizado');
+          toast({
+            title: "Conta criada com aviso",
+            description: "Conta criada, mas houve problema na criação do perfil. Contate o suporte se necessário.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Cadastro realizado!",
+            description: "Verifique seu email para confirmar sua conta.",
+          });
+        }
       }
 
       return { error };
     } catch (error: any) {
-      console.error('=== ERRO INESPERADO NO SIGNUP ===');
-      console.error('Erro completo:', error);
+      console.error('Erro inesperado no signup:', error);
       toast({
         title: "Erro no cadastro",
         description: error.message,

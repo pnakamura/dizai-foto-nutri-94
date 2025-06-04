@@ -15,8 +15,10 @@ export type Database = {
           data_mudanca: string | null
           id: string
           motivo: string | null
-          status_anterior: Database["public"]["Enums"]["payment_status"] | null
-          status_novo: Database["public"]["Enums"]["payment_status"]
+          status_anterior:
+            | Database["public"]["Enums"]["payment_status_v2"]
+            | null
+          status_novo: Database["public"]["Enums"]["payment_status_v2"]
           usuario_id: string
         }
         Insert: {
@@ -24,8 +26,10 @@ export type Database = {
           data_mudanca?: string | null
           id?: string
           motivo?: string | null
-          status_anterior?: Database["public"]["Enums"]["payment_status"] | null
-          status_novo: Database["public"]["Enums"]["payment_status"]
+          status_anterior?:
+            | Database["public"]["Enums"]["payment_status_v2"]
+            | null
+          status_novo: Database["public"]["Enums"]["payment_status_v2"]
           usuario_id: string
         }
         Update: {
@@ -33,8 +37,10 @@ export type Database = {
           data_mudanca?: string | null
           id?: string
           motivo?: string | null
-          status_anterior?: Database["public"]["Enums"]["payment_status"] | null
-          status_novo?: Database["public"]["Enums"]["payment_status"]
+          status_anterior?:
+            | Database["public"]["Enums"]["payment_status_v2"]
+            | null
+          status_novo?: Database["public"]["Enums"]["payment_status_v2"]
           usuario_id?: string
         }
         Relationships: [
@@ -84,15 +90,7 @@ export type Database = {
           unidade?: string
           valor_alvo?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "metas_cliente_id_fkey"
-            columns: ["cliente_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       perfis_clientes: {
         Row: {
@@ -137,15 +135,7 @@ export type Database = {
           sequencia_dias?: number | null
           usuario_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "perfis_clientes_usuario_id_fkey"
-            columns: ["usuario_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       perfis_profissionais: {
         Row: {
@@ -178,15 +168,7 @@ export type Database = {
           total_clientes?: number | null
           usuario_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "perfis_profissionais_usuario_id_fkey"
-            columns: ["usuario_id"]
-            isOneToOne: true
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -198,10 +180,10 @@ export type Database = {
           id: string
           metadados: Json | null
           nome: string
-          status_conta: Database["public"]["Enums"]["account_status"]
-          status_pagamento: Database["public"]["Enums"]["payment_status"]
+          status_conta: Database["public"]["Enums"]["account_status_v2"]
+          status_pagamento: Database["public"]["Enums"]["payment_status_v2"]
           telefone: string | null
-          tipo: Database["public"]["Enums"]["user_type"]
+          tipo: Database["public"]["Enums"]["user_type_v2"]
           ultima_atualizacao: string | null
         }
         Insert: {
@@ -213,10 +195,10 @@ export type Database = {
           id: string
           metadados?: Json | null
           nome: string
-          status_conta?: Database["public"]["Enums"]["account_status"]
-          status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          status_conta?: Database["public"]["Enums"]["account_status_v2"]
+          status_pagamento?: Database["public"]["Enums"]["payment_status_v2"]
           telefone?: string | null
-          tipo?: Database["public"]["Enums"]["user_type"]
+          tipo?: Database["public"]["Enums"]["user_type_v2"]
           ultima_atualizacao?: string | null
         }
         Update: {
@@ -228,10 +210,10 @@ export type Database = {
           id?: string
           metadados?: Json | null
           nome?: string
-          status_conta?: Database["public"]["Enums"]["account_status"]
-          status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          status_conta?: Database["public"]["Enums"]["account_status_v2"]
+          status_pagamento?: Database["public"]["Enums"]["payment_status_v2"]
           telefone?: string | null
-          tipo?: Database["public"]["Enums"]["user_type"]
+          tipo?: Database["public"]["Enums"]["user_type_v2"]
           ultima_atualizacao?: string | null
         }
         Relationships: []
@@ -264,15 +246,7 @@ export type Database = {
           quantidade_ml?: number
           tipo_registro?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "registros_agua_cliente_id_fkey"
-            columns: ["cliente_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       registros_alimentares: {
         Row: {
@@ -320,15 +294,7 @@ export type Database = {
           proteinas?: number | null
           tipo_refeicao?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "registros_alimentares_cliente_id_fkey"
-            columns: ["cliente_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       registros_peso: {
         Row: {
@@ -355,15 +321,7 @@ export type Database = {
           notas?: string | null
           peso?: number
         }
-        Relationships: [
-          {
-            foreignKeyName: "registros_peso_cliente_id_fkey"
-            columns: ["cliente_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       relacionamento_profissional_cliente: {
         Row: {
@@ -390,42 +348,24 @@ export type Database = {
           profissional_id?: string
           status?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "relacionamento_profissional_cliente_cliente_id_fkey"
-            columns: ["cliente_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "relacionamento_profissional_cliente_profissional_id_fkey"
-            columns: ["profissional_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      get_user_type: {
-        Args: { user_id: string }
-        Returns: Database["public"]["Enums"]["user_type"]
-      }
+      [_ in never]: never
     }
     Enums: {
-      account_status: "ativo" | "inativo" | "pausado"
-      payment_status:
+      account_status_v2: "ativo" | "inativo" | "pausado"
+      payment_status_v2:
         | "primeira_vez"
         | "teste"
         | "normal"
         | "assinatura"
         | "pendente"
-      user_type: "cliente" | "profissional"
+      user_type_v2: "cliente" | "profissional"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -541,15 +481,15 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      account_status: ["ativo", "inativo", "pausado"],
-      payment_status: [
+      account_status_v2: ["ativo", "inativo", "pausado"],
+      payment_status_v2: [
         "primeira_vez",
         "teste",
         "normal",
         "assinatura",
         "pendente",
       ],
-      user_type: ["cliente", "profissional"],
+      user_type_v2: ["cliente", "profissional"],
     },
   },
 } as const

@@ -23,16 +23,14 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   const { signUp, loading } = useAuth();
   const { toast } = useToast();
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const validateForm = () => {
     if (password.length < 6) {
       toast({
         title: "Senha muito curta",
         description: "A senha deve ter pelo menos 6 caracteres",
         variant: "destructive",
       });
-      return;
+      return false;
     }
 
     if (!nome.trim()) {
@@ -41,20 +39,37 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         description: "Por favor, informe seu nome completo",
         variant: "destructive",
       });
+      return false;
+    }
+
+    if (!email.trim()) {
+      toast({
+        title: "Email obrigatório",
+        description: "Por favor, informe um email válido",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!validateForm()) {
       return;
     }
 
-    console.log('=== INÍCIO DO PROCESSO DE CADASTRO ===');
+    console.log('=== INICIANDO PROCESSO DE CADASTRO ===');
     console.log('Dados do formulário:', { 
       email: email.trim(), 
       nome: nome.trim(), 
       telefone: telefone.trim(), 
-      tipo,
-      passwordLength: password.length 
+      tipo 
     });
     
     try {
-      console.log('🔄 Executando signUp...');
       const result = await signUp(email.trim(), password, {
         nome: nome.trim(),
         telefone: telefone.trim(),
@@ -62,46 +77,42 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       });
       
       if (result.error) {
-        console.error('❌ Erro no signUp:', result.error);
+        console.error('Erro retornado do signUp:', result.error);
         
         let errorMessage = "Erro ao criar conta";
         if (result.error.message.includes('User already registered')) {
           errorMessage = "Este email já está cadastrado";
         } else if (result.error.message.includes('Invalid email')) {
           errorMessage = "Email inválido";
+        } else if (result.error.message.includes('Password')) {
+          errorMessage = "Senha deve ter pelo menos 6 caracteres";
         }
         
         toast({
           title: "Erro no cadastro",
-          description: `${errorMessage}: ${result.error.message}`,
+          description: errorMessage,
           variant: "destructive",
         });
         return;
       }
 
-      console.log('✅ SignUp realizado com sucesso');
+      console.log('✅ Processo de cadastro concluído com sucesso');
       
-      // Limpar formulário
+      // Limpar formulário apenas em caso de sucesso
       setEmail('');
       setPassword('');
       setNome('');
       setTelefone('');
       setTipo('cliente');
       
-      toast({
-        title: "Conta criada!",
-        description: "Verifique seu email para confirmar sua conta.",
-      });
-      
       onSuccess();
       
     } catch (error: any) {
-      console.error('=== ERRO INESPERADO NO PROCESSO ===');
-      console.error('Erro completo:', error);
+      console.error('Erro inesperado no processo:', error);
       
       toast({
         title: "Erro inesperado",
-        description: `Tente novamente: ${error.message}`,
+        description: "Tente novamente em alguns instantes",
         variant: "destructive",
       });
     }
