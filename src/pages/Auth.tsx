@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,6 +22,7 @@ const Auth = () => {
   
   const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
@@ -32,35 +34,92 @@ const Auth = () => {
     e.preventDefault();
     console.log('Tentando fazer login com:', { email, password });
     
-    const { error } = await signIn(email, password);
-    if (!error) {
-      console.log('Login realizado com sucesso');
-      navigate('/dashboard');
-    } else {
-      console.error('Erro no login:', error);
+    try {
+      const { error } = await signIn(email, password);
+      if (!error) {
+        console.log('Login realizado com sucesso');
+        toast({
+          title: "Login realizado!",
+          description: "Bem-vindo de volta!",
+        });
+        navigate('/dashboard');
+      } else {
+        console.error('Erro no login:', error);
+        toast({
+          title: "Erro no login",
+          description: error.message || "Verifique suas credenciais",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      console.error('Erro inesperado no login:', error);
+      toast({
+        title: "Erro inesperado",
+        description: "Tente novamente em alguns instantes",
+        variant: "destructive",
+      });
     }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password.length < 6) {
+      toast({
+        title: "Senha muito curta",
+        description: "A senha deve ter pelo menos 6 caracteres",
+        variant: "destructive",
+      });
+      return;
+    }
+
     console.log('Tentando criar conta com:', { email, nome, telefone, tipo });
     
-    const { error } = await signUp(email, password, {
-      nome,
-      telefone,
-      tipo
-    });
-    
-    if (!error) {
-      console.log('Conta criada com sucesso');
-      setActiveTab('login');
-      // Limpar formulário
-      setEmail('');
-      setPassword('');
-      setNome('');
-      setTelefone('');
-    } else {
-      console.error('Erro no cadastro:', error);
+    try {
+      const { error } = await signUp(email, password, {
+        nome,
+        telefone,
+        tipo
+      });
+      
+      if (!error) {
+        console.log('Conta criada com sucesso');
+        toast({
+          title: "Conta criada!",
+          description: "Verifique seu email para confirmar sua conta.",
+        });
+        setActiveTab('login');
+        // Limpar formulário
+        setEmail('');
+        setPassword('');
+        setNome('');
+        setTelefone('');
+        setTipo('cliente');
+      } else {
+        console.error('Erro no cadastro:', error);
+        let errorMessage = "Erro ao criar conta";
+        
+        if (error.message.includes('User already registered')) {
+          errorMessage = "Este email já está cadastrado";
+        } else if (error.message.includes('Invalid email')) {
+          errorMessage = "Email inválido";
+        } else if (error.message.includes('Password')) {
+          errorMessage = "Erro na senha";
+        }
+        
+        toast({
+          title: "Erro no cadastro",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      console.error('Erro inesperado no cadastro:', error);
+      toast({
+        title: "Erro inesperado",
+        description: "Tente novamente em alguns instantes",
+        variant: "destructive",
+      });
     }
   };
 
