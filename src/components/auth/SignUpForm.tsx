@@ -8,6 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfileManager } from '@/hooks/useProfileManager';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SignUpFormProps {
   onSuccess: () => void;
