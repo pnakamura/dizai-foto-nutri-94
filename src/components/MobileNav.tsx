@@ -20,7 +20,6 @@ const MobileNav: React.FC = () => {
   const navItems = [
     { href: "#features", label: "Recursos" },
     { href: "#how-it-works", label: "Como Funciona" },
-    { href: "#testimonials", label: "Depoimentos" },
     { href: "/dashboard", label: "Dashboard", isRoute: true },
     { href: "/professional", label: "Profissionais", isRoute: true },
     { href: "#faq", label: "FAQ" },
@@ -39,15 +38,15 @@ const MobileNav: React.FC = () => {
         <Menu className="h-6 w-6" />
       </Button>
 
-      {/* Overlay with improved design */}
+      {/* Overlay with fixed background */}
       <div 
         className={cn(
-          "fixed inset-0 z-50 bg-background transition-all duration-300 ease-in-out",
+          "fixed inset-0 z-50 bg-white transition-all duration-300 ease-in-out",
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b border-border">
+        <div className="flex justify-between items-center p-4 border-b border-border bg-white">
           <Link to="/" onClick={closeMenu}>
             <h1 className="text-xl font-bold gradient-text">DizAi</h1>
           </Link>
@@ -63,8 +62,8 @@ const MobileNav: React.FC = () => {
         </div>
         
         {/* Navigation Menu */}
-        <nav className="flex flex-col h-full">
-          <div className="flex-1 px-4 py-6 space-y-2">
+        <nav className="flex flex-col h-full bg-white">
+          <div className="flex-1 px-4 py-6 space-y-2 bg-white">
             {navItems.map((item, index) => (
               item.isRoute ? (
                 <Link 
@@ -91,8 +90,8 @@ const MobileNav: React.FC = () => {
           </div>
           
           {/* Bottom Actions */}
-          <div className="p-4 border-t border-border space-y-3">
-            <Link to="/login" onClick={closeMenu} className="block">
+          <div className="p-4 border-t border-border space-y-3 bg-white">
+            <Link to="/auth" onClick={closeMenu} className="block">
               <Button variant="outline" size="lg" className="w-full">
                 Login
               </Button>

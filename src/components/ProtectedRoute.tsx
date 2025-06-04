@@ -27,12 +27,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredUserT
     );
   }
 
-  if (!user || !session) {
-    return <Navigate to="/auth" replace />;
-  }
+  // Temporariamente permitir acesso sem login para testes
+  // TODO: Reativar verificação de autenticação quando necessário
+  // if (!user || !session) {
+  //   return <Navigate to="/auth" replace />;
+  // }
 
   // TODO: Check user type when profile data is available
-  // For now, allow all authenticated users
+  // For now, allow all users
 
   return <>{children}</>;
 };

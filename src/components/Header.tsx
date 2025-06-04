@@ -25,20 +25,15 @@ const Header: React.FC = () => {
         <a href="#how-it-works" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
           Como Funciona
         </a>
-        <a href="#testimonials" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
-          Depoimentos
-        </a>
-        <a href="#pricing" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
-          Planos e Preços
-        </a>
-        {user && (
-          <Link to="/dashboard" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
-            Dashboard
-          </Link>
-        )}
+        <Link to="/dashboard" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
+          Dashboard
+        </Link>
         <Link to="/professional" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
           Profissionais
         </Link>
+        <a href="#pricing" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
+          Planos e Preços
+        </a>
         <a href="#faq" className="text-foreground/70 hover:text-dizai-brand-green transition-colors font-medium text-sm">
           FAQ
         </a>
