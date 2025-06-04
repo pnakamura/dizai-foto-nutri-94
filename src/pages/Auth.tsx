@@ -30,25 +30,37 @@ const Auth = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Tentando fazer login com:', { email, password });
+    
     const { error } = await signIn(email, password);
     if (!error) {
+      console.log('Login realizado com sucesso');
       navigate('/dashboard');
+    } else {
+      console.error('Erro no login:', error);
     }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Tentando criar conta com:', { email, nome, telefone, tipo });
+    
     const { error } = await signUp(email, password, {
       nome,
       telefone,
       tipo
     });
+    
     if (!error) {
+      console.log('Conta criada com sucesso');
       setActiveTab('login');
+      // Limpar formulário
       setEmail('');
       setPassword('');
       setNome('');
       setTelefone('');
+    } else {
+      console.error('Erro no cadastro:', error);
     }
   };
 
