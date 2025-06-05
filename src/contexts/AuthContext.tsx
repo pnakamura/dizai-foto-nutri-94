@@ -1,7 +1,10 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuthRedirect } from '@/hooks/useAuthRedirect';
+import { useProfileCreation } from '@/hooks/useProfileCreation';
 
 interface AuthContextType {
   user: User | null;
@@ -28,36 +31,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-
-  const redirectUserByType = async (userId: string) => {
-    try {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('tipo')
-        .eq('id', userId)
-        .single();
-
-      if (profile) {
-        switch (profile.tipo) {
-          case 'admin':
-            window.location.href = '/admin';
-            break;
-          case 'profissional':
-            window.location.href = '/professional';
-            break;
-          case 'cliente':
-          default:
-            window.location.href = '/dashboard';
-            break;
-        }
-      } else {
-        window.location.href = '/dashboard';
-      }
-    } catch (error) {
-      console.error('Erro ao buscar perfil do usuário:', error);
-      window.location.href = '/dashboard';
-    }
-  };
+  const { redirectUserByType } = useAuthRedirect();
+  const { ensureProfileExists } = useProfileCreation();
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -79,56 +54,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const ensureProfileExists = async (userId: string, userData: any) => {
-    try {
-      console.log('🔍 Verificando se perfil existe para user:', userId);
-      
-      // Verificar se o perfil já existe
-      const { data: existingProfile, error: checkError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (checkError) {
-        console.error('Erro ao verificar perfil existente:', checkError);
-        return false;
-      }
-
-      if (existingProfile) {
-        console.log('✅ Perfil já existe, não precisa criar');
-        return true;
-      }
-
-      console.log('🔄 Perfil não encontrado, criando via fallback...');
-      
-      // Se não existe, criar via fallback
-      const profileData = {
-        id: userId,
-        nome: userData?.nome?.trim() || 'Usuário',
-        email: userData?.email?.trim() || null,
-        telefone: userData?.telefone?.trim() || null,
-        tipo: userData?.tipo || 'cliente'
-      };
-
-      const { error: insertError } = await supabase
-        .from('profiles')
-        .insert(profileData);
-
-      if (insertError) {
-        console.error('❌ Erro no fallback de criação de perfil:', insertError);
-        return false;
-      }
-
-      console.log('✅ Perfil criado com sucesso via fallback');
-      return true;
-      
-    } catch (error: any) {
-      console.error('❌ Erro inesperado no fallback:', error);
-      return false;
-    }
-  };
 
   const signUp = async (email: string, password: string, userData?: any) => {
     try {
