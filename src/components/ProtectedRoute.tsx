@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import { Navigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -11,8 +12,9 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredUserType }) => {
   const { user, loading, session } = useAuth();
+  const { userProfile, loading: profileLoading } = useUserProfile();
 
-  if (loading) {
+  if (loading || profileLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
         <Card className="w-96">
@@ -31,10 +33,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredUserT
     return <Navigate to="/auth" replace />;
   }
 
-  // TODO: Implementar verificação de tipo de usuário quando necessário
-  // if (requiredUserType && userType !== requiredUserType) {
-  //   return <Navigate to="/dashboard" replace />;
-  // }
+  // Verificar tipo de usuário se especificado
+  if (requiredUserType && userProfile) {
+    if (userProfile.tipo !== requiredUserType) {
+      // Redirecionar para a página apropriada baseada no tipo do usuário
+      const redirectPath = userProfile.tipo === 'admin' ? '/admin' : 
+                          userProfile.tipo === 'profissional' ? '/professional' : '/dashboard';
+      return <Navigate to={redirectPath} replace />;
+    }
+  }
 
   return <>{children}</>;
 };

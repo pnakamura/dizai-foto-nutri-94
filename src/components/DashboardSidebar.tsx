@@ -11,67 +11,121 @@ import {
   Calendar,
   User,
   Settings,
-  Bell
+  Bell,
+  Users,
+  UserCheck,
+  FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 const DashboardSidebar = () => {
   const location = useLocation();
+  const { userProfile } = useUserProfile();
   
-  const menuItems = [
-    {
-      title: 'Visão Geral',
-      href: '/dashboard',
-      icon: LayoutDashboard,
-      active: location.pathname === '/dashboard'
-    },
-    {
-      title: 'Nova Foto',
-      href: '/dashboard/photo',
-      icon: Camera,
-      active: location.pathname === '/dashboard/photo'
-    },
-    {
-      title: 'Progresso',
-      href: '/dashboard/progress',
-      icon: TrendingUp,
-      active: location.pathname === '/dashboard/progress'
-    },
-    {
-      title: 'Metas',
-      href: '/dashboard/goals',
-      icon: Target,
-      active: location.pathname === '/dashboard/goals'
-    },
-    {
-      title: 'Agenda',
-      href: '/dashboard/schedule',
-      icon: Calendar,
-      active: location.pathname === '/dashboard/schedule'
-    },
-    {
-      title: 'Perfil',
-      href: '/dashboard/profile',
-      icon: User,
-      active: location.pathname === '/dashboard/profile'
-    },
-    {
-      title: 'Notificações',
-      href: '/dashboard/notifications',
-      icon: Bell,
-      active: location.pathname === '/dashboard/notifications'
-    },
-    {
-      title: 'Configurações',
-      href: '/dashboard/settings',
-      icon: Settings,
-      active: location.pathname === '/dashboard/settings'
+  // Menus baseados no tipo de usuário
+  const getMenuItems = () => {
+    if (userProfile?.tipo === 'profissional') {
+      return [
+        {
+          title: 'Visão Geral',
+          href: '/professional',
+          icon: LayoutDashboard,
+          active: location.pathname === '/professional'
+        },
+        {
+          title: 'Meus Clientes',
+          href: '/professional/clients',
+          icon: Users,
+          active: location.pathname === '/professional/clients'
+        },
+        {
+          title: 'Relatórios',
+          href: '/professional/reports',
+          icon: FileText,
+          active: location.pathname === '/professional/reports'
+        },
+        {
+          title: 'Agenda',
+          href: '/professional/schedule',
+          icon: Calendar,
+          active: location.pathname === '/professional/schedule'
+        },
+        {
+          title: 'Perfil Profissional',
+          href: '/professional/profile',
+          icon: UserCheck,
+          active: location.pathname === '/professional/profile'
+        },
+        {
+          title: 'Configurações',
+          href: '/professional/settings',
+          icon: Settings,
+          active: location.pathname === '/professional/settings'
+        }
+      ];
     }
-  ];
+
+    // Menu padrão para clientes
+    return [
+      {
+        title: 'Visão Geral',
+        href: '/dashboard',
+        icon: LayoutDashboard,
+        active: location.pathname === '/dashboard'
+      },
+      {
+        title: 'Nova Foto',
+        href: '/dashboard/photo',
+        icon: Camera,
+        active: location.pathname === '/dashboard/photo'
+      },
+      {
+        title: 'Progresso',
+        href: '/dashboard/progress',
+        icon: TrendingUp,
+        active: location.pathname === '/dashboard/progress'
+      },
+      {
+        title: 'Metas',
+        href: '/dashboard/goals',
+        icon: Target,
+        active: location.pathname === '/dashboard/goals'
+      },
+      {
+        title: 'Agenda',
+        href: '/dashboard/schedule',
+        icon: Calendar,
+        active: location.pathname === '/dashboard/schedule'
+      },
+      {
+        title: 'Perfil',
+        href: '/dashboard/profile',
+        icon: User,
+        active: location.pathname === '/dashboard/profile'
+      },
+      {
+        title: 'Notificações',
+        href: '/dashboard/notifications',
+        icon: Bell,
+        active: location.pathname === '/dashboard/notifications'
+      },
+      {
+        title: 'Configurações',
+        href: '/dashboard/settings',
+        icon: Settings,
+        active: location.pathname === '/dashboard/settings'
+      }
+    ];
+  };
+
+  const menuItems = getMenuItems();
 
   return (
     <Card className="w-64 h-fit p-4 space-y-2">
-      <h3 className="font-semibold text-lg mb-4 gradient-text">Navegação</h3>
+      <h3 className="font-semibold text-lg mb-4 gradient-text">
+        {userProfile?.tipo === 'profissional' ? 'Profissional' : 'Navegação'}
+      </h3>
       <nav className="space-y-1">
         {menuItems.map((item) => (
           <Link key={item.href} to={item.href}>

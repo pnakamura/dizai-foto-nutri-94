@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,6 +28,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  const redirectUserByType = async (userId: string) => {
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('tipo')
+        .eq('id', userId)
+        .single();
+
+      if (profile) {
+        switch (profile.tipo) {
+          case 'admin':
+            window.location.href = '/admin';
+            break;
+          case 'profissional':
+            window.location.href = '/professional';
+            break;
+          case 'cliente':
+          default:
+            window.location.href = '/dashboard';
+            break;
+        }
+      } else {
+        window.location.href = '/dashboard';
+      }
+    } catch (error) {
+      console.error('Erro ao buscar perfil do usuário:', error);
+      window.location.href = '/dashboard';
+    }
+  };
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -182,7 +211,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -193,6 +222,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           description: error.message,
           variant: "destructive",
         });
+        return { error };
+      }
+
+      if (data?.user) {
+        toast({
+          title: "Login realizado!",
+          description: "Redirecionando...",
+        });
+        
+        // Redirecionar baseado no tipo de usuário
+        await redirectUserByType(data.user.id);
       }
 
       return { error };

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import DashboardBreadcrumb from '@/components/DashboardBreadcrumb';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import ProgressOverview from '@/components/ProgressOverview';
@@ -10,6 +11,7 @@ import NutritionGoals from '@/components/NutritionGoals';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
+  const { userProfile } = useUserProfile();
 
   if (loading) {
     return (
@@ -34,7 +36,7 @@ const Dashboard = () => {
           <main className="flex-1 space-y-6">
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h1 className="text-2xl font-bold gradient-text mb-2">
-                Bem-vindo, {user?.email}!
+                Bem-vindo, {userProfile?.nome || user?.email}!
               </h1>
               <p className="text-muted-foreground">
                 Aqui está o resumo do seu progresso hoje.

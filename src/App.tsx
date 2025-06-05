@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Professional from "./pages/Professional";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,7 +30,7 @@ const App = () => (
           <Route 
             path="/dashboard" 
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredUserType="cliente">
                 <Dashboard />
               </ProtectedRoute>
             } 
@@ -39,6 +40,14 @@ const App = () => (
             element={
               <ProtectedRoute requiredUserType="profissional">
                 <Professional />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute requiredUserType="admin">
+                <Admin />
               </ProtectedRoute>
             } 
           />

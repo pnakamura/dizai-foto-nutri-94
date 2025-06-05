@@ -2,11 +2,13 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import { useAdminData } from '@/hooks/useAdminData';
 import DashboardBreadcrumb from '@/components/DashboardBreadcrumb';
-import DashboardSidebar from '@/components/DashboardSidebar';
-import ProfessionalDashboard from '@/components/ProfessionalDashboard';
+import AdminSidebar from '@/components/AdminSidebar';
+import AdminDashboard from '@/components/AdminDashboard';
+import { Navigate } from 'react-router-dom';
 
-const Professional = () => {
+const Admin = () => {
   const { user, loading } = useAuth();
   const { userProfile } = useUserProfile();
 
@@ -18,29 +20,34 @@ const Professional = () => {
     );
   }
 
+  // Verificar se é admin
+  if (userProfile && userProfile.tipo !== 'admin') {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6">
-          <DashboardBreadcrumb currentPage="Área Profissional" />
+          <DashboardBreadcrumb currentPage="Painel Administrativo" />
         </div>
         
         <div className="flex gap-6">
           <aside className="hidden lg:block">
-            <DashboardSidebar />
+            <AdminSidebar />
           </aside>
           
           <main className="flex-1 space-y-6">
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h1 className="text-2xl font-bold gradient-text mb-2">
-                Bem-vindo, {userProfile?.nome || user?.email}!
+                Painel Administrativo
               </h1>
               <p className="text-muted-foreground">
-                Gerencie seus clientes e acompanhe o progresso deles de forma eficiente.
+                Gerencie usuários, monitore o sistema e configure funcionalidades.
               </p>
             </div>
             
-            <ProfessionalDashboard />
+            <AdminDashboard />
           </main>
         </div>
       </div>
@@ -48,4 +55,4 @@ const Professional = () => {
   );
 };
 
-export default Professional;
+export default Admin;
