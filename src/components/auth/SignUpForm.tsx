@@ -18,7 +18,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
   const [password, setPassword] = useState('');
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
-  const [tipo, setTipo] = useState<'cliente' | 'profissional' | 'admin'>('cliente');
+  const [tipo, setTipo] = useState<'cliente' | 'profissional'>('cliente');
   
   const { signUp, loading } = useAuth();
   const { toast } = useToast();
@@ -163,7 +163,7 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
         <Label htmlFor="tipo">Tipo de Conta *</Label>
         <Select 
           value={tipo} 
-          onValueChange={(value: 'cliente' | 'profissional' | 'admin') => setTipo(value)}
+          onValueChange={(value: 'cliente' | 'profissional') => setTipo(value)}
           disabled={loading}
         >
           <SelectTrigger>
@@ -172,7 +172,6 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
           <SelectContent>
             <SelectItem value="cliente">Cliente</SelectItem>
             <SelectItem value="profissional">Profissional</SelectItem>
-            <SelectItem value="admin">Administrador</SelectItem>
           </SelectContent>
         </Select>
       </div>
