@@ -58,10 +58,14 @@ const AdminSidebar = () => {
   ];
 
   return (
-    <Card className="w-64 h-fit p-4 space-y-2">
-      <div className="flex items-center gap-2 mb-4">
-        <Shield className="h-5 w-5 text-red-500" />
-        <h3 className="font-semibold text-lg gradient-text">Admin</h3>
+    <Card className="w-64 h-fit p-4 space-y-2 shadow-lg border-0 bg-white/95 backdrop-blur-sm">
+      <div className="flex items-center gap-3 mb-6 px-2">
+        <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-purple-500 to-red-500 rounded-lg">
+          <Shield className="h-4 w-4 text-white" />
+        </div>
+        <h3 className="font-semibold text-lg bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent">
+          Administração
+        </h3>
       </div>
       <nav className="space-y-1">
         {menuItems.map((item) => (
@@ -69,8 +73,10 @@ const AdminSidebar = () => {
             <Button
               variant={item.active ? "default" : "ghost"}
               className={cn(
-                "w-full justify-start gap-3",
-                item.active && "bg-gradient-button text-white"
+                "w-full justify-start gap-3 h-11 font-medium transition-all duration-200",
+                item.active 
+                  ? "bg-gradient-to-r from-purple-600 to-red-500 text-white shadow-md hover:shadow-lg" 
+                  : "hover:bg-purple-50 hover:text-purple-600"
               )}
             >
               <item.icon className="h-4 w-4" />

@@ -11,18 +11,21 @@ import NutritionGoals from '@/components/NutritionGoals';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
-  const { userProfile } = useUserProfile();
+  const { profile } = useUserProfile();
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-dizai-brand-green"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-dizai-brand-green border-t-transparent mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Carregando seu dashboard...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6">
           <DashboardBreadcrumb currentPage="Dashboard" />
@@ -34,12 +37,15 @@ const Dashboard = () => {
           </aside>
           
           <main className="flex-1 space-y-6">
-            <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h1 className="text-2xl font-bold gradient-text mb-2">
-                Bem-vindo, {userProfile?.nome || user?.email}!
-              </h1>
+            <div className="bg-white rounded-xl p-6 shadow-lg border-0 bg-gradient-to-r from-white to-green-50">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-3 h-8 bg-gradient-to-b from-dizai-brand-green to-blue-500 rounded-full"></div>
+                <h1 className="text-2xl font-bold gradient-text">
+                  Bem-vindo, {profile?.nome || user?.email}!
+                </h1>
+              </div>
               <p className="text-muted-foreground">
-                Aqui está o resumo do seu progresso hoje.
+                Aqui está o resumo do seu progresso nutricional hoje.
               </p>
             </div>
             
