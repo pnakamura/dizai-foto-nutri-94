@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -34,6 +35,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
+  const handleAuthRedirect = useCallback(async (userId: string) => {
+    const currentPath = window.location.pathname;
+    
+    // Verificar se já estamos em uma das páginas principais
+    const isAlreadyInMainPage = ['/dashboard', '/professional', '/admin'].includes(currentPath);
+    
+    if (!isAlreadyInMainPage) {
+      console.log('🔄 Redirecionando usuário baseado no tipo...');
+      await redirectUserByType(userId);
+    } else {
+      console.log('✅ Usuário já está na página correta:', currentPath);
+    }
+  }, [redirectUserByType]);
+
   useEffect(() => {
     console.log('🚀 AuthProvider inicializando...');
 
@@ -58,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('✅ Login normal detectado, redirecionando...');
             setHasRedirected(true);
             setTimeout(() => {
-              redirectUserByType(currentSession.user.id);
+              handleAuthRedirect(currentSession.user.id);
             }, 500);
           }
         }
@@ -90,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [handleAuthRedirect, hasRedirected]);
 
   const signUp = async (email: string, password: string, userData?: any) => {
     try {
@@ -193,8 +208,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           description: "Redirecionando...",
         });
         
-        // Redirecionar baseado no tipo de usuário
-        await redirectUserByType(data.user.id);
+        // NÃO redirecionar aqui - deixar o onAuthStateChange fazer isso
+        // Isso evita o redirecionamento duplo que causa o piscar
       }
 
       return { error };
@@ -233,8 +248,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 Iniciando reset de senha para:', email);
       
-      // URL específica para reset de senha
-      const redirectUrl = `https://dizai-foto-nutri-94.lovable.app/reset-password`;
+      // URL específica para reset de senha usando origin dinâmico
+      const redirectUrl = `${window.location.origin}/reset-password`;
       
       console.log('🔗 URL de redirecionamento:', redirectUrl);
 

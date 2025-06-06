@@ -1,34 +1,59 @@
 
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useAuthRedirect = () => {
+  const navigate = useNavigate();
+
   const redirectUserByType = async (userId: string) => {
     try {
-      const { data: profile } = await supabase
+      console.log('🔍 Buscando perfil do usuário:', userId);
+      
+      const { data: profile, error } = await supabase
         .from('profiles')
         .select('tipo')
         .eq('id', userId)
         .single();
 
+      if (error) {
+        console.error('❌ Erro ao buscar perfil:', error);
+        navigate('/dashboard');
+        return;
+      }
+
       if (profile) {
+        console.log('✅ Perfil encontrado, tipo:', profile.tipo);
+        
+        const currentPath = window.location.pathname;
+        let targetPath = '/dashboard';
+
         switch (profile.tipo) {
           case 'admin':
-            window.location.href = '/admin';
+            targetPath = '/admin';
             break;
           case 'profissional':
-            window.location.href = '/professional';
+            targetPath = '/professional';
             break;
           case 'cliente':
           default:
-            window.location.href = '/dashboard';
+            targetPath = '/dashboard';
             break;
         }
+
+        // Só navegar se não estivermos já na página correta
+        if (currentPath !== targetPath) {
+          console.log(`🚀 Navegando de ${currentPath} para ${targetPath}`);
+          navigate(targetPath, { replace: true });
+        } else {
+          console.log(`✅ Já estamos na página correta: ${currentPath}`);
+        }
       } else {
-        window.location.href = '/dashboard';
+        console.log('⚠️ Perfil não encontrado, redirecionando para dashboard');
+        navigate('/dashboard');
       }
     } catch (error) {
-      console.error('Erro ao buscar perfil do usuário:', error);
-      window.location.href = '/dashboard';
+      console.error('❌ Erro inesperado ao buscar perfil:', error);
+      navigate('/dashboard');
     }
   };
 
