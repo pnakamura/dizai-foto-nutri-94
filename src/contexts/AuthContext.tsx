@@ -33,34 +33,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
-  // Função simplificada para detectar sessão de recuperação
+  // Função para detectar sessão de recuperação
   const isRecoverySession = (currentSession?: Session | null): boolean => {
     const urlParams = new URLSearchParams(window.location.search);
     const type = urlParams.get('type');
     const accessToken = urlParams.get('access_token');
     
     // Verificar se há parâmetros de recovery na URL
-    const hasRecoveryParams = type === 'recovery' && accessToken;
+    const hasRecoveryParams = type === 'recovery' && !!accessToken;
     
     // Verificar se há marcação de recovery no sessionStorage
     const hasRecoveryStorage = sessionStorage.getItem('recovery_session') === 'true';
     
-    // Verificar se estamos na página de reset (forte indicador de recovery)
+    // Verificar se estamos na página de reset
     const isOnResetPage = window.location.pathname === '/reset-password';
     
     // Se está na página de reset COM sessão ativa, assumir recovery
-    const likelyRecoveryByContext = isOnResetPage && currentSession?.user;
+    const likelyRecoveryByContext = isOnResetPage && !!currentSession?.user;
+    
+    // Verificar se a sessão é muito recente (últimos 10 minutos)
+    const isRecentSession = currentSession?.user ? 
+      (Date.now() - new Date(currentSession.user.created_at).getTime()) < 10 * 60 * 1000 : false;
+    
+    // Critério mais permissivo: qualquer combinação que sugira recovery
+    const isRecovery = hasRecoveryParams || hasRecoveryStorage || 
+      (likelyRecoveryByContext && isRecentSession) || 
+      (isOnResetPage && !!currentSession?.user);
     
     console.log('🔍 Verificando sessão de recuperação:', {
       hasRecoveryParams,
       hasRecoveryStorage,
       likelyRecoveryByContext,
+      isRecentSession,
+      isRecovery,
       type,
       currentPath: window.location.pathname,
       hasSession: !!currentSession?.user
     });
     
-    return hasRecoveryParams || hasRecoveryStorage || likelyRecoveryByContext;
+    return isRecovery;
   };
 
   // Função para redirecionar para reset de senha
