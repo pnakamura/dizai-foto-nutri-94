@@ -48,13 +48,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const hasRecoveryStorage = recoveryStorageValue === 'true';
     
     // Verificar se a sessão atual é de recovery
-    const sessionIsRecovery = currentSession?.user && (
+    const sessionIsRecovery = Boolean(currentSession?.user && (
       currentSession.user.aud === 'authenticated' && 
       currentSession.user.app_metadata?.recovery_sent_at
-    );
+    ));
     
     // Verificar se foi um recovery baseado no user_metadata
-    const userMetadataRecovery = currentSession?.user?.user_metadata?.recovery_mode === true;
+    const userMetadataRecovery = Boolean(currentSession?.user?.user_metadata?.recovery_mode === true);
     
     console.log('🔍 Verificando sessão de recuperação:', {
       hasRecoveryParams,
@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       appMetadata: currentSession?.user?.app_metadata
     });
     
-    return hasRecoveryParams || !!hasRecoveryStorage || !!sessionIsRecovery || !!userMetadataRecovery;
+    return Boolean(hasRecoveryParams) || hasRecoveryStorage || sessionIsRecovery || userMetadataRecovery;
   };
 
   // Função para redirecionar para reset de senha
