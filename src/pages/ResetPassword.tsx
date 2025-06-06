@@ -23,9 +23,10 @@ const ResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isValidToken, setIsValidToken] = useState(false);
   const [isCheckingToken, setIsCheckingToken] = useState(true);
+  const [tokenStatus, setTokenStatus] = useState<'checking' | 'valid' | 'consumed' | 'invalid'>('checking');
 
   // Capturar parâmetros da URL
-  const accessToken = searchParams.get('access_token') || searchParams.get('token');
+  const accessToken = searchParams.get('access_token');
   const refreshToken = searchParams.get('refresh_token');
   const type = searchParams.get('type');
   const errorCode = searchParams.get('error');
@@ -33,66 +34,84 @@ const ResetPassword = () => {
 
   useEffect(() => {
     const checkTokenAndSetSession = async () => {
-      console.log('🔍 Verificando parâmetros da URL:', {
+      console.log('🔍 ResetPassword - Iniciando verificação:', {
         accessToken: accessToken ? 'presente' : 'ausente',
         refreshToken: refreshToken ? 'presente' : 'ausente',
         type,
         errorCode,
         errorDescription,
         currentSession: session ? 'presente' : 'ausente',
+        sessionUserId: session?.user?.id,
         allParams: Object.fromEntries(searchParams)
       });
-
-      // Se já temos uma sessão ativa e os parâmetros corretos, considerar válido
-      if (session && type === 'recovery') {
-        console.log('✅ Sessão de recuperação ativa detectada');
-        setIsValidToken(true);
-        setIsCheckingToken(false);
-        toast({
-          title: "Sessão de recuperação ativa",
-          description: "Agora você pode definir sua nova senha.",
-        });
-        return;
-      }
 
       // Verificar se há erro nos parâmetros
       if (errorCode) {
         console.error('❌ Erro nos parâmetros:', errorCode, errorDescription);
+        setTokenStatus('invalid');
+        setIsCheckingToken(false);
         toast({
           title: "Erro no link",
           description: errorDescription || "Houve um problema com o link de recuperação.",
           variant: "destructive",
         });
-        navigate('/login');
+        return;
+      }
+
+      // Se já temos uma sessão ativa e é do tipo recovery, permitir reset
+      if (session?.user && type === 'recovery') {
+        console.log('✅ Sessão de recuperação ativa - permitindo reset de senha');
+        setIsValidToken(true);
+        setTokenStatus('valid');
+        setIsCheckingToken(false);
+        toast({
+          title: "Pronto para redefinir",
+          description: "Agora você pode definir sua nova senha.",
+        });
+        return;
+      }
+
+      // Se não há tokens na URL mas há sessão ativa, verificar se pode ser recovery consumida
+      if (!accessToken && !refreshToken && session?.user) {
+        console.log('⚠️ Tokens ausentes mas sessão ativa - possível token já consumido');
+        setIsValidToken(true);
+        setTokenStatus('consumed');
+        setIsCheckingToken(false);
+        toast({
+          title: "Sessão ativa detectada",
+          description: "Você pode redefinir sua senha agora.",
+        });
         return;
       }
 
       // Verificar parâmetros necessários
       if (!accessToken || !refreshToken) {
-        console.error('❌ Parâmetros ausentes:', { accessToken: !!accessToken, refreshToken: !!refreshToken });
+        console.error('❌ Parâmetros ausentes e sem sessão ativa');
+        setTokenStatus('invalid');
+        setIsCheckingToken(false);
         toast({
           title: "Link inválido",
           description: "O link de recuperação de senha é inválido. Solicite um novo.",
           variant: "destructive",
         });
-        navigate('/login');
         return;
       }
 
       // Verificar tipo de ação
       if (type !== 'recovery') {
         console.error('❌ Tipo inválido:', type);
+        setTokenStatus('invalid');
+        setIsCheckingToken(false);
         toast({
           title: "Link inválido",
           description: "Este link não é para recuperação de senha.",
           variant: "destructive",
         });
-        navigate('/login');
         return;
       }
 
       try {
-        console.log('🔧 Tentando definir sessão...');
+        console.log('🔧 Tentando definir sessão com tokens...');
         const { data, error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken,
@@ -101,25 +120,25 @@ const ResetPassword = () => {
         if (error) {
           console.error('❌ Erro ao definir sessão:', error);
           
-          // Tratar diferentes tipos de erro
           if (error.message.includes('expired') || error.message.includes('invalid')) {
+            setTokenStatus('invalid');
             toast({
               title: "Link expirado",
               description: "O link de recuperação expirou. Solicite um novo reset de senha.",
               variant: "destructive",
             });
           } else {
+            setTokenStatus('invalid');
             toast({
               title: "Erro",
               description: error.message || "Não foi possível validar o link de recuperação.",
               variant: "destructive",
             });
           }
-          
-          navigate('/login');
         } else {
           console.log('✅ Sessão definida com sucesso:', data);
           setIsValidToken(true);
+          setTokenStatus('valid');
           toast({
             title: "Link válido",
             description: "Agora você pode definir sua nova senha.",
@@ -127,19 +146,19 @@ const ResetPassword = () => {
         }
       } catch (error: any) {
         console.error('❌ Erro inesperado:', error);
+        setTokenStatus('invalid');
         toast({
           title: "Erro inesperado",
           description: "Ocorreu um erro ao processar o link. Tente solicitar um novo.",
           variant: "destructive",
         });
-        navigate('/login');
       } finally {
         setIsCheckingToken(false);
       }
     };
 
     checkTokenAndSetSession();
-  }, [accessToken, refreshToken, type, errorCode, errorDescription, session, navigate, toast, searchParams]);
+  }, [accessToken, refreshToken, type, errorCode, errorDescription, session, toast, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -227,7 +246,7 @@ const ResetPassword = () => {
     );
   }
 
-  if (!isValidToken) {
+  if (!isValidToken && tokenStatus === 'invalid') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
@@ -261,8 +280,16 @@ const ResetPassword = () => {
               Redefinir Senha
             </CardTitle>
             <p className="text-muted-foreground">
-              Digite sua nova senha abaixo
+              {tokenStatus === 'consumed' 
+                ? "Sua sessão está ativa. Digite sua nova senha abaixo."
+                : "Digite sua nova senha abaixo"
+              }
             </p>
+            {tokenStatus === 'consumed' && (
+              <p className="text-xs text-orange-600 mt-2">
+                ⚠️ Token já utilizado, mas você pode continuar o reset
+              </p>
+            )}
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -329,6 +356,19 @@ const ResetPassword = () => {
               >
                 {isLoading ? 'Atualizando...' : 'Atualizar Senha'}
               </Button>
+
+              {tokenStatus === 'consumed' && (
+                <div className="text-center mt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleRequestNewReset}
+                    className="text-sm"
+                  >
+                    Solicitar novo link de reset
+                  </Button>
+                </div>
+              )}
             </form>
           </CardContent>
         </Card>

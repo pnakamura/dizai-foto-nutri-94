@@ -33,46 +33,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
-  // Função para verificar se é uma sessão de recuperação
-  const isRecoverySession = (currentSession: Session | null): boolean => {
-    if (!currentSession) return false;
-    
-    // Verificar parâmetros da URL atual
+  // Função aprimorada para detectar sessão de recuperação
+  const isRecoverySession = (): boolean => {
     const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get('access_token') || urlParams.get('token');
-    const type = urlParams.get('type');
+    const accessToken = urlParams.get('access_token');
     const refreshToken = urlParams.get('refresh_token');
+    const type = urlParams.get('type');
     
-    // Se há tokens na URL e tipo é recovery, é uma sessão de recuperação
+    console.log('🔍 Verificando se é sessão de recuperação:', {
+      accessToken: accessToken ? 'presente' : 'ausente',
+      refreshToken: refreshToken ? 'presente' : 'ausente',
+      type,
+      currentPath: window.location.pathname,
+      fullUrl: window.location.href
+    });
+    
     return !!(accessToken && refreshToken && type === 'recovery');
   };
 
+  // Função para redirecionar para reset de senha preservando parâmetros
+  const redirectToResetPassword = () => {
+    const urlParams = window.location.search;
+    const resetUrl = `/reset-password${urlParams}`;
+    console.log('🔄 Redirecionando para reset de senha:', resetUrl);
+    
+    // Usar replace para não criar entrada no histórico
+    window.location.replace(resetUrl);
+  };
+
   useEffect(() => {
-    // Set up auth state listener FIRST
+    console.log('🚀 AuthProvider inicializando...');
+    
+    // Verificar IMEDIATAMENTE se estamos em uma sessão de recuperação
+    if (isRecoverySession() && window.location.pathname !== '/reset-password') {
+      console.log('🔄 Sessão de recuperação detectada ANTES do listener, redirecionando...');
+      redirectToResetPassword();
+      return;
+    }
+
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
-        console.log('Auth state changed:', event, currentSession?.user?.email);
+        console.log('📡 Auth state changed:', {
+          event,
+          userEmail: currentSession?.user?.email,
+          currentPath: window.location.pathname,
+          isRecovery: isRecoverySession()
+        });
+        
+        // PRIMEIRA PRIORIDADE: Verificar se é recovery session
+        if (isRecoverySession() && window.location.pathname !== '/reset-password') {
+          console.log('🔄 Recovery session detectada no listener, redirecionando...');
+          redirectToResetPassword();
+          return;
+        }
         
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setLoading(false);
 
-        // Verificar se é uma sessão de recuperação de senha
-        if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
-          if (isRecoverySession(currentSession)) {
-            console.log('🔄 Sessão de recuperação detectada, redirecionando...');
-            
-            // Usar setTimeout para garantir que o estado seja atualizado primeiro
-            setTimeout(() => {
-              window.location.href = '/reset-password' + window.location.search;
-            }, 100);
-            return;
-          }
-        }
-
-        // Redirecionamento normal para login bem-sucedido (não recovery)
-        if (event === 'SIGNED_IN' && currentSession?.user && !isRecoverySession(currentSession)) {
-          console.log('✅ Login normal detectado, redirecionando baseado no tipo...');
+        // Redirecionamento normal apenas se NÃO for recovery
+        if (event === 'SIGNED_IN' && currentSession?.user && !isRecoverySession()) {
+          console.log('✅ Login normal detectado (não recovery), redirecionando...');
           setTimeout(() => {
             redirectUserByType(currentSession.user.id);
           }, 500);
@@ -80,17 +102,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     );
 
-    // THEN check for existing session
+    // Verificar sessão existente
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      console.log('Sessão existente verificada:', currentSession?.user?.email);
+      console.log('🔍 Verificando sessão existente:', {
+        hasSession: !!currentSession,
+        userEmail: currentSession?.user?.email,
+        isRecovery: isRecoverySession(),
+        currentPath: window.location.pathname
+      });
       
-      // Se já há uma sessão e estamos na página inicial, verificar se é recovery
-      if (currentSession && window.location.pathname === '/') {
-        if (isRecoverySession(currentSession)) {
-          console.log('🔄 Sessão de recuperação existente detectada');
-          window.location.href = '/reset-password' + window.location.search;
-          return;
-        }
+      // Se há sessão e é recovery, redirecionar
+      if (currentSession && isRecoverySession() && window.location.pathname !== '/reset-password') {
+        console.log('🔄 Sessão de recovery existente, redirecionando...');
+        redirectToResetPassword();
+        return;
       }
       
       setSession(currentSession);
@@ -242,8 +267,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 Iniciando reset de senha para:', email);
       
-      // URL específica para reset de senha
-      const redirectUrl = `${window.location.origin}/reset-password`;
+      // URL com domínio correto
+      const redirectUrl = `https://dizai-foto-nutri-94.lovable.app/reset-password`;
       
       console.log('🔗 URL de redirecionamento:', redirectUrl);
 
