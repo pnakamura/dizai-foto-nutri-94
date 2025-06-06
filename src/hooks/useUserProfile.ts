@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -40,10 +40,11 @@ interface UserProfile {
 export const useUserProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async (retry = 0) => {
     if (!user) {
       setProfile(null);
       setLoading(false);
@@ -51,6 +52,8 @@ export const useUserProfile = () => {
     }
 
     try {
+      console.log(`🔍 Tentativa ${retry + 1} de buscar perfil para:`, user.id);
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -59,23 +62,49 @@ export const useUserProfile = () => {
 
       if (error) {
         console.error('Erro ao buscar perfil:', error);
-        toast({
-          title: "Erro ao carregar perfil",
-          description: "Não foi possível carregar seus dados",
-          variant: "destructive",
-        });
+        
+        // Implementar retry logic para erros de rede
+        if (error.message.includes('Failed to fetch') && retry < 3) {
+          console.log(`🔄 Tentando novamente em ${(retry + 1) * 1000}ms...`);
+          setTimeout(() => {
+            setRetryCount(prev => prev + 1);
+            fetchProfile(retry + 1);
+          }, (retry + 1) * 1000);
+          return;
+        }
+        
+        // Só mostrar toast após esgotar tentativas
+        if (retry >= 2) {
+          toast({
+            title: "Erro ao carregar perfil",
+            description: "Verificando conectividade...",
+            variant: "destructive",
+          });
+        }
         return;
       }
 
+      console.log('✅ Perfil carregado com sucesso:', data);
       setProfile(data);
+      setRetryCount(0); // Reset contador em caso de sucesso
     } catch (error) {
       console.error('Erro inesperado ao buscar perfil:', error);
+      
+      // Retry para erros inesperados também
+      if (retry < 3) {
+        setTimeout(() => {
+          fetchProfile(retry + 1);
+        }, (retry + 1) * 1000);
+        return;
+      }
     } finally {
-      setLoading(false);
+      if (retry >= 2) { // Só definir loading como false após esgotar tentativas
+        setLoading(false);
+      }
     }
-  };
+  }, [user, toast]);
 
-  const updateProfile = async (updates: Partial<UserProfile>) => {
+  const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
     if (!user) return false;
 
     try {
@@ -111,22 +140,27 @@ export const useUserProfile = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, toast]);
 
-  const isAdmin = () => {
+  const isAdmin = useCallback(() => {
     return profile?.tipo === 'admin';
-  };
+  }, [profile]);
 
-  const isProfessional = () => {
+  const isProfessional = useCallback(() => {
     return profile?.tipo === 'profissional';
-  };
+  }, [profile]);
 
-  const isClient = () => {
+  const isClient = useCallback(() => {
     return profile?.tipo === 'cliente';
-  };
+  }, [profile]);
 
   useEffect(() => {
     fetchProfile();
+  }, [fetchProfile]);
+
+  // Resetar retry count quando user muda
+  useEffect(() => {
+    setRetryCount(0);
   }, [user]);
 
   return {

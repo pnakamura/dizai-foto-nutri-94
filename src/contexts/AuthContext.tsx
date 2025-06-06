@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -30,84 +30,126 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hasRedirected, setHasRedirected] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+  const [redirectTimer, setRedirectTimer] = useState<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
   const handleAuthRedirect = useCallback(async (userId: string) => {
-    const currentPath = window.location.pathname;
+    if (!userId || !initialized) return;
     
-    // Verificar se já estamos em uma das páginas principais
+    const currentPath = window.location.pathname;
     const isAlreadyInMainPage = ['/dashboard', '/professional', '/admin'].includes(currentPath);
     
     if (!isAlreadyInMainPage) {
       console.log('🔄 Redirecionando usuário baseado no tipo...');
-      await redirectUserByType(userId);
+      
+      // Debounce o redirecionamento para evitar chamadas múltiplas
+      if (redirectTimer) {
+        clearTimeout(redirectTimer);
+      }
+      
+      const timer = setTimeout(() => {
+        redirectUserByType(userId);
+      }, 300);
+      
+      setRedirectTimer(timer);
     } else {
       console.log('✅ Usuário já está na página correta:', currentPath);
     }
-  }, [redirectUserByType]);
+  }, [redirectUserByType, initialized, redirectTimer]);
 
   useEffect(() => {
-    console.log('🚀 AuthProvider inicializando...');
+    if (initialized) return; // Evitar múltiplas inicializações
 
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, currentSession) => {
-        console.log('📡 Auth state changed:', {
-          event,
-          userEmail: currentSession?.user?.email,
-          currentPath: window.location.pathname,
-          hasRedirected
-        });
-        
-        setSession(currentSession);
-        setUser(currentSession?.user ?? null);
-        setLoading(false);
+    console.log('🚀 AuthProvider inicializando uma única vez...');
+    
+    let isMounted = true;
 
-        // Apenas redirecionar para login normal, uma única vez
-        if (event === 'SIGNED_IN' && currentSession?.user && !hasRedirected) {
-          // Se estamos na página de reset, não fazer redirecionamento automático
-          if (window.location.pathname !== '/reset-password') {
-            console.log('✅ Login normal detectado, redirecionando...');
-            setHasRedirected(true);
-            setTimeout(() => {
-              handleAuthRedirect(currentSession.user.id);
-            }, 500);
+    const initializeAuth = async () => {
+      try {
+        // Configurar listener ANTES de verificar sessão
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+          async (event, currentSession) => {
+            if (!isMounted) return;
+            
+            console.log('📡 Auth state changed:', {
+              event,
+              userEmail: currentSession?.user?.email,
+              currentPath: window.location.pathname
+            });
+            
+            setSession(currentSession);
+            setUser(currentSession?.user ?? null);
+            setLoading(false);
+
+            // Apenas redirecionar em SIGNED_IN se não estivermos em reset-password
+            if (event === 'SIGNED_IN' && currentSession?.user) {
+              if (window.location.pathname !== '/reset-password') {
+                console.log('✅ Login detectado, preparando redirecionamento...');
+                setTimeout(() => {
+                  handleAuthRedirect(currentSession.user.id);
+                }, 500);
+              }
+            }
+
+            // Reset em logout
+            if (event === 'SIGNED_OUT') {
+              if (redirectTimer) {
+                clearTimeout(redirectTimer);
+                setRedirectTimer(null);
+              }
+              if (window.location.pathname !== '/reset-password') {
+                console.log('👋 Logout detectado, redirecionando para home...');
+                setTimeout(() => {
+                  window.location.href = '/';
+                }, 100);
+              }
+            }
           }
+        );
+
+        // Verificar sessão existente
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        
+        if (isMounted) {
+          console.log('🔍 Sessão existente encontrada:', {
+            hasSession: !!currentSession,
+            userEmail: currentSession?.user?.email,
+            currentPath: window.location.pathname
+          });
+          
+          setSession(currentSession);
+          setUser(currentSession?.user ?? null);
+          setLoading(false);
+          setInitialized(true);
         }
 
-        // Se logout, resetar o flag de redirecionamento
-        if (event === 'SIGNED_OUT') {
-          setHasRedirected(false);
-          if (window.location.pathname !== '/reset-password') {
-            console.log('👋 Logout detectado, redirecionando para home...');
-            setTimeout(() => {
-              window.location.href = '/';
-            }, 100);
-          }
+        return () => {
+          isMounted = false;
+          subscription.unsubscribe();
+        };
+      } catch (error) {
+        console.error('Erro na inicialização do auth:', error);
+        if (isMounted) {
+          setLoading(false);
+          setInitialized(true);
         }
       }
-    );
+    };
 
-    // Verificar sessão existente
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
-      console.log('🔍 Verificando sessão existente:', {
-        hasSession: !!currentSession,
-        userEmail: currentSession?.user?.email,
-        currentPath: window.location.pathname
-      });
-      
-      setSession(currentSession);
-      setUser(currentSession?.user ?? null);
-      setLoading(false);
-    });
+    initializeAuth();
 
-    return () => subscription.unsubscribe();
-  }, [handleAuthRedirect, hasRedirected]);
+    return () => {
+      isMounted = false;
+      if (redirectTimer) {
+        clearTimeout(redirectTimer);
+      }
+    };
+  }, [handleAuthRedirect, initialized, redirectTimer]);
 
-  const signUp = async (email: string, password: string, userData?: any) => {
+  const signUp = useCallback(async (email: string, password: string, userData?: any) => {
     try {
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
@@ -116,7 +158,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('Email:', email);
       console.log('UserData:', userData);
       
-      // Preparar metadata limpa
       const metaData = {
         nome: userData?.nome?.trim() || email.split('@')[0],
         email: email.trim(),
@@ -150,10 +191,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (data?.user) {
         console.log('✅ Usuário criado:', data.user.id);
         
-        // Aguardar um pouco para o trigger processar
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Verificar e garantir que o perfil foi criado
         const profileCreated = await ensureProfileExists(data.user.id, metaData);
         
         if (!profileCreated) {
@@ -183,9 +222,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast, ensureProfileExists]);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = useCallback(async (email: string, password: string) => {
     try {
       setLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -207,9 +246,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           title: "Login realizado!",
           description: "Redirecionando...",
         });
-        
-        // NÃO redirecionar aqui - deixar o onAuthStateChange fazer isso
-        // Isso evita o redirecionamento duplo que causa o piscar
       }
 
       return { error };
@@ -223,9 +259,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     try {
       setLoading(true);
       await supabase.auth.signOut();
@@ -242,15 +278,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
-  const resetPassword = async (email: string) => {
+  const resetPassword = useCallback(async (email: string) => {
     try {
       console.log('🔄 Iniciando reset de senha para:', email);
       
-      // URL específica para reset de senha usando origin dinâmico
       const redirectUrl = `${window.location.origin}/reset-password`;
-      
       console.log('🔗 URL de redirecionamento:', redirectUrl);
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -282,9 +316,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       return { error };
     }
-  };
+  }, [toast]);
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     session,
     loading,
@@ -292,7 +326,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     signIn,
     signOut,
     resetPassword,
-  };
+  }), [user, session, loading, signUp, signIn, signOut, resetPassword]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
