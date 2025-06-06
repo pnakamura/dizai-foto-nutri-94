@@ -12,15 +12,33 @@ import HeaderNavigation from './header/HeaderNavigation';
 import HeaderUserMenu from './header/HeaderUserMenu';
 
 const Header = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const { profile } = useUserProfile();
   const navigate = useNavigate();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const handleSignOut = async () => {
+    console.log('🔄 Header: Iniciando logout...');
     await signOut();
+    console.log('✅ Header: Logout concluído, navegando para home...');
     navigate('/');
   };
+
+  // Mostrar header simples durante carregamento
+  if (loading) {
+    return (
+      <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <HeaderLogo />
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-8 bg-gray-200 animate-pulse rounded"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   if (!user) {
     return (

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -100,11 +99,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 clearTimeout(redirectTimer);
                 setRedirectTimer(null);
               }
-              if (window.location.pathname !== '/reset-password') {
-                console.log('👋 Logout detectado, redirecionando para home...');
-                setTimeout(() => {
-                  window.location.href = '/';
-                }, 100);
+              console.log('👋 Logout detectado, redirecionando para home...');
+              // Garantir que realmente limpe o estado
+              setUser(null);
+              setSession(null);
+              // Redirecionar apenas se não estivermos já na home ou em páginas públicas
+              const currentPath = window.location.pathname;
+              const publicPaths = ['/', '/auth', '/login', '/register', '/reset-password'];
+              if (!publicPaths.includes(currentPath)) {
+                window.location.href = '/';
               }
             }
           }
@@ -303,12 +306,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = useCallback(async () => {
     try {
       setLoading(true);
-      await supabase.auth.signOut();
-      toast({
-        title: "Logout realizado",
-        description: "Você foi desconectado com sucesso.",
-      });
+      console.log('🔄 Iniciando processo de logout...');
+      
+      // Limpar timers e estado local primeiro
+      if (redirectTimer) {
+        clearTimeout(redirectTimer);
+        setRedirectTimer(null);
+      }
+      
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('❌ Erro no logout:', error);
+        toast({
+          title: "Erro no logout",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        console.log('✅ Logout realizado com sucesso');
+        toast({
+          title: "Logout realizado",
+          description: "Você foi desconectado com sucesso.",
+        });
+      }
     } catch (error: any) {
+      console.error('❌ Erro inesperado no logout:', error);
       toast({
         title: "Erro no logout",
         description: error.message,
@@ -317,7 +340,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setLoading(false);
     }
-  }, [toast]);
+  }, [toast, redirectTimer]);
 
   const resetPassword = useCallback(async (email: string) => {
     try {
