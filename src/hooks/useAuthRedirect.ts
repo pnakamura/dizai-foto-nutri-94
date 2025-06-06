@@ -1,10 +1,7 @@
 
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 export const useAuthRedirect = () => {
-  const navigate = useNavigate();
-
   const redirectUserByType = async (userId: string) => {
     try {
       console.log('🔍 Buscando perfil do usuário:', userId);
@@ -17,7 +14,7 @@ export const useAuthRedirect = () => {
 
       if (error) {
         console.error('❌ Erro ao buscar perfil:', error);
-        navigate('/dashboard');
+        window.location.href = '/dashboard';
         return;
       }
 
@@ -43,17 +40,17 @@ export const useAuthRedirect = () => {
         // Só navegar se não estivermos já na página correta
         if (currentPath !== targetPath) {
           console.log(`🚀 Navegando de ${currentPath} para ${targetPath}`);
-          navigate(targetPath, { replace: true });
+          window.location.href = targetPath;
         } else {
           console.log(`✅ Já estamos na página correta: ${currentPath}`);
         }
       } else {
         console.log('⚠️ Perfil não encontrado, redirecionando para dashboard');
-        navigate('/dashboard');
+        window.location.href = '/dashboard';
       }
     } catch (error) {
       console.error('❌ Erro inesperado ao buscar perfil:', error);
-      navigate('/dashboard');
+      window.location.href = '/dashboard';
     }
   };
 
