@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,21 +33,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
+  // Função para verificar se é uma sessão de recuperação
+  const isRecoverySession = (currentSession: Session | null): boolean => {
+    if (!currentSession) return false;
+    
+    // Verificar parâmetros da URL atual
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('access_token') || urlParams.get('token');
+    const type = urlParams.get('type');
+    const refreshToken = urlParams.get('refresh_token');
+    
+    // Se há tokens na URL e tipo é recovery, é uma sessão de recuperação
+    return !!(accessToken && refreshToken && type === 'recovery');
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
-        setSession(session);
-        setUser(session?.user ?? null);
+      (event, currentSession) => {
+        console.log('Auth state changed:', event, currentSession?.user?.email);
+        
+        setSession(currentSession);
+        setUser(currentSession?.user ?? null);
         setLoading(false);
+
+        // Verificar se é uma sessão de recuperação de senha
+        if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+          if (isRecoverySession(currentSession)) {
+            console.log('🔄 Sessão de recuperação detectada, redirecionando...');
+            
+            // Usar setTimeout para garantir que o estado seja atualizado primeiro
+            setTimeout(() => {
+              window.location.href = '/reset-password' + window.location.search;
+            }, 100);
+            return;
+          }
+        }
+
+        // Redirecionamento normal para login bem-sucedido (não recovery)
+        if (event === 'SIGNED_IN' && currentSession?.user && !isRecoverySession(currentSession)) {
+          console.log('✅ Login normal detectado, redirecionando baseado no tipo...');
+          setTimeout(() => {
+            redirectUserByType(currentSession.user.id);
+          }, 500);
+        }
       }
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log('Sessão existente verificada:', currentSession?.user?.email);
+      
+      // Se já há uma sessão e estamos na página inicial, verificar se é recovery
+      if (currentSession && window.location.pathname === '/') {
+        if (isRecoverySession(currentSession)) {
+          console.log('🔄 Sessão de recuperação existente detectada');
+          window.location.href = '/reset-password' + window.location.search;
+          return;
+        }
+      }
+      
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
       setLoading(false);
     });
 
@@ -196,7 +242,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 Iniciando reset de senha para:', email);
       
-      // URL completa e específica para reset de senha
+      // URL específica para reset de senha
       const redirectUrl = `${window.location.origin}/reset-password`;
       
       console.log('🔗 URL de redirecionamento:', redirectUrl);

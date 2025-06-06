@@ -8,11 +8,13 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { session } = useAuth();
   
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -22,7 +24,7 @@ const ResetPassword = () => {
   const [isValidToken, setIsValidToken] = useState(false);
   const [isCheckingToken, setIsCheckingToken] = useState(true);
 
-  // Capturar diferentes formatos de parâmetros
+  // Capturar parâmetros da URL
   const accessToken = searchParams.get('access_token') || searchParams.get('token');
   const refreshToken = searchParams.get('refresh_token');
   const type = searchParams.get('type');
@@ -37,8 +39,21 @@ const ResetPassword = () => {
         type,
         errorCode,
         errorDescription,
+        currentSession: session ? 'presente' : 'ausente',
         allParams: Object.fromEntries(searchParams)
       });
+
+      // Se já temos uma sessão ativa e os parâmetros corretos, considerar válido
+      if (session && type === 'recovery') {
+        console.log('✅ Sessão de recuperação ativa detectada');
+        setIsValidToken(true);
+        setIsCheckingToken(false);
+        toast({
+          title: "Sessão de recuperação ativa",
+          description: "Agora você pode definir sua nova senha.",
+        });
+        return;
+      }
 
       // Verificar se há erro nos parâmetros
       if (errorCode) {
@@ -124,7 +139,7 @@ const ResetPassword = () => {
     };
 
     checkTokenAndSetSession();
-  }, [accessToken, refreshToken, type, errorCode, errorDescription, navigate, toast, searchParams]);
+  }, [accessToken, refreshToken, type, errorCode, errorDescription, session, navigate, toast, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
