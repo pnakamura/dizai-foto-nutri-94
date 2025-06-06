@@ -33,56 +33,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
-  // Função melhorada para detectar sessão de recuperação
+  // Função simplificada para detectar sessão de recuperação
   const isRecoverySession = (currentSession?: Session | null): boolean => {
     const urlParams = new URLSearchParams(window.location.search);
     const type = urlParams.get('type');
     const accessToken = urlParams.get('access_token');
-    const refreshToken = urlParams.get('refresh_token');
     
-    // Verificar parâmetros na URL
-    const hasRecoveryParams = type === 'recovery' && accessToken && refreshToken;
+    // Verificar se há parâmetros de recovery na URL
+    const hasRecoveryParams = type === 'recovery' && accessToken;
     
     // Verificar se há marcação de recovery no sessionStorage
-    const recoveryStorageValue = sessionStorage.getItem('recovery_session');
-    const hasRecoveryStorage = recoveryStorageValue === 'true';
-    
-    // Verificar se a sessão foi criada recentemente (últimos 10 minutos)
-    const sessionAge = currentSession?.user ? 
-      Date.now() - new Date(currentSession.user.created_at).getTime() : Infinity;
-    const isRecentSession = sessionAge < 10 * 60 * 1000; // 10 minutos
+    const hasRecoveryStorage = sessionStorage.getItem('recovery_session') === 'true';
     
     // Verificar se estamos na página de reset (forte indicador de recovery)
     const isOnResetPage = window.location.pathname === '/reset-password';
     
-    // Se está na página de reset COM sessão ativa e sessão é recente, assumir recovery
-    const likelyRecoveryByContext = isOnResetPage && currentSession?.user && isRecentSession;
-    
-    // Verificar se a sessão atual é de recovery baseada em metadados
-    const sessionIsRecovery = Boolean(currentSession?.user && (
-      currentSession.user.aud === 'authenticated' && 
-      currentSession.user.app_metadata?.recovery_sent_at
-    ));
-    
-    // Verificar se foi um recovery baseado no user_metadata
-    const userMetadataRecovery = Boolean(currentSession?.user?.user_metadata?.recovery_mode === true);
+    // Se está na página de reset COM sessão ativa, assumir recovery
+    const likelyRecoveryByContext = isOnResetPage && currentSession?.user;
     
     console.log('🔍 Verificando sessão de recuperação:', {
       hasRecoveryParams,
       hasRecoveryStorage,
-      sessionIsRecovery,
-      userMetadataRecovery,
       likelyRecoveryByContext,
-      isRecentSession,
-      sessionAge: sessionAge === Infinity ? 'N/A' : `${Math.round(sessionAge / 1000)}s`,
       type,
       currentPath: window.location.pathname,
-      userAud: currentSession?.user?.aud,
-      appMetadata: currentSession?.user?.app_metadata,
-      userCreatedAt: currentSession?.user?.created_at
+      hasSession: !!currentSession?.user
     });
     
-    return Boolean(hasRecoveryParams) || hasRecoveryStorage || sessionIsRecovery || userMetadataRecovery || likelyRecoveryByContext;
+    return hasRecoveryParams || hasRecoveryStorage || likelyRecoveryByContext;
   };
 
   // Função para redirecionar para reset de senha
