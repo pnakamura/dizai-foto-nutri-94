@@ -24,45 +24,33 @@ const ResetPassword = () => {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
 
   useEffect(() => {
-    const validateSession = () => {
-      console.log('🔍 ResetPassword - Validando sessão:', {
-        hasSession: !!session,
-        sessionUserId: session?.user?.id,
-        currentPath: window.location.pathname
-      });
+    console.log('🔍 ResetPassword - Validando sessão:', {
+      hasSession: !!session,
+      sessionUserId: session?.user?.id,
+      currentPath: window.location.pathname
+    });
 
-      // LÓGICA SIMPLES: Se o usuário está logado E está na página de reset = válido
-      if (session?.user && window.location.pathname === '/reset-password') {
-        console.log('✅ Sessão válida para reset detectada');
-        setIsValidSession(true);
-        setIsCheckingSession(false);
-        
-        toast({
-          title: "Pronto para redefinir",
-          description: "Agora você pode definir sua nova senha.",
-        });
-        return;
-      }
-
-      // Se não há sessão, inválido
-      if (!session?.user) {
-        console.log('❌ Nenhuma sessão ativa encontrada');
-        setIsValidSession(false);
-        setIsCheckingSession(false);
-        toast({
-          title: "Sessão inválida",
-          description: "Você precisa clicar no link do email para redefinir sua senha.",
-          variant: "destructive",
-        });
-        return;
-      }
-
+    // LÓGICA SIMPLES: Se está em reset-password e tem sessão = válido
+    if (session?.user) {
+      console.log('✅ Sessão ativa encontrada para reset');
+      setIsValidSession(true);
       setIsCheckingSession(false);
-    };
-
-    // Pequeno delay para permitir que o AuthContext processe primeiro
-    const timer = setTimeout(validateSession, 100);
-    return () => clearTimeout(timer);
+      
+      toast({
+        title: "Pronto para redefinir",
+        description: "Agora você pode definir sua nova senha.",
+      });
+    } else {
+      console.log('❌ Nenhuma sessão ativa encontrada');
+      setIsValidSession(false);
+      setIsCheckingSession(false);
+      
+      toast({
+        title: "Sessão inválida",
+        description: "Você precisa clicar no link do email para redefinir sua senha.",
+        variant: "destructive",
+      });
+    }
   }, [session, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,11 +97,10 @@ const ResetPassword = () => {
           description: "Sua senha foi alterada com sucesso. Redirecionando para o login...",
         });
 
-        // Fazer logout para forçar novo login com nova senha
-        await supabase.auth.signOut();
-        
+        // Redirecionar DIRETAMENTE para login sem fazer logout
+        // Isso evita o loop de redirecionamento
         setTimeout(() => {
-          navigate('/login');
+          window.location.href = '/login';
         }, 2000);
       }
     } catch (error: any) {

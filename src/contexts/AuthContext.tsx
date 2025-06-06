@@ -50,17 +50,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(currentSession?.user ?? null);
         setLoading(false);
 
-        // Redirecionamento apenas para login normal (não recovery)
+        // Apenas redirecionar para login normal, nunca para reset de senha
         if (event === 'SIGNED_IN' && currentSession?.user) {
-          // Se NÃO estamos na página de reset, fazer redirecionamento normal
+          // Se estamos na página de reset, não fazer redirecionamento automático
           if (window.location.pathname !== '/reset-password') {
             console.log('✅ Login normal detectado, redirecionando...');
             setTimeout(() => {
               redirectUserByType(currentSession.user.id);
             }, 500);
-          } else {
-            console.log('🔄 Usuário logado na página de reset - não redirecionando');
           }
+        }
+
+        // Se logout e NÃO estamos em reset-password, ir para home
+        if (event === 'SIGNED_OUT' && window.location.pathname !== '/reset-password') {
+          console.log('👋 Logout detectado, redirecionando para home...');
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 100);
         }
       }
     );
