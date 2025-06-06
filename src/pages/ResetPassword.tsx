@@ -22,16 +22,54 @@ const ResetPassword = () => {
   const [isValidToken, setIsValidToken] = useState(false);
   const [isCheckingToken, setIsCheckingToken] = useState(true);
 
-  const accessToken = searchParams.get('access_token');
+  // Capturar diferentes formatos de parâmetros
+  const accessToken = searchParams.get('access_token') || searchParams.get('token');
   const refreshToken = searchParams.get('refresh_token');
   const type = searchParams.get('type');
+  const errorCode = searchParams.get('error');
+  const errorDescription = searchParams.get('error_description');
 
   useEffect(() => {
     const checkTokenAndSetSession = async () => {
-      if (!accessToken || !refreshToken || type !== 'recovery') {
+      console.log('🔍 Verificando parâmetros da URL:', {
+        accessToken: accessToken ? 'presente' : 'ausente',
+        refreshToken: refreshToken ? 'presente' : 'ausente',
+        type,
+        errorCode,
+        errorDescription,
+        allParams: Object.fromEntries(searchParams)
+      });
+
+      // Verificar se há erro nos parâmetros
+      if (errorCode) {
+        console.error('❌ Erro nos parâmetros:', errorCode, errorDescription);
+        toast({
+          title: "Erro no link",
+          description: errorDescription || "Houve um problema com o link de recuperação.",
+          variant: "destructive",
+        });
+        navigate('/login');
+        return;
+      }
+
+      // Verificar parâmetros necessários
+      if (!accessToken || !refreshToken) {
+        console.error('❌ Parâmetros ausentes:', { accessToken: !!accessToken, refreshToken: !!refreshToken });
         toast({
           title: "Link inválido",
-          description: "O link de recuperação de senha é inválido ou expirou.",
+          description: "O link de recuperação de senha é inválido. Solicite um novo.",
+          variant: "destructive",
+        });
+        navigate('/login');
+        return;
+      }
+
+      // Verificar tipo de ação
+      if (type !== 'recovery') {
+        console.error('❌ Tipo inválido:', type);
+        toast({
+          title: "Link inválido",
+          description: "Este link não é para recuperação de senha.",
           variant: "destructive",
         });
         navigate('/login');
@@ -39,27 +77,44 @@ const ResetPassword = () => {
       }
 
       try {
-        const { error } = await supabase.auth.setSession({
+        console.log('🔧 Tentando definir sessão...');
+        const { data, error } = await supabase.auth.setSession({
           access_token: accessToken,
           refresh_token: refreshToken,
         });
 
         if (error) {
-          console.error('Erro ao definir sessão:', error);
-          toast({
-            title: "Link expirado",
-            description: "O link de recuperação de senha expirou. Solicite um novo.",
-            variant: "destructive",
-          });
+          console.error('❌ Erro ao definir sessão:', error);
+          
+          // Tratar diferentes tipos de erro
+          if (error.message.includes('expired') || error.message.includes('invalid')) {
+            toast({
+              title: "Link expirado",
+              description: "O link de recuperação expirou. Solicite um novo reset de senha.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Erro",
+              description: error.message || "Não foi possível validar o link de recuperação.",
+              variant: "destructive",
+            });
+          }
+          
           navigate('/login');
         } else {
+          console.log('✅ Sessão definida com sucesso:', data);
           setIsValidToken(true);
+          toast({
+            title: "Link válido",
+            description: "Agora você pode definir sua nova senha.",
+          });
         }
-      } catch (error) {
-        console.error('Erro inesperado:', error);
+      } catch (error: any) {
+        console.error('❌ Erro inesperado:', error);
         toast({
-          title: "Erro",
-          description: "Ocorreu um erro inesperado. Tente novamente.",
+          title: "Erro inesperado",
+          description: "Ocorreu um erro ao processar o link. Tente solicitar um novo.",
           variant: "destructive",
         });
         navigate('/login');
@@ -69,7 +124,7 @@ const ResetPassword = () => {
     };
 
     checkTokenAndSetSession();
-  }, [accessToken, refreshToken, type, navigate, toast]);
+  }, [accessToken, refreshToken, type, errorCode, errorDescription, navigate, toast, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,18 +150,20 @@ const ResetPassword = () => {
     setIsLoading(true);
 
     try {
+      console.log('🔐 Tentando atualizar senha...');
       const { error } = await supabase.auth.updateUser({
         password: password,
       });
 
       if (error) {
-        console.error('Erro ao atualizar senha:', error);
+        console.error('❌ Erro ao atualizar senha:', error);
         toast({
           title: "Erro",
           description: error.message || "Não foi possível atualizar a senha.",
           variant: "destructive",
         });
       } else {
+        console.log('✅ Senha atualizada com sucesso');
         toast({
           title: "Senha atualizada!",
           description: "Sua senha foi alterada com sucesso. Redirecionando para o login...",
@@ -120,7 +177,7 @@ const ResetPassword = () => {
         }, 2000);
       }
     } catch (error: any) {
-      console.error('Erro inesperado:', error);
+      console.error('❌ Erro inesperado:', error);
       toast({
         title: "Erro inesperado",
         description: "Tente novamente em alguns instantes.",
@@ -131,6 +188,14 @@ const ResetPassword = () => {
     }
   };
 
+  const handleRequestNewReset = () => {
+    navigate('/login');
+    toast({
+      title: "Solicite um novo reset",
+      description: "Use a opção 'Esqueceu sua senha?' na página de login.",
+    });
+  };
+
   if (isCheckingToken) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
@@ -139,6 +204,7 @@ const ResetPassword = () => {
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-dizai-brand-green border-t-transparent mx-auto mb-4"></div>
               <p className="text-muted-foreground font-medium">Validando link de recuperação...</p>
+              <p className="text-xs text-muted-foreground mt-2">Aguarde um momento</p>
             </div>
           </CardContent>
         </Card>
@@ -147,7 +213,28 @@ const ResetPassword = () => {
   }
 
   if (!isValidToken) {
-    return null; // O useEffect já redirecionou
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold text-red-600">
+              Link Inválido ou Expirado
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-muted-foreground">
+              O link de recuperação de senha não é válido ou já expirou.
+            </p>
+            <Button 
+              onClick={handleRequestNewReset}
+              className="w-full bg-gradient-button hover:opacity-90"
+            >
+              Solicitar Novo Reset
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (

@@ -194,27 +194,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const resetPassword = async (email: string) => {
     try {
+      console.log('🔄 Iniciando reset de senha para:', email);
+      
+      // URL completa e específica para reset de senha
       const redirectUrl = `${window.location.origin}/reset-password`;
       
+      console.log('🔗 URL de redirecionamento:', redirectUrl);
+
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
       });
 
       if (error) {
+        console.error('❌ Erro no reset:', error);
         toast({
           title: "Erro",
           description: error.message,
           variant: "destructive",
         });
       } else {
+        console.log('✅ Email de reset enviado com sucesso');
         toast({
           title: "Email enviado",
-          description: "Verifique seu email para redefinir sua senha.",
+          description: "Verifique seu email para redefinir sua senha. O link expira em 1 hora.",
         });
       }
 
       return { error };
     } catch (error: any) {
+      console.error('❌ Erro inesperado no reset:', error);
       toast({
         title: "Erro",
         description: error.message,
