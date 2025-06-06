@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,59 +34,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
-  // Função para detectar sessão de recuperação
-  const isRecoverySession = (currentSession?: Session | null): boolean => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const type = urlParams.get('type');
-    const accessToken = urlParams.get('access_token');
-    
-    // Verificar se há parâmetros de recovery na URL
-    const hasRecoveryParams = type === 'recovery' && !!accessToken;
-    
-    // Verificar se há marcação de recovery no sessionStorage
-    const hasRecoveryStorage = sessionStorage.getItem('recovery_session') === 'true';
-    
-    // Verificar se estamos na página de reset
-    const isOnResetPage = window.location.pathname === '/reset-password';
-    
-    // Se está na página de reset COM sessão ativa, assumir recovery
-    const likelyRecoveryByContext = isOnResetPage && !!currentSession?.user;
-    
-    // Verificar se a sessão é muito recente (últimos 10 minutos)
-    const isRecentSession = currentSession?.user ? 
-      (Date.now() - new Date(currentSession.user.created_at).getTime()) < 10 * 60 * 1000 : false;
-    
-    // Critério mais permissivo: qualquer combinação que sugira recovery
-    const isRecovery = hasRecoveryParams || hasRecoveryStorage || 
-      (likelyRecoveryByContext && isRecentSession) || 
-      (isOnResetPage && !!currentSession?.user);
-    
-    console.log('🔍 Verificando sessão de recuperação:', {
-      hasRecoveryParams,
-      hasRecoveryStorage,
-      likelyRecoveryByContext,
-      isRecentSession,
-      isRecovery,
-      type,
-      currentPath: window.location.pathname,
-      hasSession: !!currentSession?.user
-    });
-    
-    return isRecovery;
-  };
-
-  // Função para redirecionar para reset de senha
-  const redirectToResetPassword = () => {
-    const urlParams = window.location.search;
-    const resetUrl = `/reset-password${urlParams}`;
-    console.log('🔄 Redirecionando para reset de senha:', resetUrl);
-    
-    // Marcar que é uma sessão de recovery no sessionStorage
-    sessionStorage.setItem('recovery_session', 'true');
-    
-    window.location.replace(resetUrl);
-  };
-
   useEffect(() => {
     console.log('🚀 AuthProvider inicializando...');
 
@@ -95,29 +43,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('📡 Auth state changed:', {
           event,
           userEmail: currentSession?.user?.email,
-          currentPath: window.location.pathname,
-          isRecovery: isRecoverySession(currentSession)
+          currentPath: window.location.pathname
         });
-        
-        // Se é SIGNED_IN e detectamos recovery, redirecionar imediatamente
-        if (event === 'SIGNED_IN' && currentSession?.user && isRecoverySession(currentSession)) {
-          console.log('🔄 Recovery session detectada no SIGNED_IN, redirecionando...');
-          if (window.location.pathname !== '/reset-password') {
-            redirectToResetPassword();
-            return;
-          }
-        }
         
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setLoading(false);
 
-        // Redirecionamento normal apenas se NÃO for recovery
-        if (event === 'SIGNED_IN' && currentSession?.user && !isRecoverySession(currentSession)) {
-          console.log('✅ Login normal detectado (não recovery), redirecionando...');
-          setTimeout(() => {
-            redirectUserByType(currentSession.user.id);
-          }, 500);
+        // Redirecionamento apenas para login normal (não recovery)
+        if (event === 'SIGNED_IN' && currentSession?.user) {
+          // Se NÃO estamos na página de reset, fazer redirecionamento normal
+          if (window.location.pathname !== '/reset-password') {
+            console.log('✅ Login normal detectado, redirecionando...');
+            setTimeout(() => {
+              redirectUserByType(currentSession.user.id);
+            }, 500);
+          } else {
+            console.log('🔄 Usuário logado na página de reset - não redirecionando');
+          }
         }
       }
     );
@@ -127,16 +70,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('🔍 Verificando sessão existente:', {
         hasSession: !!currentSession,
         userEmail: currentSession?.user?.email,
-        isRecovery: isRecoverySession(currentSession),
         currentPath: window.location.pathname
       });
-      
-      // Se há sessão e é recovery, redirecionar
-      if (currentSession && isRecoverySession(currentSession) && window.location.pathname !== '/reset-password') {
-        console.log('🔄 Sessão de recovery existente, redirecionando...');
-        redirectToResetPassword();
-        return;
-      }
       
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
@@ -267,8 +202,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = async () => {
     try {
       setLoading(true);
-      // Limpar sessionStorage
-      sessionStorage.removeItem('recovery_session');
       await supabase.auth.signOut();
       toast({
         title: "Logout realizado",

@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
 const ResetPassword = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { session } = useAuth();
@@ -23,55 +23,19 @@ const ResetPassword = () => {
   const [isValidSession, setIsValidSession] = useState(false);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
 
-  // Capturar parâmetros da URL
-  const accessToken = searchParams.get('access_token');
-  const refreshToken = searchParams.get('refresh_token');
-  const type = searchParams.get('type');
-  const errorCode = searchParams.get('error');
-  const errorDescription = searchParams.get('error_description');
-
   useEffect(() => {
-    const validateSessionForReset = async () => {
+    const validateSession = () => {
       console.log('🔍 ResetPassword - Validando sessão:', {
         hasSession: !!session,
         sessionUserId: session?.user?.id,
-        hasRecoveryStorage: sessionStorage.getItem('recovery_session') === 'true',
-        urlType: type,
-        hasTokens: !!(accessToken && refreshToken),
-        errorCode,
         currentPath: window.location.pathname
       });
 
-      // Se há erro nos parâmetros
-      if (errorCode) {
-        console.error('❌ Erro nos parâmetros:', errorCode, errorDescription);
-        setIsValidSession(false);
-        setIsCheckingSession(false);
-        toast({
-          title: "Erro no link",
-          description: errorDescription || "Houve um problema com o link de recuperação.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // NOVA ABORDAGEM: Se o usuário está na página de reset, assumir que é válido
-      // Especialmente se há qualquer indicação de recovery
-      const hasAnyRecoveryIndicator = 
-        session?.user || 
-        sessionStorage.getItem('recovery_session') === 'true' || 
-        type === 'recovery' || 
-        accessToken;
-
-      if (hasAnyRecoveryIndicator) {
-        console.log('✅ Sessão de recovery detectada - permitindo reset');
+      // LÓGICA SIMPLES: Se o usuário está logado E está na página de reset = válido
+      if (session?.user && window.location.pathname === '/reset-password') {
+        console.log('✅ Sessão válida para reset detectada');
         setIsValidSession(true);
         setIsCheckingSession(false);
-        
-        // Marcar como sessão de recovery se ainda não está marcado
-        if (sessionStorage.getItem('recovery_session') !== 'true') {
-          sessionStorage.setItem('recovery_session', 'true');
-        }
         
         toast({
           title: "Pronto para redefinir",
@@ -80,63 +44,26 @@ const ResetPassword = () => {
         return;
       }
 
-      // Se há tokens, tentar estabelecer sessão
-      if (accessToken && refreshToken && !session?.user) {
-        try {
-          console.log('🔧 Tentando estabelecer sessão com tokens...');
-          const { data, error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
-
-          if (error) {
-            console.error('❌ Erro ao estabelecer sessão:', error);
-            // Ainda assim, permitir o reset se os tokens existem
-            console.log('⚠️ Permitindo reset mesmo com erro de sessão');
-            setIsValidSession(true);
-            sessionStorage.setItem('recovery_session', 'true');
-            toast({
-              title: "Pronto para redefinir",
-              description: "Agora você pode definir sua nova senha.",
-            });
-          } else {
-            console.log('✅ Sessão estabelecida com sucesso');
-            sessionStorage.setItem('recovery_session', 'true');
-            setIsValidSession(true);
-            toast({
-              title: "Link válido",
-              description: "Agora você pode definir sua nova senha.",
-            });
-          }
-        } catch (error: any) {
-          console.error('❌ Erro inesperado:', error);
-          // Mesmo com erro, se há tokens, assumir que é válido
-          console.log('⚠️ Assumindo reset válido mesmo com erro');
-          setIsValidSession(true);
-          sessionStorage.setItem('recovery_session', 'true');
-          toast({
-            title: "Pronto para redefinir",
-            description: "Agora você pode definir sua nova senha.",
-          });
-        }
-      } else {
-        // Caso padrão: sem indicadores válidos
-        console.error('❌ Nenhum indicador de recovery válido encontrado');
+      // Se não há sessão, inválido
+      if (!session?.user) {
+        console.log('❌ Nenhuma sessão ativa encontrada');
         setIsValidSession(false);
+        setIsCheckingSession(false);
         toast({
-          title: "Link inválido",
-          description: "O link de recuperação de senha é inválido. Solicite um novo.",
+          title: "Sessão inválida",
+          description: "Você precisa clicar no link do email para redefinir sua senha.",
           variant: "destructive",
         });
+        return;
       }
 
       setIsCheckingSession(false);
     };
 
     // Pequeno delay para permitir que o AuthContext processe primeiro
-    const timer = setTimeout(validateSessionForReset, 100);
+    const timer = setTimeout(validateSession, 100);
     return () => clearTimeout(timer);
-  }, [session, accessToken, refreshToken, type, errorCode, errorDescription, toast]);
+  }, [session, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,8 +103,6 @@ const ResetPassword = () => {
         });
       } else {
         console.log('✅ Senha atualizada com sucesso');
-        // Limpar sessionStorage
-        sessionStorage.removeItem('recovery_session');
         
         toast({
           title: "Senha atualizada!",
@@ -203,16 +128,6 @@ const ResetPassword = () => {
     }
   };
 
-  const handleRequestNewReset = () => {
-    // Limpar sessionStorage
-    sessionStorage.removeItem('recovery_session');
-    navigate('/login');
-    toast({
-      title: "Solicite um novo reset",
-      description: "Use a opção 'Esqueceu sua senha?' na página de login.",
-    });
-  };
-
   if (isCheckingSession) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
@@ -220,7 +135,7 @@ const ResetPassword = () => {
           <CardContent className="flex items-center justify-center p-8">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-dizai-brand-green border-t-transparent mx-auto mb-4"></div>
-              <p className="text-muted-foreground font-medium">Validando sessão de recuperação...</p>
+              <p className="text-muted-foreground font-medium">Validando sessão...</p>
               <p className="text-xs text-muted-foreground mt-2">Aguarde um momento</p>
             </div>
           </CardContent>
@@ -240,21 +155,22 @@ const ResetPassword = () => {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">
-              O link de recuperação de senha não é válido ou já expirou.
+              Para redefinir sua senha, você precisa clicar no link enviado por email.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Se você já clicou no link e ainda vê esta mensagem, o link pode ter expirado.
             </p>
             <Button 
-              onClick={() => {
-                sessionStorage.removeItem('recovery_session');
-                navigate('/login');
-                toast({
-                  title: "Solicite um novo reset",
-                  description: "Use a opção 'Esqueceu sua senha?' na página de login.",
-                });
-              }}
+              onClick={() => navigate('/login')}
               className="w-full bg-gradient-button hover:opacity-90"
             >
-              Solicitar Novo Reset
+              Voltar ao Login
             </Button>
+            <div className="text-center mt-4">
+              <p className="text-xs text-muted-foreground">
+                Na página de login, use "Esqueceu sua senha?" para solicitar um novo link.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -338,17 +254,6 @@ const ResetPassword = () => {
               >
                 {isLoading ? 'Atualizando...' : 'Atualizar Senha'}
               </Button>
-
-              <div className="text-center mt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleRequestNewReset}
-                  className="text-sm"
-                >
-                  Solicitar novo link de reset
-                </Button>
-              </div>
             </form>
           </CardContent>
         </Card>
