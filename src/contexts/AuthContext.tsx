@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -33,43 +34,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
 
-  // Função aprimorada para detectar sessão de recuperação
-  const isRecoverySession = (): boolean => {
+  // Função melhorada para detectar sessão de recuperação
+  const isRecoverySession = (currentSession?: Session | null): boolean => {
     const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type');
     const accessToken = urlParams.get('access_token');
     const refreshToken = urlParams.get('refresh_token');
-    const type = urlParams.get('type');
     
-    console.log('🔍 Verificando se é sessão de recuperação:', {
-      accessToken: accessToken ? 'presente' : 'ausente',
-      refreshToken: refreshToken ? 'presente' : 'ausente',
+    // Verificar parâmetros na URL
+    const hasRecoveryParams = type === 'recovery' && accessToken && refreshToken;
+    
+    // Verificar se a sessão atual é de recovery (baseado no aud claim ou outros metadados)
+    const sessionIsRecovery = currentSession?.user?.aud === 'authenticated' && 
+                             currentSession?.user?.recovery_sent_at;
+    
+    console.log('🔍 Verificando sessão de recuperação:', {
+      hasRecoveryParams,
+      sessionIsRecovery,
       type,
       currentPath: window.location.pathname,
-      fullUrl: window.location.href
+      userAud: currentSession?.user?.aud,
+      recoverySentAt: currentSession?.user?.recovery_sent_at
     });
     
-    return !!(accessToken && refreshToken && type === 'recovery');
+    return hasRecoveryParams || !!sessionIsRecovery;
   };
 
-  // Função para redirecionar para reset de senha preservando parâmetros
+  // Função para redirecionar para reset de senha
   const redirectToResetPassword = () => {
     const urlParams = window.location.search;
     const resetUrl = `/reset-password${urlParams}`;
     console.log('🔄 Redirecionando para reset de senha:', resetUrl);
     
-    // Usar replace para não criar entrada no histórico
+    // Marcar que é uma sessão de recovery no sessionStorage
+    sessionStorage.setItem('recovery_session', 'true');
+    
     window.location.replace(resetUrl);
   };
 
   useEffect(() => {
     console.log('🚀 AuthProvider inicializando...');
-    
-    // Verificar IMEDIATAMENTE se estamos em uma sessão de recuperação
-    if (isRecoverySession() && window.location.pathname !== '/reset-password') {
-      console.log('🔄 Sessão de recuperação detectada ANTES do listener, redirecionando...');
-      redirectToResetPassword();
-      return;
-    }
 
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -78,14 +82,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           event,
           userEmail: currentSession?.user?.email,
           currentPath: window.location.pathname,
-          isRecovery: isRecoverySession()
+          isRecovery: isRecoverySession(currentSession)
         });
         
-        // PRIMEIRA PRIORIDADE: Verificar se é recovery session
-        if (isRecoverySession() && window.location.pathname !== '/reset-password') {
-          console.log('🔄 Recovery session detectada no listener, redirecionando...');
-          redirectToResetPassword();
-          return;
+        // Se é SIGNED_IN e detectamos recovery, redirecionar imediatamente
+        if (event === 'SIGNED_IN' && currentSession?.user && isRecoverySession(currentSession)) {
+          console.log('🔄 Recovery session detectada no SIGNED_IN, redirecionando...');
+          if (window.location.pathname !== '/reset-password') {
+            redirectToResetPassword();
+            return;
+          }
         }
         
         setSession(currentSession);
@@ -93,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setLoading(false);
 
         // Redirecionamento normal apenas se NÃO for recovery
-        if (event === 'SIGNED_IN' && currentSession?.user && !isRecoverySession()) {
+        if (event === 'SIGNED_IN' && currentSession?.user && !isRecoverySession(currentSession)) {
           console.log('✅ Login normal detectado (não recovery), redirecionando...');
           setTimeout(() => {
             redirectUserByType(currentSession.user.id);
@@ -107,12 +113,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('🔍 Verificando sessão existente:', {
         hasSession: !!currentSession,
         userEmail: currentSession?.user?.email,
-        isRecovery: isRecoverySession(),
+        isRecovery: isRecoverySession(currentSession),
         currentPath: window.location.pathname
       });
       
       // Se há sessão e é recovery, redirecionar
-      if (currentSession && isRecoverySession() && window.location.pathname !== '/reset-password') {
+      if (currentSession && isRecoverySession(currentSession) && window.location.pathname !== '/reset-password') {
         console.log('🔄 Sessão de recovery existente, redirecionando...');
         redirectToResetPassword();
         return;
@@ -247,6 +253,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signOut = async () => {
     try {
       setLoading(true);
+      // Limpar sessionStorage
+      sessionStorage.removeItem('recovery_session');
       await supabase.auth.signOut();
       toast({
         title: "Logout realizado",
@@ -267,7 +275,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 Iniciando reset de senha para:', email);
       
-      // URL com domínio correto
+      // URL específica para reset de senha
       const redirectUrl = `https://dizai-foto-nutri-94.lovable.app/reset-password`;
       
       console.log('🔗 URL de redirecionamento:', redirectUrl);
