@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,20 +43,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Verificar parâmetros na URL
     const hasRecoveryParams = type === 'recovery' && accessToken && refreshToken;
     
-    // Verificar se a sessão atual é de recovery (baseado no aud claim ou outros metadados)
-    const sessionIsRecovery = currentSession?.user?.aud === 'authenticated' && 
-                             currentSession?.user?.recovery_sent_at;
+    // Verificar se há marcação de recovery no sessionStorage (fix para TypeScript)
+    const hasRecoveryStorage = sessionStorage.getItem('recovery_session') === 'true';
+    
+    // Verificar se a sessão atual é de recovery
+    const sessionIsRecovery = currentSession?.user && (
+      currentSession.user.aud === 'authenticated' && 
+      currentSession.user.app_metadata?.recovery_sent_at
+    );
+    
+    // Verificar se foi um recovery baseado no user_metadata
+    const userMetadataRecovery = currentSession?.user?.user_metadata?.recovery_mode === true;
     
     console.log('🔍 Verificando sessão de recuperação:', {
       hasRecoveryParams,
+      hasRecoveryStorage,
       sessionIsRecovery,
+      userMetadataRecovery,
       type,
       currentPath: window.location.pathname,
       userAud: currentSession?.user?.aud,
-      recoverySentAt: currentSession?.user?.recovery_sent_at
+      appMetadata: currentSession?.user?.app_metadata
     });
     
-    return hasRecoveryParams || !!sessionIsRecovery;
+    return hasRecoveryParams || hasRecoveryStorage || !!sessionIsRecovery || !!userMetadataRecovery;
   };
 
   // Função para redirecionar para reset de senha
