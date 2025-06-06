@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -68,7 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       appMetadata: currentSession?.user?.app_metadata
     });
     
-    return hasRecoveryParams || hasRecoveryStorage || !!sessionIsRecovery || !!userMetadataRecovery;
+    return hasRecoveryParams || !!hasRecoveryStorage || !!sessionIsRecovery || !!userMetadataRecovery;
   };
 
   // Função para redirecionar para reset de senha
