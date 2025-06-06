@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,6 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasRedirected, setHasRedirected] = useState(false);
   const { toast } = useToast();
   const { redirectUserByType } = useAuthRedirect();
   const { ensureProfileExists } = useProfileCreation();
@@ -43,30 +43,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log('📡 Auth state changed:', {
           event,
           userEmail: currentSession?.user?.email,
-          currentPath: window.location.pathname
+          currentPath: window.location.pathname,
+          hasRedirected
         });
         
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         setLoading(false);
 
-        // Apenas redirecionar para login normal, nunca para reset de senha
-        if (event === 'SIGNED_IN' && currentSession?.user) {
+        // Apenas redirecionar para login normal, uma única vez
+        if (event === 'SIGNED_IN' && currentSession?.user && !hasRedirected) {
           // Se estamos na página de reset, não fazer redirecionamento automático
           if (window.location.pathname !== '/reset-password') {
             console.log('✅ Login normal detectado, redirecionando...');
+            setHasRedirected(true);
             setTimeout(() => {
               redirectUserByType(currentSession.user.id);
             }, 500);
           }
         }
 
-        // Se logout e NÃO estamos em reset-password, ir para home
-        if (event === 'SIGNED_OUT' && window.location.pathname !== '/reset-password') {
-          console.log('👋 Logout detectado, redirecionando para home...');
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 100);
+        // Se logout, resetar o flag de redirecionamento
+        if (event === 'SIGNED_OUT') {
+          setHasRedirected(false);
+          if (window.location.pathname !== '/reset-password') {
+            console.log('👋 Logout detectado, redirecionando para home...');
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 100);
+          }
         }
       }
     );
