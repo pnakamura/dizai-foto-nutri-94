@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -44,7 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const hasRecoveryParams = type === 'recovery' && accessToken && refreshToken;
     
     // Verificar se há marcação de recovery no sessionStorage (fix para TypeScript)
-    const hasRecoveryStorage = sessionStorage.getItem('recovery_session') === 'true';
+    const recoveryStorageValue = sessionStorage.getItem('recovery_session');
+    const hasRecoveryStorage = recoveryStorageValue === 'true';
     
     // Verificar se a sessão atual é de recovery
     const sessionIsRecovery = currentSession?.user && (
