@@ -43,11 +43,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Verificar parâmetros na URL
     const hasRecoveryParams = type === 'recovery' && accessToken && refreshToken;
     
-    // Verificar se há marcação de recovery no sessionStorage (fix para TypeScript)
+    // Verificar se há marcação de recovery no sessionStorage
     const recoveryStorageValue = sessionStorage.getItem('recovery_session');
     const hasRecoveryStorage = recoveryStorageValue === 'true';
     
-    // Verificar se a sessão atual é de recovery
+    // Verificar se a sessão foi criada recentemente (últimos 10 minutos)
+    const sessionAge = currentSession?.user ? 
+      Date.now() - new Date(currentSession.user.created_at).getTime() : Infinity;
+    const isRecentSession = sessionAge < 10 * 60 * 1000; // 10 minutos
+    
+    // Verificar se estamos na página de reset (forte indicador de recovery)
+    const isOnResetPage = window.location.pathname === '/reset-password';
+    
+    // Se está na página de reset COM sessão ativa e sessão é recente, assumir recovery
+    const likelyRecoveryByContext = isOnResetPage && currentSession?.user && isRecentSession;
+    
+    // Verificar se a sessão atual é de recovery baseada em metadados
     const sessionIsRecovery = Boolean(currentSession?.user && (
       currentSession.user.aud === 'authenticated' && 
       currentSession.user.app_metadata?.recovery_sent_at
@@ -61,13 +72,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       hasRecoveryStorage,
       sessionIsRecovery,
       userMetadataRecovery,
+      likelyRecoveryByContext,
+      isRecentSession,
+      sessionAge: sessionAge === Infinity ? 'N/A' : `${Math.round(sessionAge / 1000)}s`,
       type,
       currentPath: window.location.pathname,
       userAud: currentSession?.user?.aud,
-      appMetadata: currentSession?.user?.app_metadata
+      appMetadata: currentSession?.user?.app_metadata,
+      userCreatedAt: currentSession?.user?.created_at
     });
     
-    return Boolean(hasRecoveryParams) || hasRecoveryStorage || sessionIsRecovery || userMetadataRecovery;
+    return Boolean(hasRecoveryParams) || hasRecoveryStorage || sessionIsRecovery || userMetadataRecovery || likelyRecoveryByContext;
   };
 
   // Função para redirecionar para reset de senha

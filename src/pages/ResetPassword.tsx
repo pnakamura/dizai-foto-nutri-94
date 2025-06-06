@@ -40,7 +40,10 @@ const ResetPassword = () => {
         urlType: type,
         hasTokens: !!(accessToken && refreshToken),
         errorCode,
-        allParams: Object.fromEntries(searchParams)
+        allParams: Object.fromEntries(searchParams),
+        userCreatedAt: session?.user?.created_at,
+        isRecentSession: session?.user ? 
+          Date.now() - new Date(session.user.created_at).getTime() < 10 * 60 * 1000 : false
       });
 
       // Se há erro nos parâmetros
@@ -56,33 +59,41 @@ const ResetPassword = () => {
         return;
       }
 
-      // Verificar se é uma sessão de recovery válida
-      const isRecoverySession = session?.user && (
-        type === 'recovery' || 
-        sessionStorage.getItem('recovery_session') === 'true' ||
-        (accessToken && refreshToken)
-      );
+      // NOVA LÓGICA: Se há sessão ativa e estamos na página de reset, assumir que é válida
+      if (session?.user) {
+        const sessionAge = Date.now() - new Date(session.user.created_at).getTime();
+        const isRecentSession = sessionAge < 10 * 60 * 1000; // 10 minutos
+        const hasRecoveryMarker = sessionStorage.getItem('recovery_session') === 'true';
+        
+        console.log('✅ Sessão ativa detectada:', {
+          sessionAge: `${Math.round(sessionAge / 1000)}s`,
+          isRecentSession,
+          hasRecoveryMarker
+        });
 
-      if (isRecoverySession) {
-        console.log('✅ Sessão de recovery válida detectada');
+        // Se a sessão é recente OU tem marcador de recovery, considerar válida
+        if (isRecentSession || hasRecoveryMarker || type === 'recovery') {
+          console.log('✅ Sessão de recovery válida (sessão ativa)');
+          setIsValidSession(true);
+          setIsCheckingSession(false);
+          toast({
+            title: "Sessão de recovery ativa",
+            description: "Agora você pode definir sua nova senha.",
+          });
+          return;
+        }
+      }
+
+      // Verificar se é uma sessão de recovery válida baseada nos parâmetros
+      const isRecoverySession = type === 'recovery' || sessionStorage.getItem('recovery_session') === 'true';
+
+      if (isRecoverySession && (session?.user || (accessToken && refreshToken))) {
+        console.log('✅ Sessão de recovery válida detectada (parâmetros)');
         setIsValidSession(true);
         setIsCheckingSession(false);
         toast({
           title: "Pronto para redefinir",
           description: "Agora você pode definir sua nova senha.",
-        });
-        return;
-      }
-
-      // Se não há sessão ativa nem tokens válidos
-      if (!session?.user && (!accessToken || !refreshToken)) {
-        console.error('❌ Sem sessão ativa e sem tokens válidos');
-        setIsValidSession(false);
-        setIsCheckingSession(false);
-        toast({
-          title: "Link inválido",
-          description: "O link de recuperação de senha é inválido. Solicite um novo.",
-          variant: "destructive",
         });
         return;
       }
@@ -122,6 +133,15 @@ const ResetPassword = () => {
             variant: "destructive",
           });
         }
+      } else if (!session?.user && (!accessToken || !refreshToken)) {
+        // Só mostrar erro se não há sessão E não há tokens
+        console.error('❌ Sem sessão ativa e sem tokens válidos');
+        setIsValidSession(false);
+        toast({
+          title: "Link inválido",
+          description: "O link de recuperação de senha é inválido. Solicite um novo.",
+          variant: "destructive",
+        });
       }
 
       setIsCheckingSession(false);
