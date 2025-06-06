@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -105,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               setSession(null);
               // Redirecionar apenas se não estivermos já na home ou em páginas públicas
               const currentPath = window.location.pathname;
-              const publicPaths = ['/', '/auth', '/login', '/register', '/reset-password'];
+              const publicPaths = ['/', '/auth', '/reset-password'];
               if (!publicPaths.includes(currentPath)) {
                 window.location.href = '/';
               }

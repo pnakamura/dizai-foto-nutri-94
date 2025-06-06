@@ -14,9 +14,10 @@ const Auth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      // O redirecionamento será feito automaticamente pelo AuthContext
+      console.log('Usuário já logado, aguardando redirecionamento...');
     }
-  }, [user, navigate]);
+  }, [user]);
 
   const handleSignUpSuccess = () => {
     setActiveTab('login');

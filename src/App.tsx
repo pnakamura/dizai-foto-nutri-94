@@ -7,8 +7,6 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Professional from "./pages/Professional";
@@ -27,8 +25,6 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route 

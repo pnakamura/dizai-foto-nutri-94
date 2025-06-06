@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +15,6 @@ const LoginForm = () => {
   const [showForgotModal, setShowForgotModal] = useState(false);
   
   const { signIn, loading } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -31,7 +29,7 @@ const LoginForm = () => {
           title: "Login realizado!",
           description: "Bem-vindo de volta!",
         });
-        navigate('/dashboard');
+        // O redirecionamento será feito automaticamente pelo AuthContext
       } else {
         console.error('Erro no login:', error);
         toast({
