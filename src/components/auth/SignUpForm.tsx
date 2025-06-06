@@ -51,6 +51,26 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       return false;
     }
 
+    if (!telefone.trim()) {
+      toast({
+        title: "Telefone obrigatório",
+        description: "Por favor, informe seu número de telefone",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    // Validação básica de telefone (pelo menos 10 dígitos)
+    const telefoneNumeros = telefone.replace(/\D/g, '');
+    if (telefoneNumeros.length < 10) {
+      toast({
+        title: "Telefone inválido",
+        description: "Por favor, informe um telefone válido com pelo menos 10 dígitos",
+        variant: "destructive",
+      });
+      return false;
+    }
+
     return true;
   };
 
@@ -98,6 +118,11 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       }
 
       console.log('✅ Processo de cadastro concluído com sucesso');
+      
+      toast({
+        title: "Cadastro realizado!",
+        description: "Verifique seu email para confirmar sua conta.",
+      });
       
       // Limpar formulário apenas em caso de sucesso
       setEmail('');
@@ -148,13 +173,14 @@ const SignUpForm = ({ onSuccess }: SignUpFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="telefone">Telefone</Label>
+        <Label htmlFor="telefone">Telefone *</Label>
         <Input
           id="telefone"
           type="tel"
           placeholder="(11) 99999-9999"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
+          required
           disabled={loading}
         />
       </div>

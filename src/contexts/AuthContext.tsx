@@ -154,9 +154,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const redirectUrl = `${window.location.origin}/`;
       
-      console.log('=== INICIANDO SIGNUP ===');
-      console.log('Email:', email);
-      console.log('UserData:', userData);
+      console.log('=== INICIANDO SIGNUP DETALHADO ===');
+      console.log('📧 Email:', email);
+      console.log('📋 UserData recebido:', userData);
+      
+      // Validar dados obrigatórios antes de enviar
+      if (!userData?.nome?.trim()) {
+        console.error('❌ Nome é obrigatório mas não foi fornecido');
+        toast({
+          title: "Erro no cadastro",
+          description: "Nome é obrigatório",
+          variant: "destructive",
+        });
+        return { error: new Error('Nome é obrigatório') };
+      }
+      
+      if (!userData?.telefone?.trim()) {
+        console.error('❌ Telefone é obrigatório mas não foi fornecido');
+        toast({
+          title: "Erro no cadastro",
+          description: "Telefone é obrigatório",
+          variant: "destructive",
+        });
+        return { error: new Error('Telefone é obrigatório') };
+      }
       
       const metaData = {
         nome: userData?.nome?.trim() || email.split('@')[0],
@@ -165,7 +186,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         tipo: userData?.tipo || 'cliente'
       };
       
-      console.log('MetaData para envio:', metaData);
+      console.log('📝 MetaData preparado para envio:', metaData);
+      
+      // Validação final dos metadados
+      console.log('🔍 Validação final dos dados:');
+      console.log('  ✅ Nome:', metaData.nome);
+      console.log('  ✅ Email:', metaData.email);
+      console.log('  ✅ Telefone:', metaData.telefone);
+      console.log('  ✅ Tipo:', metaData.tipo);
       
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
@@ -176,10 +204,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       });
 
-      console.log('Resposta do signUp:', { data, error });
+      console.log('📡 Resposta do Supabase signUp:', { 
+        userData: data?.user ? {
+          id: data.user.id,
+          email: data.user.email,
+          metadata: data.user.user_metadata
+        } : null,
+        error 
+      });
 
       if (error) {
-        console.error('Erro no signUp:', error);
+        console.error('❌ Erro no signUp:', error);
         toast({
           title: "Erro no cadastro",
           description: error.message,
@@ -189,20 +224,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data?.user) {
-        console.log('✅ Usuário criado:', data.user.id);
+        console.log('✅ Usuário criado no Supabase:', data.user.id);
+        console.log('📋 Metadados salvos no usuário:', data.user.user_metadata);
         
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Aguardar um pouco para o trigger processar
+        await new Promise(resolve => setTimeout(resolve, 1500));
         
+        console.log('🔄 Iniciando criação/verificação do perfil...');
         const profileCreated = await ensureProfileExists(data.user.id, metaData);
         
         if (!profileCreated) {
-          console.warn('⚠️ Falha no fallback de perfil, mas signup foi realizado');
+          console.warn('⚠️ Falha na criação do perfil via fallback');
           toast({
             title: "Conta criada com aviso",
             description: "Conta criada, mas houve problema na criação do perfil. Contate o suporte se necessário.",
             variant: "destructive",
           });
         } else {
+          console.log('✅ Perfil criado/verificado com sucesso');
           toast({
             title: "Cadastro realizado!",
             description: "Verifique seu email para confirmar sua conta.",
@@ -212,7 +251,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return { error };
     } catch (error: any) {
-      console.error('Erro inesperado no signup:', error);
+      console.error('❌ Erro inesperado no signup:', error);
       toast({
         title: "Erro no cadastro",
         description: error.message,
