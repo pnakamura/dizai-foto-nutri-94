@@ -11,37 +11,15 @@ export const useAuthRedirect = () => {
     try {
       console.log('🔍 Buscando perfil do usuário:', userId);
       
-      // Implementar retry para a busca de perfil
-      let profile = null;
-      let error = null;
-      let attempts = 0;
-      const maxAttempts = 3;
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('tipo')
+        .eq('id', userId)
+        .single();
 
-      while (attempts < maxAttempts && !profile) {
-        attempts++;
-        
-        const { data, error: fetchError } = await supabase
-          .from('profiles')
-          .select('tipo')
-          .eq('id', userId)
-          .single();
-
-        if (fetchError) {
-          error = fetchError;
-          console.warn(`❌ Tentativa ${attempts} falhou:`, fetchError);
-          
-          if (attempts < maxAttempts) {
-            console.log(`🔄 Aguardando ${attempts * 500}ms antes da próxima tentativa...`);
-            await new Promise(resolve => setTimeout(resolve, attempts * 500));
-          }
-        } else {
-          profile = data;
-          error = null;
-        }
-      }
-
-      if (error && !profile) {
-        console.error('❌ Erro ao buscar perfil após todas as tentativas:', error);
+      if (error) {
+        console.error('❌ Erro ao buscar perfil:', error);
+        // Redirecionar para dashboard como fallback
         window.location.href = '/dashboard';
         return;
       }
@@ -68,11 +46,7 @@ export const useAuthRedirect = () => {
         // Só navegar se não estivermos já na página correta
         if (currentPath !== targetPath) {
           console.log(`🚀 Navegando de ${currentPath} para ${targetPath}`);
-          
-          // Pequeno delay para garantir que a UI está pronta
-          setTimeout(() => {
-            window.location.href = targetPath;
-          }, 100);
+          window.location.href = targetPath;
         } else {
           console.log(`✅ Já estamos na página correta: ${currentPath}`);
         }

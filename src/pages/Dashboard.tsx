@@ -8,6 +8,7 @@ import ProgressOverview from '@/components/ProgressOverview';
 import NutritionChart from '@/components/NutritionChart';
 import RecentMeals from '@/components/RecentMeals';
 import NutritionGoals from '@/components/NutritionGoals';
+import LoadingScreen from '@/components/LoadingScreen';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
@@ -15,12 +16,10 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-dizai-brand-green border-t-transparent mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Carregando seu dashboard...</p>
-        </div>
-      </div>
+      <LoadingScreen 
+        message="Carregando seu dashboard..."
+        variant="default"
+      />
     );
   }
 

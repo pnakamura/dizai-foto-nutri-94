@@ -5,6 +5,7 @@ import { useUserProfile } from '@/hooks/useUserProfile';
 import DashboardBreadcrumb from '@/components/DashboardBreadcrumb';
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminDashboard from '@/components/AdminDashboard';
+import LoadingScreen from '@/components/LoadingScreen';
 import { Navigate } from 'react-router-dom';
 
 const Admin = () => {
@@ -13,12 +14,10 @@ const Admin = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Carregando painel administrativo...</p>
-        </div>
-      </div>
+      <LoadingScreen 
+        message="Carregando painel administrativo..."
+        variant="admin"
+      />
     );
   }
 

@@ -40,44 +40,39 @@ interface UserProfile {
 export const useUserProfile = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [retryCount, setRetryCount] = useState(0);
+  const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const fetchProfile = useCallback(async (retry = 0) => {
+  const fetchProfile = useCallback(async () => {
     if (!user) {
       setProfile(null);
       setLoading(false);
+      setError(null);
       return;
     }
 
+    setLoading(true);
+    setError(null);
+
     try {
-      console.log(`🔍 Tentativa ${retry + 1} de buscar perfil para:`, user.id);
+      console.log('🔍 Buscando perfil para usuário:', user.id);
       
-      const { data, error } = await supabase
+      const { data, error: fetchError } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
 
-      if (error) {
-        console.error('Erro ao buscar perfil:', error);
+      if (fetchError) {
+        console.error('Erro ao buscar perfil:', fetchError);
+        setError(fetchError.message);
         
-        // Implementar retry logic para erros de rede
-        if (error.message.includes('Failed to fetch') && retry < 3) {
-          console.log(`🔄 Tentando novamente em ${(retry + 1) * 1000}ms...`);
-          setTimeout(() => {
-            setRetryCount(prev => prev + 1);
-            fetchProfile(retry + 1);
-          }, (retry + 1) * 1000);
-          return;
-        }
-        
-        // Só mostrar toast após esgotar tentativas
-        if (retry >= 2) {
+        // Só mostrar toast para erros que não sejam de conectividade
+        if (!fetchError.message.includes('Failed to fetch') && !fetchError.message.includes('NetworkError')) {
           toast({
             title: "Erro ao carregar perfil",
-            description: "Verificando conectividade...",
+            description: "Não foi possível carregar suas informações. Tente novamente.",
             variant: "destructive",
           });
         }
@@ -86,21 +81,12 @@ export const useUserProfile = () => {
 
       console.log('✅ Perfil carregado com sucesso:', data);
       setProfile(data);
-      setRetryCount(0); // Reset contador em caso de sucesso
-    } catch (error) {
+      setError(null);
+    } catch (error: any) {
       console.error('Erro inesperado ao buscar perfil:', error);
-      
-      // Retry para erros inesperados também
-      if (retry < 3) {
-        setTimeout(() => {
-          fetchProfile(retry + 1);
-        }, (retry + 1) * 1000);
-        return;
-      }
+      setError(error.message);
     } finally {
-      if (retry >= 2) { // Só definir loading como false após esgotar tentativas
-        setLoading(false);
-      }
+      setLoading(false);
     }
   }, [user, toast]);
 
@@ -158,14 +144,10 @@ export const useUserProfile = () => {
     fetchProfile();
   }, [fetchProfile]);
 
-  // Resetar retry count quando user muda
-  useEffect(() => {
-    setRetryCount(0);
-  }, [user]);
-
   return {
     profile,
     loading,
+    error,
     updateProfile,
     refetchProfile: fetchProfile,
     isAdmin,
