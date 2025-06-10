@@ -26,6 +26,8 @@ const ResetPassword = () => {
   useEffect(() => {
     const checkResetSession = async () => {
       console.log('🔍 ResetPassword - Verificando sessão para reset de senha');
+      console.log('🌐 URL atual:', window.location.href);
+      console.log('🔗 Hash atual:', window.location.hash);
       
       // Verificar se há tokens na URL (formato hash)
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
@@ -34,12 +36,13 @@ const ResetPassword = () => {
       const tokenType = hashParams.get('token_type');
       const type = hashParams.get('type');
 
-      console.log('🔗 Tokens na URL:', {
+      console.log('🔗 Tokens detectados na URL:', {
         hasAccessToken: !!accessToken,
         hasRefreshToken: !!refreshToken,
         tokenType,
         type,
-        currentUrl: window.location.href
+        accessTokenLength: accessToken?.length || 0,
+        refreshTokenLength: refreshToken?.length || 0
       });
 
       // Se há tokens na URL e é do tipo recovery, processar
@@ -63,6 +66,7 @@ const ResetPassword = () => {
             setIsValidSession(false);
           } else {
             console.log('✅ Sessão de reset definida com sucesso');
+            console.log('👤 Usuário da sessão:', data.user?.email);
             setIsValidSession(true);
             
             // Limpar a URL dos parâmetros
@@ -76,11 +80,16 @@ const ResetPassword = () => {
         } catch (error) {
           console.error('❌ Erro inesperado ao processar tokens:', error);
           setIsValidSession(false);
+          toast({
+            title: "Erro no processamento",
+            description: "Houve um problema ao processar o link. Tente solicitar um novo.",
+            variant: "destructive",
+          });
         }
       } 
       // Se há sessão ativa normal, verificar se é válida para reset
       else if (session?.user) {
-        console.log('✅ Sessão ativa encontrada');
+        console.log('✅ Sessão ativa encontrada:', session.user.email);
         setIsValidSession(true);
         
         toast({
@@ -91,6 +100,10 @@ const ResetPassword = () => {
       // Nenhuma sessão válida encontrada
       else {
         console.log('❌ Nenhuma sessão válida para reset encontrada');
+        console.log('🔍 Situação atual:');
+        console.log('  - Tokens na URL:', { accessToken: !!accessToken, refreshToken: !!refreshToken, type });
+        console.log('  - Sessão ativa:', !!session);
+        
         setIsValidSession(false);
         
         toast({
@@ -175,7 +188,7 @@ const ResetPassword = () => {
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-dizai-brand-green border-t-transparent mx-auto mb-4"></div>
               <p className="text-muted-foreground font-medium">Validando sessão...</p>
-              <p className="text-xs text-muted-foreground mt-2">Aguarde um momento</p>
+              <p className="text-xs text-muted-foreground mt-2">Processando link de recuperação</p>
             </div>
           </CardContent>
         </Card>

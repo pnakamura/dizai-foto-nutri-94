@@ -384,7 +384,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 AuthContext: Iniciando reset de senha para:', email);
       
-      // Usar a URL dinâmica atual para redirecionamento
+      // Usar a URL específica do reset-password
       const currentOrigin = window.location.origin;
       const redirectUrl = `${currentOrigin}/reset-password`;
       
