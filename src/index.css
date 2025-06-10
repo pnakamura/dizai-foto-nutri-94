@@ -62,7 +62,7 @@
 
   body {
     @apply bg-background text-foreground;
-    background-image: linear-gradient(135deg, rgba(249, 115, 22, 0.03) 0%, rgba(34, 197, 94, 0.05) 50%, rgba(239, 68, 68, 0.03) 100%);
+    background-image: linear-gradient(135deg, rgba(0, 204, 102, 0.03) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(51, 51, 51, 0.03) 100%);
     -webkit-tap-highlight-color: transparent;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -81,27 +81,28 @@
     box-sizing: border-box;
   }
   
-  /* Neon text effect with new brand colors */
-  .text-neon {
-    text-shadow: 0 0 5px rgba(34, 197, 94, 0.7), 0 0 10px rgba(34, 197, 94, 0.5);
+  /* Neon text effect with Ethra colors */
+  .text-neon-ethra {
+    text-shadow: 0 0 5px rgba(0, 204, 102, 0.7), 0 0 10px rgba(0, 204, 102, 0.5);
   }
   
-  /* Glowing border effect with new brand colors */
-  .border-glow {
-    box-shadow: 0 0 5px rgba(34, 197, 94, 0.6), 0 0 10px rgba(34, 197, 94, 0.4);
+  /* Glowing border effect with Ethra colors */
+  .border-glow-ethra {
+    box-shadow: 0 0 5px rgba(0, 204, 102, 0.6), 0 0 10px rgba(0, 204, 102, 0.4);
   }
   
-  /* Glass effect - updated for light background */
-  .glass-card {
+  /* Glass effect for Ethra */
+  .glass-card-ethra {
     backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(34, 197, 94, 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 204, 102, 0.2);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
-  /* Gradient text with new brand colors */
-  .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-brand;
+  /* Gradient text with Ethra colors */
+  .gradient-text-ethra {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #00cc66 0%, #333333 100%);
   }
 
   /* WhatsApp button hover effect */
@@ -148,12 +149,12 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    @apply outline-none ring-2 ring-dizai-brand-green ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-ethra-green ring-offset-2 ring-offset-background;
   }
   
   .whatsapp-button:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 10px 20px rgba(0, 204, 102, 0.3);
   }
   
   /* Prevent text size adjustment on orientation change */

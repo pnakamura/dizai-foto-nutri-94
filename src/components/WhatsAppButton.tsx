@@ -15,22 +15,22 @@ interface WhatsAppButtonProps extends ButtonProps {
 
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   showBadge = false,
-  buttonText = "Comece Agora",
+  buttonText = "Quero testar agora",
   fullWidth = false,
   className,
   iconOnly = false,
   ...props
 }) => {
-  // URL codificado da mensagem "Olá! Quero saber mais sobre o Diz aí?"
-  const whatsappMessage = encodeURIComponent("Olá! Quero saber mais sobre o Diz aí?");
+  // URL codificado da mensagem "Olá! Quero saber mais sobre a Ethra"
+  const whatsappMessage = encodeURIComponent("Olá! Quero saber mais sobre a Ethra");
   const whatsappLink = `https://wa.me/555189457133?text=${whatsappMessage}`;
   
   return (
     <Button
       asChild
       className={cn(
-        "bg-dizai-whatsapp hover:bg-dizai-whatsapp-dark text-white whatsapp-button relative",
-        "focus:ring-2 focus:ring-dizai-neon-green/50 focus:ring-offset-2 focus:ring-offset-dizai-dark-blue",
+        "bg-ethra-whatsapp hover:bg-ethra-whatsapp-dark text-white whatsapp-button relative",
+        "focus:ring-2 focus:ring-ethra-green/50 focus:ring-offset-2 focus:ring-offset-white",
         "active:scale-95 transition-all duration-200",
         fullWidth ? "w-full" : "",
         iconOnly ? "p-3 min-w-12 min-h-12" : "px-6 py-5 min-h-[48px]",
@@ -49,13 +49,13 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
           <>
             <span className="relative z-10">{buttonText}</span>
             {showBadge && (
-              <Badge variant="outline" className="bg-dizai-neon-green text-dizai-dark-blue border-none ml-1 px-2 font-medium">
+              <Badge variant="outline" className="bg-white text-ethra-green border-none ml-1 px-2 font-medium">
                 Grátis
               </Badge>
             )}
           </>
         )}
-        <span className="absolute inset-0 bg-gradient-whatsapp opacity-0 hover:opacity-100 transition-opacity rounded-md"></span>
+        <span className="absolute inset-0 bg-gradient-to-r from-ethra-whatsapp to-ethra-whatsapp-dark opacity-0 hover:opacity-100 transition-opacity rounded-md"></span>
       </a>
     </Button>
   );

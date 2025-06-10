@@ -63,19 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Novas cores baseadas no logo DizAi
-				dizai: {
-					'dark-blue': '#1A1F2C',
-					'deep-purple': '#2D1E4F',
-					'light-purple': '#9b87f5',
-					'brand-green': '#22C55E',      // Verde vibrante do logo
-					'brand-orange': '#F97316',     // Laranja do logo
-					'brand-red': '#EF4444',        // Vermelho do logo
-					'neon-green': '#22C55E',       // Verde principal
-					'neon-orange': '#F97316',      // Laranja vibrante
-					'accent-pink': '#D946EF',
-					'whatsapp': '#25D366',
-					'whatsapp-dark': '#128C7E',
+				// Cores da marca Ethra
+				ethra: {
+					'green': '#00cc66',           // Verde vibrante principal
+					'green-dark': '#00b359',      // Verde escuro para hover
+					'dark': '#333333',            // Cinza escuro
+					'whatsapp': '#25D366',        // WhatsApp verde
+					'whatsapp-dark': '#128C7E',   // WhatsApp verde escuro
 				}
 			},
 			borderRadius: {
@@ -110,32 +104,12 @@ export default {
 						transform: 'translateY(0)'
 					}
 				},
-				'fade-in-right': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateX(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateX(0)'
-					}
-				},
-				'fade-in-left': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateX(-20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateX(0)'
-					}
-				},
 				'pulse-glow': {
 					'0%, 100%': {
-						boxShadow: '0 0 5px rgba(76, 250, 123, 0.6), 0 0 10px rgba(76, 250, 123, 0.4)'
+						boxShadow: '0 0 5px rgba(0, 204, 102, 0.6), 0 0 10px rgba(0, 204, 102, 0.4)'
 					},
 					'50%': {
-						boxShadow: '0 0 15px rgba(76, 250, 123, 0.8), 0 0 20px rgba(76, 250, 123, 0.6)'
+						boxShadow: '0 0 15px rgba(0, 204, 102, 0.8), 0 0 20px rgba(0, 204, 102, 0.6)'
 					}
 				},
 				'float': {
@@ -159,25 +133,15 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
-				'fade-in-right': 'fade-in-right 0.5s ease-out',
-				'fade-in-left': 'fade-in-left 0.5s ease-out',
 				'pulse-glow': 'pulse-glow 2s infinite',
 				'float': 'float 6s ease-in-out infinite',
 				'pulse-subtle': 'pulse-subtle 3s infinite ease-in-out'
 			},
 			backgroundImage: {
-				'gradient-futuristic': 'linear-gradient(180deg, #1A1F2C 0%, #2D1E4F 100%)',
-				'gradient-neon': 'linear-gradient(90deg, #22C55E 0%, #F97316 100%)',
-				'gradient-brand': 'linear-gradient(135deg, #22C55E 0%, #F97316 50%, #EF4444 100%)',
-				'gradient-button': 'linear-gradient(90deg, #22C55E 0%, #F97316 100%)',
-				'gradient-whatsapp': 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)'
+				'gradient-ethra': 'linear-gradient(135deg, #00cc66 0%, #333333 100%)',
 			},
 			boxShadow: {
-				'neon': '0 0 5px rgba(34, 197, 94, 0.6), 0 0 10px rgba(34, 197, 94, 0.4)',
-				'neon-hover': '0 0 15px rgba(34, 197, 94, 0.8), 0 0 20px rgba(34, 197, 94, 0.6)',
-				'brand': '0 0 10px rgba(249, 115, 22, 0.5)',
-				'whatsapp': '0 0 10px rgba(37, 211, 102, 0.5)',
-				'card': '0 10px 30px -5px rgba(0, 0, 0, 0.3)',
+				'ethra-glow': '0 0 10px rgba(0, 204, 102, 0.5)',
 			}
 		}
 	},
