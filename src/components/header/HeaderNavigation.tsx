@@ -48,7 +48,7 @@ const HeaderNavigation: React.FC<HeaderNavigationProps> = ({ profile }) => {
         <Link
           key={index}
           to={item.href}
-          className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+          className="flex items-center space-x-2 text-gray-600 hover:text-ethra-green transition-colors"
         >
           <item.icon className="h-4 w-4" />
           <span>{item.label}</span>

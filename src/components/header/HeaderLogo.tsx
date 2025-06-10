@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { cn } from '@/lib/utils';
 
 interface HeaderLogoProps {
   profile?: {
@@ -12,15 +11,11 @@ interface HeaderLogoProps {
 const HeaderLogo: React.FC<HeaderLogoProps> = ({ profile }) => {
   return (
     <Link to="/" className="flex items-center space-x-2">
-      <div className={cn(
-        "w-8 h-8 rounded-lg flex items-center justify-center",
-        profile?.tipo === 'admin' ? "bg-gradient-to-br from-purple-500 to-red-500" :
-        profile?.tipo === 'profissional' ? "bg-gradient-to-br from-blue-500 to-green-500" :
-        "bg-gradient-to-br from-green-500 to-blue-500"
-      )}>
-        <span className="text-white font-bold text-sm">DA</span>
-      </div>
-      <span className="text-xl font-bold gradient-text">DizAi</span>
+      <img 
+        src="/lovable-uploads/8d74b715-8a44-47ed-92be-4159edbfb736.png" 
+        alt="Ethra - Análise nutricional por inteligência artificial" 
+        className="h-10 w-auto"
+      />
     </Link>
   );
 };
