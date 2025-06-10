@@ -9,10 +9,20 @@ import LoadingScreen from '@/components/LoadingScreen';
 import { Navigate } from 'react-router-dom';
 
 const Admin = () => {
-  const { user, loading } = useAuth();
-  const { profile } = useUserProfile();
+  const { user, loading: authLoading } = useAuth();
+  const { profile, loading: profileLoading } = useUserProfile();
 
-  if (loading) {
+  console.log('🔍 Admin: Estado atual:', {
+    authLoading,
+    profileLoading,
+    hasUser: !!user,
+    profileType: profile?.tipo,
+    currentPath: window.location.pathname
+  });
+
+  // Mostrar loading apenas se realmente estiver carregando
+  if (authLoading || profileLoading) {
+    console.log('⏳ Admin: Mostrando loading screen');
     return (
       <LoadingScreen 
         message="Carregando painel administrativo..."
@@ -21,10 +31,31 @@ const Admin = () => {
     );
   }
 
-  // Verificar se é admin
-  if (profile && profile.tipo !== 'admin') {
-    return <Navigate to="/dashboard" replace />;
+  // Verificar se não há usuário logado
+  if (!user) {
+    console.log('🚫 Admin: Usuário não logado, redirecionando para auth');
+    return <Navigate to="/auth" replace />;
   }
+
+  // Verificar se não é admin
+  if (profile && profile.tipo !== 'admin') {
+    console.log('🚫 Admin: Usuário não é admin, redirecionando para dashboard');
+    const redirectPath = profile.tipo === 'profissional' ? '/professional' : '/dashboard';
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  // Se ainda não temos o profile carregado, mas temos user, aguardar um pouco mais
+  if (!profile) {
+    console.log('⏳ Admin: Profile ainda não carregado, aguardando...');
+    return (
+      <LoadingScreen 
+        message="Verificando permissões..."
+        variant="admin"
+      />
+    );
+  }
+
+  console.log('✅ Admin: Renderizando página admin normalmente');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">

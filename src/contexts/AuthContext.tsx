@@ -54,6 +54,9 @@ const clearAllStorageData = () => {
   }
 };
 
+// Singleton para evitar múltiplas inicializações
+let authProviderInstance: any = null;
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -69,6 +72,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     const currentPath = window.location.pathname;
     const isAlreadyInMainPage = ['/dashboard', '/professional', '/admin'].includes(currentPath);
+    
+    // Se estamos em reset-password, não redirecionar imediatamente
+    if (currentPath === '/reset-password') {
+      console.log('🔄 Usuário está em reset-password, aguardando...');
+      return;
+    }
     
     if (!isAlreadyInMainPage) {
       console.log('🔄 Redirecionando usuário baseado no tipo...');
@@ -89,11 +98,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [redirectUserByType, initialized, redirectTimer]);
 
   useEffect(() => {
-    if (initialized) return; // Evitar múltiplas inicializações
+    // Evitar múltiplas inicializações usando singleton
+    if (authProviderInstance) {
+      console.log('⚠️ AuthProvider já inicializado, reutilizando instância');
+      return;
+    }
 
     console.log('🚀 AuthProvider inicializando uma única vez...');
+    authProviderInstance = true;
     
     let isMounted = true;
+    let authSubscription: any = null;
 
     const initializeAuth = async () => {
       try {
@@ -114,11 +129,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
             // Apenas redirecionar em SIGNED_IN se não estivermos em reset-password
             if (event === 'SIGNED_IN' && currentSession?.user) {
-              if (window.location.pathname !== '/reset-password') {
+              const currentPath = window.location.pathname;
+              if (currentPath !== '/reset-password') {
                 console.log('✅ Login detectado, preparando redirecionamento...');
                 setTimeout(() => {
                   handleAuthRedirect(currentSession.user.id);
-                }, 500);
+                }, 1000); // Delay maior para evitar conflitos
+              } else {
+                console.log('🔄 Login em reset-password detectado, não redirecionando');
               }
             }
 
@@ -148,6 +166,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         );
 
+        authSubscription = subscription;
+
         // Verificar sessão existente
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
@@ -164,10 +184,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setInitialized(true);
         }
 
-        return () => {
-          isMounted = false;
-          subscription.unsubscribe();
-        };
       } catch (error) {
         console.error('Erro na inicialização do auth:', error);
         if (isMounted) {
@@ -181,11 +197,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => {
       isMounted = false;
+      if (authSubscription) {
+        authSubscription.unsubscribe();
+      }
       if (redirectTimer) {
         clearTimeout(redirectTimer);
       }
+      // Reset singleton na limpeza
+      authProviderInstance = null;
     };
-  }, [handleAuthRedirect, initialized, redirectTimer]);
+  }, []); // Dependências vazias para executar apenas uma vez
 
   const signUp = useCallback(async (email: string, password: string, userData?: any) => {
     try {
