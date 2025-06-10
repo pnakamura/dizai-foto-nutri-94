@@ -384,12 +384,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 AuthContext: Iniciando reset de senha para:', email);
       
-      // Usar a URL específica do reset-password
-      const currentOrigin = window.location.origin;
-      const redirectUrl = `${currentOrigin}/reset-password`;
+      // Usar a URL correta do projeto atual
+      const redirectUrl = 'https://dizai-foto-nutri-94.lovable.app/reset-password';
       
       console.log('🔗 URL de redirecionamento configurada:', redirectUrl);
-      console.log('🌐 Origin detectado:', currentOrigin);
 
       // Teste de conectividade com o Supabase antes do reset
       try {
