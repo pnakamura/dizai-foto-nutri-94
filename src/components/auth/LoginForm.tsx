@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import ForgotPasswordModal from './ForgotPasswordModal';
 
 const LoginForm = () => {
@@ -16,20 +17,29 @@ const LoginForm = () => {
   
   const { signIn, loading } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Tentando fazer login com:', { email, password });
+    console.log('Tentando fazer login com:', { email });
     
     try {
       const { error } = await signIn(email, password);
       if (!error) {
-        console.log('Login realizado com sucesso');
+        console.log('Login realizado com sucesso, aguardando redirecionamento...');
         toast({
           title: "Login realizado!",
           description: "Bem-vindo de volta!",
         });
-        // O redirecionamento será feito automaticamente pelo AuthContext
+        
+        // Aguardar um pouco para o AuthContext processar o redirecionamento
+        setTimeout(() => {
+          // Se ainda estivermos na página de auth após 2 segundos, forçar navegação
+          if (window.location.pathname === '/auth') {
+            console.log('Forçando navegação manual para dashboard');
+            navigate('/dashboard');
+          }
+        }, 2000);
       } else {
         console.error('Erro no login:', error);
         toast({

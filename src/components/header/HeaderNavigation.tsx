@@ -32,8 +32,8 @@ const HeaderNavigation: React.FC<HeaderNavigationProps> = ({ profile }) => {
       case 'admin':
         return [
           { icon: Home, label: 'Painel Admin', href: '/admin' },
-          { icon: Users, label: 'Usuários', href: '/admin' },
-          { icon: BarChart3, label: 'Relatórios', href: '/admin' },
+          { icon: Users, label: 'Usuários', href: '/admin/users' },
+          { icon: BarChart3, label: 'Relatórios', href: '/admin/reports' },
         ];
       default:
         return [];
