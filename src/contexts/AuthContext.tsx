@@ -408,8 +408,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error('❌ Erro no reset:', error);
         console.error('❌ Detalhes do erro:', {
           message: error.message,
-          status: error.status,
-          statusText: error.statusText
+          status: error.status
         });
         
         // Não exibir toast aqui, deixar para o componente tratar
