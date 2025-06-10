@@ -384,11 +384,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔄 Iniciando reset de senha para:', email);
       
-      // Usar a URL atual da aplicação para redirecionamento
+      // Usar a URL dinâmica atual para redirecionamento
       const currentOrigin = window.location.origin;
       const redirectUrl = `${currentOrigin}/reset-password`;
       
-      console.log('🔗 URL de redirecionamento:', redirectUrl);
+      console.log('🔗 URL de redirecionamento configurada:', redirectUrl);
+      console.log('🌐 Origin detectado:', currentOrigin);
+
+      // Teste de conectividade com o Supabase antes do reset
+      try {
+        const { data: healthCheck } = await supabase.from('profiles').select('count', { count: 'exact', head: true });
+        console.log('✅ Conectividade com Supabase OK');
+      } catch (connectError) {
+        console.error('❌ Problema de conectividade com Supabase:', connectError);
+        throw new Error('Problema de conexão com o servidor. Tente novamente.');
+      }
 
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
@@ -396,30 +406,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('❌ Erro no reset:', error);
-        toast({
-          title: "Erro",
-          description: error.message,
-          variant: "destructive",
+        console.error('❌ Detalhes do erro:', {
+          message: error.message,
+          status: error.status,
+          statusText: error.statusText
         });
+        
+        // Não exibir toast aqui, deixar para o componente tratar
+        return { error };
       } else {
         console.log('✅ Email de reset enviado com sucesso');
-        toast({
-          title: "Email enviado",
-          description: "Verifique seu email para redefinir sua senha. O link expira em 1 hora.",
-        });
+        console.log('📧 Email enviado para:', email);
+        console.log('🔗 Com redirecionamento para:', redirectUrl);
+        
+        // Não exibir toast aqui, deixar para o componente tratar
+        return { error: null };
       }
-
-      return { error };
     } catch (error: any) {
       console.error('❌ Erro inesperado no reset:', error);
-      toast({
-        title: "Erro",
-        description: error.message,
-        variant: "destructive",
-      });
       return { error };
     }
-  }, [toast]);
+  }, []);
 
   const value = useMemo(() => ({
     user,
