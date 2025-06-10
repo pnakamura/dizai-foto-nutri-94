@@ -24,33 +24,86 @@ const ResetPassword = () => {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
 
   useEffect(() => {
-    console.log('🔍 ResetPassword - Validando sessão:', {
-      hasSession: !!session,
-      sessionUserId: session?.user?.id,
-      currentPath: window.location.pathname
-    });
+    const checkResetSession = async () => {
+      console.log('🔍 ResetPassword - Verificando sessão para reset de senha');
+      
+      // Verificar se há tokens na URL (formato hash)
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      const tokenType = hashParams.get('token_type');
+      const type = hashParams.get('type');
 
-    // LÓGICA SIMPLES: Se está em reset-password e tem sessão = válido
-    if (session?.user) {
-      console.log('✅ Sessão ativa encontrada para reset');
-      setIsValidSession(true);
-      setIsCheckingSession(false);
-      
-      toast({
-        title: "Pronto para redefinir",
-        description: "Agora você pode definir sua nova senha.",
+      console.log('🔗 Tokens na URL:', {
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!refreshToken,
+        tokenType,
+        type,
+        currentUrl: window.location.href
       });
-    } else {
-      console.log('❌ Nenhuma sessão ativa encontrada');
-      setIsValidSession(false);
+
+      // Se há tokens na URL e é do tipo recovery, processar
+      if (accessToken && refreshToken && type === 'recovery') {
+        console.log('📧 Tokens de recovery encontrados, processando...');
+        
+        try {
+          // Definir a sessão usando os tokens da URL
+          const { data, error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken
+          });
+
+          if (error) {
+            console.error('❌ Erro ao definir sessão:', error);
+            toast({
+              title: "Link inválido",
+              description: "O link de reset pode ter expirado. Solicite um novo.",
+              variant: "destructive",
+            });
+            setIsValidSession(false);
+          } else {
+            console.log('✅ Sessão de reset definida com sucesso');
+            setIsValidSession(true);
+            
+            // Limpar a URL dos parâmetros
+            window.history.replaceState({}, document.title, '/reset-password');
+            
+            toast({
+              title: "Pronto para redefinir",
+              description: "Agora você pode definir sua nova senha.",
+            });
+          }
+        } catch (error) {
+          console.error('❌ Erro inesperado ao processar tokens:', error);
+          setIsValidSession(false);
+        }
+      } 
+      // Se há sessão ativa normal, verificar se é válida para reset
+      else if (session?.user) {
+        console.log('✅ Sessão ativa encontrada');
+        setIsValidSession(true);
+        
+        toast({
+          title: "Pronto para redefinir",
+          description: "Agora você pode definir sua nova senha.",
+        });
+      } 
+      // Nenhuma sessão válida encontrada
+      else {
+        console.log('❌ Nenhuma sessão válida para reset encontrada');
+        setIsValidSession(false);
+        
+        toast({
+          title: "Sessão inválida",
+          description: "Você precisa clicar no link do email para redefinir sua senha.",
+          variant: "destructive",
+        });
+      }
+
       setIsCheckingSession(false);
-      
-      toast({
-        title: "Sessão inválida",
-        description: "Você precisa clicar no link do email para redefinir sua senha.",
-        variant: "destructive",
-      });
-    }
+    };
+
+    checkResetSession();
   }, [session, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,7 +150,7 @@ const ResetPassword = () => {
           description: "Sua senha foi alterada com sucesso. Redirecionando para o login...",
         });
 
-        // Corrigir redirecionamento para /auth em vez de /login
+        // Aguardar um pouco e redirecionar para auth
         setTimeout(() => {
           window.location.href = '/auth';
         }, 2000);
