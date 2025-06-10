@@ -97,10 +97,9 @@ const ResetPassword = () => {
           description: "Sua senha foi alterada com sucesso. Redirecionando para o login...",
         });
 
-        // Redirecionar DIRETAMENTE para login sem fazer logout
-        // Isso evita o loop de redirecionamento
+        // Corrigir redirecionamento para /auth em vez de /login
         setTimeout(() => {
-          window.location.href = '/login';
+          window.location.href = '/auth';
         }, 2000);
       }
     } catch (error: any) {
@@ -148,7 +147,7 @@ const ResetPassword = () => {
               Se você já clicou no link e ainda vê esta mensagem, o link pode ter expirado.
             </p>
             <Button 
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/auth')}
               className="w-full bg-gradient-button hover:opacity-90"
             >
               Voltar ao Login

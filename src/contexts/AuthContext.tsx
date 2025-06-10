@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -24,6 +23,35 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
+};
+
+// Função para limpeza completa de sessão
+const clearAllStorageData = () => {
+  console.log('🧹 Limpando todos os dados de sessão...');
+  
+  try {
+    // Limpar localStorage
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (key.includes('supabase') || key.includes('auth') || key.includes('session')) {
+        localStorage.removeItem(key);
+        console.log(`🗑️ Removido do localStorage: ${key}`);
+      }
+    });
+    
+    // Limpar sessionStorage
+    const sessionKeys = Object.keys(sessionStorage);
+    sessionKeys.forEach(key => {
+      if (key.includes('supabase') || key.includes('auth') || key.includes('session')) {
+        sessionStorage.removeItem(key);
+        console.log(`🗑️ Removido do sessionStorage: ${key}`);
+      }
+    });
+    
+    console.log('✅ Limpeza de storage concluída');
+  } catch (error) {
+    console.error('❌ Erro na limpeza de storage:', error);
+  }
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -94,20 +122,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               }
             }
 
-            // Reset em logout
+            // Reset em logout com limpeza completa
             if (event === 'SIGNED_OUT') {
               if (redirectTimer) {
                 clearTimeout(redirectTimer);
                 setRedirectTimer(null);
               }
-              console.log('👋 Logout detectado, redirecionando para home...');
+              console.log('👋 Logout detectado, executando limpeza completa...');
+              
               // Garantir que realmente limpe o estado
               setUser(null);
               setSession(null);
+              
+              // Limpeza completa de storage
+              clearAllStorageData();
+              
               // Redirecionar apenas se não estivermos já na home ou em páginas públicas
               const currentPath = window.location.pathname;
               const publicPaths = ['/', '/auth', '/reset-password'];
               if (!publicPaths.includes(currentPath)) {
+                console.log('🔄 Redirecionando para home após logout...');
                 window.location.href = '/';
               }
             }
@@ -314,6 +348,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         clearTimeout(redirectTimer);
         setRedirectTimer(null);
       }
+      
+      // Limpeza ANTES do signOut para garantir limpeza completa
+      clearAllStorageData();
       
       const { error } = await supabase.auth.signOut();
       
