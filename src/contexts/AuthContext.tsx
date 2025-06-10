@@ -382,7 +382,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const resetPassword = useCallback(async (email: string) => {
     try {
-      console.log('🔄 Iniciando reset de senha para:', email);
+      console.log('🔄 AuthContext: Iniciando reset de senha para:', email);
       
       // Usar a URL dinâmica atual para redirecionamento
       const currentOrigin = window.location.origin;
@@ -393,21 +393,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Teste de conectividade com o Supabase antes do reset
       try {
-        const { data: healthCheck } = await supabase.from('profiles').select('count', { count: 'exact', head: true });
+        console.log('🔍 Testando conectividade com Supabase...');
+        const { data: healthCheck, error: healthError } = await supabase.from('profiles').select('count', { count: 'exact', head: true });
+        if (healthError) {
+          console.error('❌ Erro na conectividade:', healthError);
+          throw new Error('Problema de conexão com o servidor. Tente novamente.');
+        }
         console.log('✅ Conectividade com Supabase OK');
-      } catch (connectError) {
+      } catch (connectError: any) {
         console.error('❌ Problema de conectividade com Supabase:', connectError);
-        throw new Error('Problema de conexão com o servidor. Tente novamente.');
+        return { error: new Error('Problema de conexão com o servidor. Tente novamente.') };
       }
 
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      console.log('📧 Enviando email de reset via Supabase...');
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: redirectUrl,
       });
+
+      console.log('📡 Resposta do Supabase resetPasswordForEmail:', { data, error });
 
       if (error) {
         console.error('❌ Erro no reset:', error);
         console.error('❌ Detalhes do erro:', {
           message: error.message,
+          name: error.name,
           status: error.status
         });
         
@@ -423,6 +432,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error: any) {
       console.error('❌ Erro inesperado no reset:', error);
+      console.error('❌ Tipo do erro:', typeof error);
+      console.error('❌ Nome do erro:', error.name);
+      console.error('❌ Stack:', error.stack);
       return { error };
     }
   }, []);

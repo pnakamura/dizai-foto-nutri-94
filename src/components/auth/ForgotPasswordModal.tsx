@@ -48,34 +48,55 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
     }
 
     setIsLoading(true);
-    console.log('🔄 Iniciando reset de senha para:', email.trim());
+    console.log('🔄 ForgotPasswordModal: Iniciando reset de senha para:', email.trim());
     
     try {
       const { error } = await resetPassword(email.trim());
       
       if (error) {
-        console.error('❌ Erro no reset de senha:', error);
+        console.error('❌ ForgotPasswordModal: Erro no reset:', error);
         
-        // Tratamento de erros específicos
+        // Tratamento de erros mais específico baseado na mensagem
         let errorMessage = "Ocorreu um erro ao enviar o email de recuperação.";
+        let errorTitle = "Erro no envio";
         
-        if (error.message?.includes('Email not confirmed')) {
+        // Verificar diferentes tipos de erro
+        if (error.message?.toLowerCase().includes('email not confirmed')) {
+          errorTitle = "Email não confirmado";
           errorMessage = "Este email ainda não foi confirmado. Verifique sua caixa de entrada primeiro.";
-        } else if (error.message?.includes('User not found')) {
+        } else if (error.message?.toLowerCase().includes('user not found')) {
+          errorTitle = "Email não encontrado";
           errorMessage = "Não encontramos uma conta com este email.";
-        } else if (error.message?.includes('Too many requests')) {
+        } else if (error.message?.toLowerCase().includes('too many requests')) {
+          errorTitle = "Muitas tentativas";
           errorMessage = "Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.";
-        } else if (error.message?.includes('Invalid email')) {
+        } else if (error.message?.toLowerCase().includes('invalid email')) {
+          errorTitle = "Email inválido";
           errorMessage = "Email inválido. Verifique se o formato está correto.";
+        } else if (error.message?.toLowerCase().includes('network') || error.message?.toLowerCase().includes('fetch')) {
+          errorTitle = "Erro de conexão";
+          errorMessage = "Problema de conexão com o servidor. Verifique sua internet e tente novamente.";
+        } else if (error.message?.toLowerCase().includes('invalid') && error.message?.toLowerCase().includes('url')) {
+          errorTitle = "Configuração do servidor";
+          errorMessage = "Problema na configuração do servidor. Entre em contato com o suporte.";
+        } else {
+          // Log do erro completo para debug
+          console.error('❌ Erro detalhado:', {
+            message: error.message,
+            name: error.name,
+            status: error.status
+          });
+          
+          errorMessage = `Erro: ${error.message}`;
         }
         
         toast({
-          title: "Erro no envio",
+          title: errorTitle,
           description: errorMessage,
           variant: "destructive",
         });
       } else {
-        console.log('✅ Email de reset enviado com sucesso');
+        console.log('✅ ForgotPasswordModal: Email de reset enviado com sucesso');
         toast({
           title: "Email enviado!",
           description: "Verifique sua caixa de entrada e spam para instruções de recuperação de senha.",
@@ -84,12 +105,14 @@ const ForgotPasswordModal = ({ isOpen, onClose }: ForgotPasswordModalProps) => {
         onClose();
       }
     } catch (error: any) {
-      console.error('❌ Erro inesperado no reset:', error);
+      console.error('❌ ForgotPasswordModal: Erro inesperado:', error);
       
       let errorMessage = "Erro de conexão. Verifique sua internet e tente novamente.";
       
       if (error.message?.includes('fetch')) {
         errorMessage = "Problema de conexão com o servidor. Tente novamente em alguns instantes.";
+      } else if (error.name === 'TypeError') {
+        errorMessage = "Erro de rede. Verifique sua conexão com a internet.";
       }
       
       toast({
