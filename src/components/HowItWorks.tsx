@@ -5,22 +5,22 @@ import { Camera, Send, ChartBar, TrendingUp } from 'lucide-react';
 const HowItWorks: React.FC = () => {
   const steps = [
     {
-      icon: <Camera className="h-10 w-10 text-ethra-green" />,
+      icon: <Camera className="h-10 w-10 text-[#00C851]" />,
       title: "Fotografe sua refeição",
       description: "Capture direto pelo celular, sem sair do WhatsApp."
     },
     {
-      icon: <Send className="h-10 w-10 text-ethra-green" />,
+      icon: <Send className="h-10 w-10 text-[#00C851]" />,
       title: "Envie no chat da Ethra",
       description: "A inteligência artificial processa automaticamente sua imagem."
     },
     {
-      icon: <ChartBar className="h-10 w-10 text-ethra-green" />,
+      icon: <ChartBar className="h-10 w-10 text-[#00C851]" />,
       title: "Receba a análise completa",
       description: "Veja as calorias, macros e sugestões personalizadas em segundos."
     },
     {
-      icon: <TrendingUp className="h-10 w-10 text-ethra-green" />,
+      icon: <TrendingUp className="h-10 w-10 text-[#00C851]" />,
       title: "Acompanhe sua evolução alimentar",
       description: "Tenha acesso ao histórico completo do que você comeu, como comeu e como pode melhorar sua rotina nutricional."
     }
@@ -31,7 +31,7 @@ const HowItWorks: React.FC = () => {
       <div className="max-w-6xl mx-auto px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-ethra-dark">
-            Como funciona a Ethra em 3 passos simples
+            Como funciona a <span className="text-[#00C851]">Ethra</span>
           </h2>
         </div>
         

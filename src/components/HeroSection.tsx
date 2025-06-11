@@ -14,32 +14,8 @@ const HeroSection: React.FC = () => {
     <section className="py-16 md:py-24 px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Conteúdo Principal */}
-          <div className="space-y-8 text-center lg:text-left">
-            <div className="space-y-6">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ethra-dark">
-                Envie uma foto. 
-                <span className="block">Descubra o que está no seu prato em segundos.</span>
-              </h1>
-              
-              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">
-                Calorias, macros e recomendações personalizadas direto no seu WhatsApp 
-                <span className="block">sem aplicativos, sem complicação.</span>
-              </p>
-            </div>
-
-            <div className="pt-4">
-              <Button 
-                onClick={scrollToPlans}
-                className="bg-ethra-green hover:bg-ethra-green-dark text-white text-lg md:text-xl px-12 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-              >
-                Conheça nossos planos
-              </Button>
-            </div>
-          </div>
-          
-          {/* Mockup do iPhone */}
-          <div className="flex justify-center lg:justify-end">
+          {/* Mockup do iPhone - Mobile First */}
+          <div className="flex justify-center lg:justify-end order-1 lg:order-2">
             <div className="relative max-w-sm w-full">
               <div className="relative bg-black rounded-[3rem] p-2 shadow-2xl">
                 <div className="bg-white rounded-[2.5rem] overflow-hidden">
@@ -73,10 +49,10 @@ const HeroSection: React.FC = () => {
                     <div className="flex justify-start">
                       <div className="bg-white rounded-2xl rounded-bl-md p-4 max-w-[85%] shadow-sm">
                         <div className="flex items-center space-x-2 mb-2">
-                          <div className="w-8 h-8 bg-ethra-green rounded-full flex items-center justify-center">
+                          <div className="w-8 h-8 bg-[#00C851] rounded-full flex items-center justify-center">
                             <span className="text-white text-xs font-bold">E</span>
                           </div>
-                          <span className="font-semibold text-sm text-ethra-green">Ethra</span>
+                          <span className="font-semibold text-sm text-[#00C851]">Ethra</span>
                         </div>
                         <div className="space-y-2">
                           <p className="font-bold text-gray-900">Frango grelhado</p>
@@ -93,6 +69,30 @@ const HeroSection: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          
+          {/* Conteúdo Principal */}
+          <div className="space-y-8 text-center lg:text-left order-2 lg:order-1">
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ethra-dark">
+                Envie uma foto. 
+                <span className="block">Descubra o que está no seu prato em segundos.</span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">
+                Calorias, macros e recomendações personalizadas direto no seu WhatsApp 
+                <span className="block">sem aplicativos, sem complicação.</span>
+              </p>
+            </div>
+
+            <div className="pt-4">
+              <Button 
+                onClick={scrollToPlans}
+                className="bg-[#00C851] hover:bg-[#00b348] text-white text-lg md:text-xl px-12 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                Conheça nossos planos
+              </Button>
             </div>
           </div>
         </div>

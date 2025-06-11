@@ -9,22 +9,16 @@ const TrackingSection: React.FC = () => {
           {/* Conteúdo */}
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-ethra-dark">
-              Acompanhamento contínuo, com inteligência artificial
+              Acompanhamento contínuo
             </h2>
             
             <p className="text-lg text-gray-600 leading-relaxed">
-              A Ethra monitora seu histórico alimentar e envia relatórios e insights semanais para melhorar seus hábitos.
+              A <span className="text-[#00C851] font-semibold">Ethra</span> monitora seu histórico alimentar e envia relatórios e insights semanais para melhorar seus hábitos.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            <div className="grid grid-cols-1 gap-4 mt-8">
               <div className="text-center p-4">
-                <div className="text-ethra-green font-semibold mb-1">IA avançada e precisa</div>
-              </div>
-              <div className="text-center p-4">
-                <div className="text-ethra-green font-semibold mb-1">Suporte nutricional 24/7</div>
-              </div>
-              <div className="text-center p-4">
-                <div className="text-ethra-green font-semibold mb-1">Histórico e tendências</div>
+                <div className="text-[#00C851] font-semibold mb-1">Histórico e tendências</div>
               </div>
             </div>
           </div>
@@ -33,7 +27,7 @@ const TrackingSection: React.FC = () => {
           <div className="flex justify-center">
             <div className="bg-gray-50 rounded-2xl p-6 max-w-sm w-full">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-ethra-green rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-[#00C851] rounded-full flex items-center justify-center">
                   <span className="text-white font-bold">E</span>
                 </div>
                 <div>
