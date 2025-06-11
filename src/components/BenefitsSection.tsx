@@ -7,22 +7,22 @@ const BenefitsSection: React.FC = () => {
     {
       icon: <Camera className="h-8 w-8 text-[#00C851]" />,
       title: "Análise instantânea",
-      description: "Envie uma foto do seu prato e receba os dados nutricionais em tempo real."
+      description: "Tire uma foto e receba a análise completa da sua refeição em segundos sem precisar digitar nada."
     },
     {
       icon: <ChartBar className="h-8 w-8 text-[#00C851]" />,
       title: "Dados precisos e mensuráveis",
-      description: "Calorias, carboidratos, proteínas e gorduras com tecnologia de ponta."
+      description: "Descubra tudo sobre sua refeição: calorias, macronutrientes e composição, com alta precisão."
     },
     {
       icon: <Lightbulb className="h-8 w-8 text-[#00C851]" />,
       title: "Recomendações inteligentes",
-      description: "Dicas práticas para você atingir seus objetivos com eficiência."
+      description: "Receba dicas personalizadas com base no seu prato e metas direto no WhatsApp."
     },
     {
       icon: <Smartphone className="h-8 w-8 text-[#00C851]" />,
       title: "Sem downloads",
-      description: "Tudo acontece dentro do WhatsApp. Simples, seguro e direto ao ponto."
+      description: "Sem apps, sem complicações. Toda a experiência acontece via WhatsApp, com segurança e agilidade."
     }
   ];
 
@@ -31,13 +31,13 @@ const BenefitsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-ethra-dark">
-            Tecnologia que favorece a manter sua rotina mais saudável
+            Transforme sua alimentação com tecnologia e simplicidade.
           </h2>
           <h3 className="text-xl md:text-2xl font-semibold mb-4 text-[#00C851]">
             De forma simples, eficaz e sem complicações.
           </h3>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            A <span className="text-[#00C851] font-semibold">Ethra</span> transforma uma simples foto em dados valiosos para sua saúde, com alta precisão nas suas refeições.
+            Com a <span className="text-[#00C851] font-semibold">Ethra</span>, uma simples foto vira uma análise completa precisa, rápida e prática, direto no seu WhatsApp.
           </p>
         </div>
         
