@@ -47,7 +47,6 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [filterActive, setFilterActive] = useState<string>('all');
   const [filterPayment, setFilterPayment] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -103,14 +102,20 @@ const UserManagement = () => {
         search_term: searchTerm || null,
         filter_tipo: filterType === 'all' ? null : filterType as any,
         filter_status: filterStatus === 'all' ? null : filterStatus as any,
-        filter_active: filterActive === 'all' ? null : filterActive === 'true',
+        filter_active: null, // Removendo o filtro de usuário ativo
         limit_count: itemsPerPage,
         offset_count: (currentPage - 1) * itemsPerPage
       });
 
       if (error) throw error;
 
-      setUsers(data || []);
+      // Aplicar filtro de status de pagamento no frontend
+      let filteredData = data || [];
+      if (filterPayment !== 'all') {
+        filteredData = filteredData.filter(user => user.status_pagamento === filterPayment);
+      }
+
+      setUsers(filteredData);
       if (data && data.length > 0) {
         setTotalCount(data[0].total_count);
       } else {
@@ -134,7 +139,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     loadUsers();
-  }, [searchTerm, filterType, filterStatus, filterActive, filterPayment, currentPage]);
+  }, [searchTerm, filterType, filterStatus, filterPayment, currentPage]);
 
   const handleSearch = useCallback((value: string) => {
     setSearchTerm(value);
@@ -145,7 +150,6 @@ const UserManagement = () => {
     setSearchTerm('');
     setFilterType('all');
     setFilterStatus('all');
-    setFilterActive('all');
     setFilterPayment('all');
     setCurrentPage(1);
   };
@@ -155,7 +159,6 @@ const UserManagement = () => {
     if (searchTerm) count++;
     if (filterType !== 'all') count++;
     if (filterStatus !== 'all') count++;
-    if (filterActive !== 'all') count++;
     if (filterPayment !== 'all') count++;
     return count;
   };
@@ -333,12 +336,12 @@ const UserManagement = () => {
         searchTerm={searchTerm}
         filterType={filterType}
         filterStatus={filterStatus}
-        filterActive={filterActive}
+        filterActive="all" // Valor dummy já que removemos o filtro
         filterPayment={filterPayment}
         onSearchChange={handleSearch}
         onTypeChange={setFilterType}
         onStatusChange={setFilterStatus}
-        onActiveChange={setFilterActive}
+        onActiveChange={() => {}} // Função vazia já que removemos o filtro
         onPaymentChange={setFilterPayment}
         onClearFilters={handleClearFilters}
         activeFiltersCount={getActiveFiltersCount()}

@@ -9,8 +9,6 @@ import {
   Filter,
   X,
   Users,
-  UserCheck,
-  UserX,
   Clock,
   CreditCard
 } from 'lucide-react';
@@ -35,12 +33,10 @@ const UserFilters: React.FC<UserFiltersProps> = ({
   searchTerm,
   filterType,
   filterStatus,
-  filterActive,
   filterPayment,
   onSearchChange,
   onTypeChange,
   onStatusChange,
-  onActiveChange,
   onPaymentChange,
   onClearFilters,
   activeFiltersCount
@@ -97,7 +93,7 @@ const UserFilters: React.FC<UserFiltersProps> = ({
       </div>
 
       {/* Filtros em Grid Responsivo */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         {/* Filtro por Tipo */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
@@ -160,34 +156,6 @@ const UserFilters: React.FC<UserFiltersProps> = ({
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
                   Pausado
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Filtro por Ativo/Inativo */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <UserCheck className="h-4 w-4" />
-            Usuário Ativo
-          </label>
-          <Select value={filterActive} onValueChange={onActiveChange}>
-            <SelectTrigger className="h-10 border-gray-200 focus:border-ethra-green transition-colors">
-              <SelectValue placeholder="Todos" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="true">
-                <div className="flex items-center gap-2">
-                  <UserCheck className="h-4 w-4 text-green-600" />
-                  Ativos
-                </div>
-              </SelectItem>
-              <SelectItem value="false">
-                <div className="flex items-center gap-2">
-                  <UserX className="h-4 w-4 text-red-600" />
-                  Inativos
                 </div>
               </SelectItem>
             </SelectContent>
@@ -274,11 +242,6 @@ const UserFilters: React.FC<UserFiltersProps> = ({
               {filterStatus !== 'all' && (
                 <Badge variant="secondary" className="text-xs">
                   Status: {filterStatus}
-                </Badge>
-              )}
-              {filterActive !== 'all' && (
-                <Badge variant="secondary" className="text-xs">
-                  Ativo: {filterActive === 'true' ? 'Sim' : 'Não'}
                 </Badge>
               )}
               {filterPayment !== 'all' && (
