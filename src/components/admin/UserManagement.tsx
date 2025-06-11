@@ -72,7 +72,10 @@ const UserManagement = () => {
             break;
           case 'f':
             event.preventDefault();
-            document.querySelector('input[placeholder*="Pesquisar"]')?.focus();
+            const searchInput = document.querySelector('input[placeholder*="Pesquisar"]') as HTMLInputElement;
+            if (searchInput) {
+              searchInput.focus();
+            }
             break;
           case 'a':
             if (event.shiftKey) {
