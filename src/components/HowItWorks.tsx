@@ -7,17 +7,17 @@ const HowItWorks: React.FC = () => {
     {
       icon: <Camera className="h-10 w-10 text-[#00C851]" />,
       title: "Envie uma foto do seu prato",
-      description: "Capture direto pelo celular, sem sair do WhatsApp."
+      description: "Tire uma foto no WhatsApp e pronto — sem baixar nada, sem sair do app."
     },
     {
       icon: <Send className="h-10 w-10 text-[#00C851]" />,
       title: "Receba os dados nutricionais automaticamente",
-      description: "A inteligência artificial processa automaticamente sua imagem."
+      description: "A IA analisa sua refeição e envia calorias, macros e insights nutricionais direto no chat."
     },
     {
       icon: <ChartBar className="h-10 w-10 text-[#00C851]" />,
       title: "Acompanhe seu progresso no WhatsApp",
-      description: "Tenha acesso ao histórico completo e evolução alimentar."
+      description: "Veja seu histórico e progresso nutricional no próprio WhatsApp, de forma prática e organizada."
     }
   ];
 
@@ -26,7 +26,7 @@ const HowItWorks: React.FC = () => {
       <div className="max-w-6xl mx-auto px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-ethra-dark">
-            Como funciona a <span className="text-[#00C851]">Ethra</span>
+            Veja como é simples usar a <span className="text-[#00C851]">Ethra</span>
           </h2>
         </div>
         
@@ -46,7 +46,7 @@ const HowItWorks: React.FC = () => {
         
         <div className="mt-16 text-center">
           <p className="text-xl md:text-2xl font-medium text-ethra-dark leading-relaxed max-w-4xl mx-auto">
-            Seu controle nutricional tão simples quanto tirar uma foto — sem neuras, sem cálculos. A gente entrega tudo pra você.
+            Controle nutricional sem esforço: só tire uma foto e receba tudo. Sem neuras, sem cálculos, sem complicação.
           </p>
         </div>
       </div>
