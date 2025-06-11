@@ -7,7 +7,7 @@ const HowItWorks: React.FC = () => {
     {
       icon: <Camera className="h-10 w-10 text-[#00C851]" />,
       title: "Envie uma foto do seu prato",
-      description: "Tire uma foto no WhatsApp e pronto — sem baixar nada, sem sair do app."
+      description: "Tire uma foto no WhatsApp e pronto sem baixar nada, sem sair do app."
     },
     {
       icon: <Send className="h-10 w-10 text-[#00C851]" />,

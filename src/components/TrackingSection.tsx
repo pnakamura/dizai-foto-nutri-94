@@ -9,18 +9,13 @@ const TrackingSection: React.FC = () => {
           {/* Conteúdo */}
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-ethra-dark">
-              Acompanhamento inteligente e constante
+              Acompanhamento<br />
+              Inteligente e Constante
             </h2>
             
             <p className="text-lg text-gray-600 leading-relaxed">
               A <span className="text-[#00C851] font-semibold">Ethra</span> acompanha sua evolução nutricional com relatórios e sugestões personalizadas toda semana para que você melhore seus hábitos de forma prática e constante.
             </p>
-            
-            <div className="grid grid-cols-1 gap-4 mt-8">
-              <div className="text-center p-4">
-                <div className="text-[#00C851] font-semibold mb-1">Histórico e tendências</div>
-              </div>
-            </div>
           </div>
           
           {/* Exemplo de mensagem */}
