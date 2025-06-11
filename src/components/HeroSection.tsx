@@ -76,13 +76,11 @@ const HeroSection: React.FC = () => {
           <div className="space-y-8 text-center lg:text-left order-2 lg:order-1">
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ethra-dark">
-                Envie uma foto. 
-                <span className="block">Descubra o que está no seu prato em segundos.</span>
+                Envie uma foto e descubra quantas calorias irá ingerir em segundos.
               </h1>
               
               <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">
-                Calorias, macros e recomendações personalizadas direto no seu WhatsApp 
-                <span className="block">sem aplicativos, sem complicação.</span>
+                Mantenha o foco na dieta de forma simples e rápida para melhores resultados.
               </p>
             </div>
 

@@ -1,28 +1,23 @@
 
 import React from 'react';
-import { Camera, Send, ChartBar, TrendingUp } from 'lucide-react';
+import { Camera, Send, ChartBar } from 'lucide-react';
 
 const HowItWorks: React.FC = () => {
   const steps = [
     {
       icon: <Camera className="h-10 w-10 text-[#00C851]" />,
-      title: "Fotografe sua refeição",
+      title: "Envie uma foto do seu prato",
       description: "Capture direto pelo celular, sem sair do WhatsApp."
     },
     {
       icon: <Send className="h-10 w-10 text-[#00C851]" />,
-      title: "Envie no chat da Ethra",
+      title: "Receba os dados nutricionais automaticamente",
       description: "A inteligência artificial processa automaticamente sua imagem."
     },
     {
       icon: <ChartBar className="h-10 w-10 text-[#00C851]" />,
-      title: "Receba a análise completa",
-      description: "Veja as calorias, macros e sugestões personalizadas em segundos."
-    },
-    {
-      icon: <TrendingUp className="h-10 w-10 text-[#00C851]" />,
-      title: "Acompanhe sua evolução alimentar",
-      description: "Tenha acesso ao histórico completo do que você comeu, como comeu e como pode melhorar sua rotina nutricional."
+      title: "Acompanhe seu progresso no WhatsApp",
+      description: "Tenha acesso ao histórico completo e evolução alimentar."
     }
   ];
 
@@ -35,7 +30,7 @@ const HowItWorks: React.FC = () => {
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
             <div key={index} className="text-center space-y-4">
               <div className="flex justify-center">
@@ -47,6 +42,12 @@ const HowItWorks: React.FC = () => {
               <p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
             </div>
           ))}
+        </div>
+        
+        <div className="mt-16 text-center">
+          <p className="text-xl md:text-2xl font-medium text-ethra-dark leading-relaxed max-w-4xl mx-auto">
+            Seu controle nutricional tão simples quanto tirar uma foto — sem neuras, sem cálculos. A gente entrega tudo pra você.
+          </p>
         </div>
       </div>
     </section>

@@ -31,10 +31,13 @@ const BenefitsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-ethra-dark">
-            Tecnologia que entende sua alimentação
+            Tecnologia que favorece a manter sua rotina mais saudável
           </h2>
+          <h3 className="text-xl md:text-2xl font-semibold mb-4 text-[#00C851]">
+            De forma simples, eficaz e sem complicações.
+          </h3>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            A IA da <span className="text-[#00C851] font-semibold">Ethra</span> transforma uma simples foto em dados valiosos para sua saúde com alta precisão e sem burocracia.
+            A <span className="text-[#00C851] font-semibold">Ethra</span> transforma uma simples foto em dados valiosos para sua saúde, com alta precisão nas suas refeições.
           </p>
         </div>
         
