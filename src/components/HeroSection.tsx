@@ -14,31 +14,14 @@ const HeroSection: React.FC = () => {
     <section className="py-16 md:py-24 px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Mockup do iPhone - Mobile First */}
+          {/* Imagem da Interface */}
           <div className="flex justify-center lg:justify-end order-1 lg:order-2">
-            <div className="relative max-w-sm w-full">
-              <div className="relative bg-black rounded-[3rem] p-2 shadow-2xl">
-                <div className="bg-white rounded-[2.5rem] overflow-hidden">
-                  {/* Status Bar */}
-                  <div className="bg-white px-6 py-3 flex justify-between items-center text-sm">
-                    <span className="font-medium">7:45 AM</span>
-                    <div className="flex items-center space-x-1">
-                      <div className="w-4 h-2 bg-gray-300 rounded-sm"></div>
-                      <div className="w-4 h-2 bg-gray-300 rounded-sm"></div>
-                      <div className="w-4 h-2 bg-gray-900 rounded-sm"></div>
-                    </div>
-                  </div>
-                  
-                  {/* App Interface */}
-                  <div className="bg-gray-50 min-h-[500px] p-4">
-                    <img 
-                      src="/lovable-uploads/3ad11bf0-4844-477e-8c56-e7652567affe.png"
-                      alt="Interface do app Ethra mostrando análise nutricional"
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="w-full max-w-lg">
+              <img 
+                src="/lovable-uploads/3ad11bf0-4844-477e-8c56-e7652567affe.png"
+                alt="Interface do app Ethra mostrando análise nutricional"
+                className="w-full h-auto object-cover rounded-2xl shadow-2xl"
+              />
             </div>
           </div>
           
