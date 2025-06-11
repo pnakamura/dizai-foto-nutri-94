@@ -8,23 +8,10 @@ import { Check, Star } from 'lucide-react';
 const PricingSection: React.FC = () => {
   const plans = [
     {
-      name: 'Essencial',
-      price: 'R$ 19,90',
-      period: '/mês',
-      description: 'Para quem busca praticidade no dia a dia, com uso individual.',
-      features: [
-        'Histórico de 30 dias',
-        'Suporte padrão via WhatsApp',
-        'IA com sugestões personalizadas'
-      ],
-      ctaText: 'Comprar agora',
-      popular: false
-    },
-    {
       name: 'Premium',
       price: 'R$ 39,90',
       period: '/mês',
-      description: 'Ideal para famílias, casais ou times pequenos: até 3 pessoas com contas separadas.',
+      description: 'Para famílias e casais que desejam cuidar da alimentação juntos, com perfis individuais e suporte premium.',
       features: [
         '3 acessos compartilhados',
         'Histórico completo por usuário',
@@ -32,14 +19,27 @@ const PricingSection: React.FC = () => {
         'Relatórios mensais',
         'Suporte prioritário'
       ],
-      ctaText: 'Comprar agora',
+      ctaText: 'Começar agora',
+      popular: false
+    },
+    {
+      name: 'Essencial',
+      price: 'R$ 19,90',
+      period: '/mês',
+      description: 'Ideal para quem quer praticidade e autonomia. Use a IA da Ethra no dia a dia, com histórico e sugestões personalizadas.',
+      features: [
+        'Histórico de 30 dias',
+        'Suporte padrão via WhatsApp',
+        'IA com sugestões personalizadas'
+      ],
+      ctaText: 'Começar agora',
       popular: true
     },
     {
       name: 'Profissional',
       price: 'R$ 99,90',
       period: '/mês',
-      description: 'Para nutricionistas, coaches e clínicas que desejam escalar seu atendimento com tecnologia.',
+      description: 'Perfeito para profissionais da saúde que querem automatizar o atendimento e oferecer relatórios personalizados com inteligência artificial.',
       features: [
         'Gestão de até 10 clientes',
         'Painel de gestão com perfis individualizados',
@@ -48,7 +48,7 @@ const PricingSection: React.FC = () => {
         'Integração via API',
         'Suporte técnico dedicado'
       ],
-      ctaText: 'Comprar agora',
+      ctaText: 'Começar agora',
       popular: false
     }
   ];
@@ -58,10 +58,10 @@ const PricingSection: React.FC = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-2xl md:text-4xl font-bold mb-4 md:mb-5 text-ethra-dark">
-            Planos que acompanham sua <span className="text-[#00C851]">jornada</span>
+            Escolha o plano ideal e comece a <span className="text-[#00C851]">evoluir hoje</span>
           </h2>
           <p className="text-ethra-dark/70 max-w-2xl mx-auto text-sm md:text-base mb-8">
-            Escolha o plano ideal e aproveite o melhor da nutrição automatizada com inteligência artificial.
+            Compare os planos e veja como a Ethra pode transformar sua rotina nutricional, com praticidade e eficiência desde o primeiro uso.
           </p>
         </div>
 
