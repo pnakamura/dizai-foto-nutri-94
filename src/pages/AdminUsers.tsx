@@ -6,6 +6,7 @@ import DashboardBreadcrumb from '@/components/DashboardBreadcrumb';
 import AdminSidebar from '@/components/AdminSidebar';
 import LoadingScreen from '@/components/LoadingScreen';
 import UserManagement from '@/components/admin/UserManagement';
+import AdminStats from '@/components/admin/AdminStats';
 import { Navigate } from 'react-router-dom';
 
 const AdminUsers = () => {
@@ -54,7 +55,16 @@ const AdminUsers = () => {
             <AdminSidebar />
           </aside>
           
-          <main className="flex-1">
+          <main className="flex-1 space-y-6">
+            {/* Cards de Estatísticas */}
+            <div className="space-y-2">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Visão Geral dos Usuários
+              </h2>
+              <AdminStats />
+            </div>
+            
+            {/* Gerenciamento de Usuários */}
             <UserManagement />
           </main>
         </div>
