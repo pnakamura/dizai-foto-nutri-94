@@ -76,7 +76,7 @@ const HeroSection: React.FC = () => {
           <div className="space-y-8 text-center lg:text-left order-2 lg:order-1">
             <div className="space-y-6">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ethra-dark">
-                Tire uma foto do seu prato e receba sua análise nutricional completa em segundos.
+                Receba sua análise nutricional em segundos.
               </h1>
               
               <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">
