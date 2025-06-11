@@ -1,62 +1,96 @@
 
 import React from 'react';
-import WhatsAppButton from '@/components/WhatsAppButton';
-import { ArrowDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const HeroSection: React.FC = () => {
-  const scrollToFeatures = () => {
-    const featuresSection = document.getElementById('features');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
+  const scrollToPlans = () => {
+    const plansSection = document.getElementById('pricing');
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section className="py-12 md:py-24 px-5 md:px-8 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-      <div className="flex-1 space-y-5 md:space-y-7 animate-fade-in text-center md:text-left">
-        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-tight break-words text-ethra-dark">
-          Pare de contar calorias. <span className="gradient-text-ethra">Deixe a inteligência da Ethra cuidar da sua nutrição.</span>
-        </h1>
-        <p className="text-sm sm:text-base md:text-xl text-ethra-dark/80 max-w-2xl leading-relaxed break-words">
-          Com apenas uma foto da sua refeição, você recebe uma análise nutricional completa — com calorias, macronutrientes e orientações personalizadas — direto no seu WhatsApp, em segundos.
-        </p>
-        <p className="text-base sm:text-lg md:text-xl italic text-ethra-green font-medium leading-relaxed break-words">
-          "Sem cadastros. Sem aplicativos. Sem complicação. Apenas resultados."
-        </p>
-        <WhatsAppButton 
-          buttonText="Acesse Agora com 1 Foto"
-          fullWidth={true}
-          className="mt-4 md:mt-6 text-sm sm:text-base md:text-lg py-5 md:py-6 animate-pulse-subtle shadow-lg hover:shadow-ethra-glow bg-ethra-green hover:bg-ethra-green-dark"
-          showBadge={true}
-        />
-        
-        <div className="hidden md:flex justify-center md:justify-start pt-4">
-          <button 
-            onClick={scrollToFeatures} 
-            className="flex items-center gap-2 text-ethra-green hover:text-ethra-dark transition-colors focus:outline-none focus:ring-2 focus:ring-ethra-green/50 focus:ring-offset-2 focus:ring-offset-white rounded-md p-1"
-            aria-label="Veja os recursos"
-          >
-            <span className="text-sm font-medium break-words">Ver recursos</span>
-            <ArrowDown className="h-4 w-4 animate-bounce" />
-          </button>
-        </div>
-      </div>
-      
-      <div className="flex-1 flex justify-center md:justify-end mt-6 md:mt-0">
-        <div className="relative animate-float w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[380px]">
-          <div className="absolute inset-0 bg-ethra-green/20 blur-3xl rounded-full"></div>
-          <div className="relative bg-white border border-ethra-green/30 rounded-3xl p-2 shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
-            <div className="relative bg-ethra-dark rounded-2xl overflow-hidden border border-ethra-green/30">
-              <img 
-                src="/lovable-uploads/8d74b715-8a44-47ed-92be-4159edbfb736.png" 
-                alt="Logo Ethra - Análise nutricional por inteligência artificial" 
-                className="w-full h-auto p-8 bg-white"
-                loading="eager"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ethra-dark to-transparent p-2 md:p-3 text-xs md:text-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-ethra-green animate-pulse flex-shrink-0"></div>
-                  <span className="text-ethra-green font-medium break-words">Analisando... 245 kcal, 15g carboidratos</span>
+    <section className="py-16 md:py-24 px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Conteúdo Principal */}
+          <div className="space-y-8 text-center lg:text-left">
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-ethra-dark">
+                Envie uma foto. 
+                <span className="block">Descubra o que está no seu prato em segundos.</span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">
+                Calorias, macros e recomendações personalizadas direto no seu WhatsApp 
+                <span className="block">sem aplicativos, sem complicação.</span>
+              </p>
+            </div>
+
+            <div className="pt-4">
+              <Button 
+                onClick={scrollToPlans}
+                className="bg-ethra-green hover:bg-ethra-green-dark text-white text-lg md:text-xl px-12 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                Conheça nossos planos
+              </Button>
+            </div>
+          </div>
+          
+          {/* Mockup do iPhone */}
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative max-w-sm w-full">
+              <div className="relative bg-black rounded-[3rem] p-2 shadow-2xl">
+                <div className="bg-white rounded-[2.5rem] overflow-hidden">
+                  {/* Status Bar */}
+                  <div className="bg-white px-6 py-3 flex justify-between items-center text-sm">
+                    <span className="font-medium">WhatsApp</span>
+                    <div className="flex items-center space-x-1">
+                      <div className="w-4 h-2 bg-gray-300 rounded-sm"></div>
+                      <div className="w-4 h-2 bg-gray-300 rounded-sm"></div>
+                      <div className="w-4 h-2 bg-gray-900 rounded-sm"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Chat Interface */}
+                  <div className="bg-gray-50 min-h-[500px] p-4 space-y-4">
+                    {/* Mensagem do usuário */}
+                    <div className="flex justify-end">
+                      <div className="bg-[#DCF8C6] rounded-2xl rounded-br-md p-3 max-w-[80%]">
+                        <div className="bg-white rounded-lg p-2 mb-2">
+                          <img 
+                            src="/lovable-uploads/a8e49f70-19a6-49f6-97ea-520d6e630e15.png"
+                            alt="Foto da refeição"
+                            className="w-full h-24 object-cover rounded"
+                          />
+                        </div>
+                        <p className="text-sm">Análise nutricional, por favor!</p>
+                      </div>
+                    </div>
+                    
+                    {/* Resposta da Ethra */}
+                    <div className="flex justify-start">
+                      <div className="bg-white rounded-2xl rounded-bl-md p-4 max-w-[85%] shadow-sm">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <div className="w-8 h-8 bg-ethra-green rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">E</span>
+                          </div>
+                          <span className="font-semibold text-sm text-ethra-green">Ethra</span>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="font-bold text-gray-900">Frango grelhado</p>
+                          <p className="text-gray-900 font-semibold">248 kcal</p>
+                          <p className="text-gray-600 text-sm">18g carboidratos</p>
+                          <p className="text-gray-600 text-sm">35g proteínas</p>
+                          <p className="text-gray-600 text-sm">8g gorduras</p>
+                          <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                            <p className="text-xs text-gray-600">💡 Excelente escolha! Rico em proteínas e baixo em gorduras.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
