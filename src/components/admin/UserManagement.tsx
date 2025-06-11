@@ -19,7 +19,8 @@ import {
   UserPlus,
   Users,
   UserCheck,
-  UserX
+  UserX,
+  CreditCard
 } from 'lucide-react';
 import UserCreateModal from './UserCreateModal';
 import UserEditModal from './UserEditModal';
@@ -147,6 +148,25 @@ const UserManagement = () => {
     }
   };
 
+  const getStatusPagamentoBadge = (status: string) => {
+    const badgeMap = {
+      'primeira_vez': { variant: 'outline' as const, label: 'Primeira Vez', color: 'text-gray-600' },
+      'teste': { variant: 'secondary' as const, label: 'Teste', color: 'text-yellow-600' },
+      'normal': { variant: 'default' as const, label: 'Normal', color: 'bg-blue-500' },
+      'assinatura': { variant: 'default' as const, label: 'Assinatura', color: 'bg-green-500' },
+      'pendente': { variant: 'destructive' as const, label: 'Pendente', color: 'text-red-600' }
+    };
+
+    const config = badgeMap[status as keyof typeof badgeMap] || { variant: 'outline' as const, label: status, color: '' };
+    
+    return (
+      <Badge variant={config.variant} className={config.color}>
+        <CreditCard className="h-3 w-3 mr-1" />
+        {config.label}
+      </Badge>
+    );
+  };
+
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   return (
@@ -226,6 +246,7 @@ const UserManagement = () => {
                   <TableHead>Email</TableHead>
                   <TableHead>Tipo</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Pagamento</TableHead>
                   <TableHead>Data de Criação</TableHead>
                   <TableHead>Último Login</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
@@ -234,7 +255,7 @@ const UserManagement = () => {
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
+                    <TableCell colSpan={8} className="text-center py-8">
                       <div className="flex items-center justify-center">
                         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-ethra-green"></div>
                         <span className="ml-2">Carregando usuários...</span>
@@ -243,7 +264,7 @@ const UserManagement = () => {
                   </TableRow>
                 ) : users.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
+                    <TableCell colSpan={8} className="text-center py-8">
                       <div className="flex flex-col items-center text-muted-foreground">
                         <UserX className="h-12 w-12 mb-2 opacity-50" />
                         <span>Nenhum usuário encontrado</span>
@@ -268,6 +289,7 @@ const UserManagement = () => {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{getTipoBadge(user.tipo)}</TableCell>
                       <TableCell>{getStatusBadge(user.status_conta, user.is_active)}</TableCell>
+                      <TableCell>{getStatusPagamentoBadge(user.status_pagamento)}</TableCell>
                       <TableCell>
                         {new Date(user.data_criacao).toLocaleDateString('pt-BR')}
                       </TableCell>
