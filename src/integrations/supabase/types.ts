@@ -97,6 +97,7 @@ export type Database = {
       profiles: {
         Row: {
           altura: number | null
+          avatar_url: string | null
           biografia: string | null
           configuracoes: Json | null
           configuracoes_consulta: Json | null
@@ -109,6 +110,8 @@ export type Database = {
           email: string | null
           especialidade: string | null
           id: string
+          is_active: boolean | null
+          last_login: string | null
           meta_agua_ml: number | null
           meta_calorias: number | null
           meta_peso: number | null
@@ -129,6 +132,7 @@ export type Database = {
         }
         Insert: {
           altura?: number | null
+          avatar_url?: string | null
           biografia?: string | null
           configuracoes?: Json | null
           configuracoes_consulta?: Json | null
@@ -141,6 +145,8 @@ export type Database = {
           email?: string | null
           especialidade?: string | null
           id: string
+          is_active?: boolean | null
+          last_login?: string | null
           meta_agua_ml?: number | null
           meta_calorias?: number | null
           meta_peso?: number | null
@@ -161,6 +167,7 @@ export type Database = {
         }
         Update: {
           altura?: number | null
+          avatar_url?: string | null
           biografia?: string | null
           configuracoes?: Json | null
           configuracoes_consulta?: Json | null
@@ -173,6 +180,8 @@ export type Database = {
           email?: string | null
           especialidade?: string | null
           id?: string
+          is_active?: boolean | null
+          last_login?: string | null
           meta_agua_ml?: number | null
           meta_calorias?: number | null
           meta_peso?: number | null
@@ -369,12 +378,69 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      delete_user_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
+      get_all_profiles_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          nome: string
+          email: string
+          telefone: string
+          tipo: Database["public"]["Enums"]["user_type"]
+          status_conta: Database["public"]["Enums"]["account_status"]
+          status_pagamento: Database["public"]["Enums"]["payment_status"]
+          is_active: boolean
+          data_criacao: string
+          last_login: string
+          avatar_url: string
+        }[]
+      }
       get_current_user_type: {
         Args: Record<PropertyKey, never>
         Returns: Database["public"]["Enums"]["user_type"]
       }
       is_admin: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      search_users_admin: {
+        Args: {
+          search_term?: string
+          filter_tipo?: Database["public"]["Enums"]["user_type"]
+          filter_status?: Database["public"]["Enums"]["account_status"]
+          filter_active?: boolean
+          limit_count?: number
+          offset_count?: number
+        }
+        Returns: {
+          id: string
+          nome: string
+          email: string
+          telefone: string
+          tipo: Database["public"]["Enums"]["user_type"]
+          status_conta: Database["public"]["Enums"]["account_status"]
+          status_pagamento: Database["public"]["Enums"]["payment_status"]
+          is_active: boolean
+          data_criacao: string
+          last_login: string
+          avatar_url: string
+          total_count: number
+        }[]
+      }
+      update_user_profile_admin: {
+        Args: {
+          user_id: string
+          new_nome?: string
+          new_email?: string
+          new_telefone?: string
+          new_tipo?: Database["public"]["Enums"]["user_type"]
+          new_status_conta?: Database["public"]["Enums"]["account_status"]
+          new_status_pagamento?: Database["public"]["Enums"]["payment_status"]
+          new_is_active?: boolean
+        }
         Returns: boolean
       }
     }
