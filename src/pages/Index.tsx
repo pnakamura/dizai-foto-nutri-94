@@ -2,13 +2,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeroSection from '@/components/HeroSection';
-import FeaturesSection from '@/components/FeaturesSection';
-import HowItWorks from '@/components/HowItWorks';
-import PricingSection from '@/components/PricingSection';
-import Faq from '@/components/Faq';
+import HowItWorksSimple from '@/components/HowItWorksSimple';
+import TestimonialSection from '@/components/TestimonialSection';
+import StatsSection from '@/components/StatsSection';
 import Footer from '@/components/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
-import ScrollIndicator from '@/components/ScrollIndicator';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -57,21 +54,12 @@ const Index = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="container mx-auto max-w-7xl">
-        <section id="hero">
-          <HeroSection />
-        </section>
-      </div>
-      <FeaturesSection />
-      <div className="container mx-auto max-w-7xl">
-        <HowItWorks />
-      </div>
-      <PricingSection />
-      <Faq />
+    <div className="min-h-screen bg-white">
+      <HeroSection />
+      <HowItWorksSimple />
+      <TestimonialSection />
+      <StatsSection />
       <Footer />
-      <ScrollToTop />
-      <ScrollIndicator />
     </div>
   );
 };

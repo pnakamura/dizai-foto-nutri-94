@@ -27,36 +27,30 @@ const Header = () => {
   // Mostrar header simples durante carregamento
   if (loading) {
     return (
-      <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div className="container mx-auto px-8 py-6">
+          <div className="flex items-center justify-center">
             <HeaderLogo />
-            <div className="flex items-center space-x-4">
-              <div className="w-20 h-8 bg-gray-200 animate-pulse rounded"></div>
-            </div>
           </div>
         </div>
       </header>
     );
   }
 
+  // Header para usuários não logados (landing page)
   if (!user) {
     return (
-      <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div className="container mx-auto px-8 py-6">
+          <div className="flex items-center justify-center">
             <HeaderLogo />
-            <div className="flex items-center space-x-4">
-              <Link to="/auth">
-                <Button variant="outline">Entrar</Button>
-              </Link>
-            </div>
           </div>
         </div>
       </header>
     );
   }
 
+  // Header completo para usuários logados
   return (
     <>
       <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">

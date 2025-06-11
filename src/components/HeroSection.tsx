@@ -1,62 +1,83 @@
 
 import React from 'react';
 import WhatsAppButton from '@/components/WhatsAppButton';
-import { ArrowDown } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
-  const scrollToFeatures = () => {
-    const featuresSection = document.getElementById('features');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
-    <section className="py-12 md:py-24 px-5 md:px-8 flex flex-col md:flex-row items-center gap-8 md:gap-12">
-      <div className="flex-1 space-y-5 md:space-y-7 animate-fade-in text-center md:text-left">
-        <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-tight break-words text-ethra-dark">
-          Pare de contar calorias. <span className="gradient-text-ethra">Deixe a inteligência da Ethra cuidar da sua nutrição.</span>
-        </h1>
-        <p className="text-sm sm:text-base md:text-xl text-ethra-dark/80 max-w-2xl leading-relaxed break-words">
-          Com apenas uma foto da sua refeição, você recebe uma análise nutricional completa — com calorias, macronutrientes e orientações personalizadas — direto no seu WhatsApp, em segundos.
-        </p>
-        <p className="text-base sm:text-lg md:text-xl italic text-ethra-green font-medium leading-relaxed break-words">
-          "Sem cadastros. Sem aplicativos. Sem complicação. Apenas resultados."
-        </p>
-        <WhatsAppButton 
-          buttonText="Acesse Agora com 1 Foto"
-          fullWidth={true}
-          className="mt-4 md:mt-6 text-sm sm:text-base md:text-lg py-5 md:py-6 animate-pulse-subtle shadow-lg hover:shadow-ethra-glow bg-ethra-green hover:bg-ethra-green-dark"
-          showBadge={true}
-        />
-        
-        <div className="hidden md:flex justify-center md:justify-start pt-4">
-          <button 
-            onClick={scrollToFeatures} 
-            className="flex items-center gap-2 text-ethra-green hover:text-ethra-dark transition-colors focus:outline-none focus:ring-2 focus:ring-ethra-green/50 focus:ring-offset-2 focus:ring-offset-white rounded-md p-1"
-            aria-label="Veja os recursos"
-          >
-            <span className="text-sm font-medium break-words">Ver recursos</span>
-            <ArrowDown className="h-4 w-4 animate-bounce" />
-          </button>
+    <section className="py-16 md:py-24 px-8 flex flex-col lg:flex-row items-center gap-12 lg:gap-16 max-w-7xl mx-auto">
+      {/* Conteúdo Principal */}
+      <div className="flex-1 space-y-8 text-center lg:text-left">
+        <div className="space-y-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black">
+            Envie uma foto.
+            <br />
+            <span className="block">Receba sua análise</span>
+            <span className="block">nutricional em segundos.</span>
+          </h1>
+          
+          <p className="text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed max-w-2xl">
+            Calorias, macros e recomendações inteligentes
+            <br />
+            direto no WhatsApp — sem apps, sem cad
+          </p>
+        </div>
+
+        <div className="pt-4">
+          <WhatsAppButton 
+            buttonText="Enviar foto grátis"
+            className="bg-ethra-green hover:bg-ethra-green-dark text-white text-lg md:text-xl px-12 py-6 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          />
         </div>
       </div>
       
-      <div className="flex-1 flex justify-center md:justify-end mt-6 md:mt-0">
-        <div className="relative animate-float w-full max-w-[240px] sm:max-w-[280px] md:max-w-[320px] lg:max-w-[380px]">
-          <div className="absolute inset-0 bg-ethra-green/20 blur-3xl rounded-full"></div>
-          <div className="relative bg-white border border-ethra-green/30 rounded-3xl p-2 shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300">
-            <div className="relative bg-ethra-dark rounded-2xl overflow-hidden border border-ethra-green/30">
-              <img 
-                src="/lovable-uploads/8d74b715-8a44-47ed-92be-4159edbfb736.png" 
-                alt="Logo Ethra - Análise nutricional por inteligência artificial" 
-                className="w-full h-auto p-8 bg-white"
-                loading="eager"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ethra-dark to-transparent p-2 md:p-3 text-xs md:text-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full bg-ethra-green animate-pulse flex-shrink-0"></div>
-                  <span className="text-ethra-green font-medium break-words">Analisando... 245 kcal, 15g carboidratos</span>
+      {/* Smartphone com Demo */}
+      <div className="flex-1 flex justify-center lg:justify-end">
+        <div className="relative max-w-sm w-full">
+          {/* Frame do Smartphone */}
+          <div className="relative bg-black rounded-[3rem] p-2 shadow-2xl">
+            <div className="bg-white rounded-[2.5rem] overflow-hidden">
+              {/* Status Bar */}
+              <div className="bg-white px-6 py-3 flex justify-between items-center text-sm">
+                <span className="font-medium text-gray-900">Ethra</span>
+                <div className="flex items-center space-x-1">
+                  <div className="w-4 h-2 bg-gray-300 rounded-sm"></div>
+                  <div className="w-4 h-2 bg-gray-300 rounded-sm"></div>
+                  <div className="w-4 h-2 bg-gray-900 rounded-sm"></div>
+                </div>
+              </div>
+              
+              {/* Conteúdo da Tela */}
+              <div className="relative bg-gray-50 min-h-[500px] flex flex-col">
+                {/* Área da Imagem */}
+                <div className="relative bg-white m-4 rounded-xl overflow-hidden shadow-sm">
+                  <div className="w-full h-48 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
+                    <div className="w-32 h-32 bg-amber-600 rounded-full flex items-center justify-center">
+                      <div className="w-20 h-20 bg-amber-800 rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-black/50 rounded-full p-4">
+                      <div className="w-0 h-0 border-l-[20px] border-l-white border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1"></div>
+                    </div>
+                  </div>
+                  
+                  {/* Back Arrow */}
+                  <div className="absolute top-4 left-4">
+                    <div className="bg-white/80 rounded-full p-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Resultado da Análise */}
+                <div className="bg-white mx-4 mb-4 rounded-xl p-4 shadow-sm">
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">Almôndega</h3>
+                  <p className="text-lg font-semibold text-gray-900 mb-1">248 kcal</p>
+                  <p className="text-sm text-gray-600">18 g carboidratos</p>
                 </div>
               </div>
             </div>
