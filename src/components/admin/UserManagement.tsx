@@ -1,30 +1,26 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { 
-  Search, 
-  Plus, 
   Edit, 
   Trash2, 
-  Filter,
   ChevronLeft,
   ChevronRight,
   UserPlus,
   Users,
-  UserCheck,
   UserX,
-  CreditCard
+  CreditCard,
+  Calendar,
+  Clock
 } from 'lucide-react';
 import UserCreateModal from './UserCreateModal';
 import UserEditModal from './UserEditModal';
 import UserDeleteModal from './UserDeleteModal';
+import UserFilters from './UserFilters';
 
 interface User {
   id: string;
@@ -48,6 +44,7 @@ const UserManagement = () => {
   const [filterType, setFilterType] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterActive, setFilterActive] = useState<string>('all');
+  const [filterPayment, setFilterPayment] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -93,11 +90,30 @@ const UserManagement = () => {
 
   useEffect(() => {
     loadUsers();
-  }, [searchTerm, filterType, filterStatus, filterActive, currentPage]);
+  }, [searchTerm, filterType, filterStatus, filterActive, filterPayment, currentPage]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setFilterType('all');
+    setFilterStatus('all');
+    setFilterActive('all');
+    setFilterPayment('all');
+    setCurrentPage(1);
+  };
+
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (searchTerm) count++;
+    if (filterType !== 'all') count++;
+    if (filterStatus !== 'all') count++;
+    if (filterActive !== 'all') count++;
+    if (filterPayment !== 'all') count++;
+    return count;
   };
 
   const handleEdit = (user: User) => {
@@ -171,12 +187,32 @@ const UserManagement = () => {
 
   return (
     <div className="space-y-6">
+      {/* Filtros Aprimorados */}
+      <UserFilters
+        searchTerm={searchTerm}
+        filterType={filterType}
+        filterStatus={filterStatus}
+        filterActive={filterActive}
+        filterPayment={filterPayment}
+        onSearchChange={handleSearch}
+        onTypeChange={setFilterType}
+        onStatusChange={setFilterStatus}
+        onActiveChange={setFilterActive}
+        onPaymentChange={setFilterPayment}
+        onClearFilters={handleClearFilters}
+        activeFiltersCount={getActiveFiltersCount()}
+      />
+
+      {/* Tabela de Usuários */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Users className="h-5 w-5" />
               Gerenciamento de Usuários
+              <Badge variant="outline" className="ml-2">
+                {totalCount} usuário{totalCount !== 1 ? 's' : ''} encontrado{totalCount !== 1 ? 's' : ''}
+              </Badge>
             </div>
             <Button onClick={() => setShowCreateModal(true)} className="bg-ethra-green hover:bg-ethra-green/90">
               <UserPlus className="h-4 w-4 mr-2" />
@@ -184,120 +220,116 @@ const UserManagement = () => {
             </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Filtros e Pesquisa */}
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Pesquisar por nome ou email..."
-                  value={searchTerm}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            
-            <div className="flex gap-2">
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os tipos</SelectItem>
-                  <SelectItem value="cliente">Cliente</SelectItem>
-                  <SelectItem value="profissional">Profissional</SelectItem>
-                  <SelectItem value="admin">Administrador</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os status</SelectItem>
-                  <SelectItem value="ativo">Ativo</SelectItem>
-                  <SelectItem value="inativo">Inativo</SelectItem>
-                  <SelectItem value="pausado">Pausado</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={filterActive} onValueChange={setFilterActive}>
-                <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Ativo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="true">Ativos</SelectItem>
-                  <SelectItem value="false">Inativos</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Tabela de Usuários */}
-          <div className="border rounded-lg">
+        <CardContent>
+          <div className="border rounded-lg overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Nome</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Pagamento</TableHead>
-                  <TableHead>Data de Criação</TableHead>
-                  <TableHead>Último Login</TableHead>
-                  <TableHead className="text-right">Ações</TableHead>
+                <TableRow className="bg-gray-50">
+                  <TableHead className="font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      Nome
+                    </div>
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">Email</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Tipo</TableHead>
+                  <TableHead className="font-semibold text-gray-700">Status</TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <CreditCard className="h-4 w-4" />
+                      Pagamento
+                    </div>
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      Criado em
+                    </div>
+                  </TableHead>
+                  <TableHead className="font-semibold text-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      Último Login
+                    </div>
+                  </TableHead>
+                  <TableHead className="text-right font-semibold text-gray-700">Ações</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8">
-                      <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-ethra-green"></div>
-                        <span className="ml-2">Carregando usuários...</span>
+                    <TableCell colSpan={8} className="text-center py-12">
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ethra-green mb-4"></div>
+                        <span className="text-gray-600">Carregando usuários...</span>
                       </div>
                     </TableCell>
                   </TableRow>
                 ) : users.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8">
+                    <TableCell colSpan={8} className="text-center py-12">
                       <div className="flex flex-col items-center text-muted-foreground">
-                        <UserX className="h-12 w-12 mb-2 opacity-50" />
-                        <span>Nenhum usuário encontrado</span>
+                        <UserX className="h-16 w-16 mb-4 opacity-50" />
+                        <span className="text-lg font-medium mb-2">Nenhum usuário encontrado</span>
+                        <span className="text-sm">
+                          {getActiveFiltersCount() > 0 
+                            ? 'Tente ajustar os filtros para encontrar usuários'
+                            : 'Não há usuários cadastrados no sistema'
+                          }
+                        </span>
                       </div>
                     </TableCell>
                   </TableRow>
                 ) : (
                   users.map((user) => (
-                    <TableRow key={user.id}>
+                    <TableRow key={user.id} className="hover:bg-gray-50 transition-colors">
                       <TableCell>
-                        <div className="flex items-center gap-2">
-                          {user.avatar_url && (
+                        <div className="flex items-center gap-3">
+                          {user.avatar_url ? (
                             <img 
                               src={user.avatar_url} 
                               alt={user.nome}
-                              className="w-8 h-8 rounded-full"
+                              className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
                             />
+                          ) : (
+                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                              <Users className="h-5 w-5 text-gray-500" />
+                            </div>
                           )}
-                          <span className="font-medium">{user.nome}</span>
+                          <div>
+                            <span className="font-medium text-gray-900">{user.nome}</span>
+                            {user.telefone && (
+                              <div className="text-sm text-gray-500">{user.telefone}</div>
+                            )}
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>{user.email}</TableCell>
+                      <TableCell>
+                        <span className="text-gray-700">{user.email}</span>
+                      </TableCell>
                       <TableCell>{getTipoBadge(user.tipo)}</TableCell>
                       <TableCell>{getStatusBadge(user.status_conta, user.is_active)}</TableCell>
                       <TableCell>{getStatusPagamentoBadge(user.status_pagamento)}</TableCell>
                       <TableCell>
-                        {new Date(user.data_criacao).toLocaleDateString('pt-BR')}
+                        <span className="text-gray-600">
+                          {new Date(user.data_criacao).toLocaleDateString('pt-BR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                          })}
+                        </span>
                       </TableCell>
                       <TableCell>
-                        {user.last_login 
-                          ? new Date(user.last_login).toLocaleDateString('pt-BR')
-                          : 'Nunca'
-                        }
+                        <span className="text-gray-600">
+                          {user.last_login 
+                            ? new Date(user.last_login).toLocaleDateString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                              })
+                            : 'Nunca'
+                          }
+                        </span>
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
@@ -305,6 +337,7 @@ const UserManagement = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleEdit(user)}
+                            className="hover:bg-blue-50 hover:border-blue-300"
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -312,7 +345,7 @@ const UserManagement = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => handleDelete(user)}
-                            className="text-red-600 hover:text-red-700"
+                            className="hover:bg-red-50 hover:border-red-300 text-red-600 hover:text-red-700"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -325,11 +358,21 @@ const UserManagement = () => {
             </Table>
           </div>
 
-          {/* Paginação */}
+          {/* Paginação Melhorada */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mt-6 p-4 bg-gray-50 rounded-lg">
               <div className="text-sm text-muted-foreground">
-                Mostrando {(currentPage - 1) * itemsPerPage + 1} a {Math.min(currentPage * itemsPerPage, totalCount)} de {totalCount} usuários
+                Mostrando{' '}
+                <span className="font-medium text-gray-900">
+                  {(currentPage - 1) * itemsPerPage + 1}
+                </span>
+                {' '}a{' '}
+                <span className="font-medium text-gray-900">
+                  {Math.min(currentPage * itemsPerPage, totalCount)}
+                </span>
+                {' '}de{' '}
+                <span className="font-medium text-gray-900">{totalCount}</span>
+                {' '}usuários
               </div>
               <div className="flex items-center gap-2">
                 <Button
@@ -337,18 +380,24 @@ const UserManagement = () => {
                   size="sm"
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
+                  className="flex items-center gap-2"
                 >
                   <ChevronLeft className="h-4 w-4" />
                   Anterior
                 </Button>
-                <span className="text-sm">
-                  Página {currentPage} de {totalPages}
-                </span>
+                <div className="flex items-center gap-1">
+                  <span className="text-sm text-gray-600">Página</span>
+                  <span className="text-sm font-medium bg-white px-2 py-1 rounded border">
+                    {currentPage}
+                  </span>
+                  <span className="text-sm text-gray-600">de {totalPages}</span>
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
+                  className="flex items-center gap-2"
                 >
                   Próxima
                   <ChevronRight className="h-4 w-4" />
