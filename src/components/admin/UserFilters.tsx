@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import {
   Clock,
   CreditCard
 } from 'lucide-react';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface UserFiltersProps {
   searchTerm: string;
@@ -44,6 +45,17 @@ const UserFilters: React.FC<UserFiltersProps> = ({
   onClearFilters,
   activeFiltersCount
 }) => {
+  const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
+  const debouncedSearchTerm = useDebounce(localSearchTerm, 300);
+
+  useEffect(() => {
+    onSearchChange(debouncedSearchTerm);
+  }, [debouncedSearchTerm, onSearchChange]);
+
+  useEffect(() => {
+    setLocalSearchTerm(searchTerm);
+  }, [searchTerm]);
+
   return (
     <div className="bg-white rounded-lg border p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
@@ -62,19 +74,24 @@ const UserFilters: React.FC<UserFiltersProps> = ({
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <Input
             placeholder="Pesquisar por nome, email ou telefone..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={localSearchTerm}
+            onChange={(e) => setLocalSearchTerm(e.target.value)}
             className="pl-10 pr-10 h-12 text-base border-2 border-gray-200 focus:border-ethra-green transition-colors"
           />
-          {searchTerm && (
+          {localSearchTerm && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => onSearchChange('')}
+              onClick={() => setLocalSearchTerm('')}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
             >
               <X className="h-4 w-4" />
             </Button>
+          )}
+          {localSearchTerm !== debouncedSearchTerm && (
+            <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-ethra-green"></div>
+            </div>
           )}
         </div>
       </div>
@@ -244,9 +261,9 @@ const UserFilters: React.FC<UserFiltersProps> = ({
           <div className="text-sm text-gray-600">
             <span className="font-medium">Filtros ativos:</span>
             <div className="flex flex-wrap gap-2 mt-2">
-              {searchTerm && (
+              {debouncedSearchTerm && (
                 <Badge variant="secondary" className="text-xs">
-                  Busca: "{searchTerm}"
+                  Busca: "{debouncedSearchTerm}"
                 </Badge>
               )}
               {filterType !== 'all' && (
