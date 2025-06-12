@@ -17,7 +17,14 @@ const HeroSection: React.FC = () => {
           {/* Conteúdo Principal - Texto à Esquerda */}
           <div className="space-y-8 text-left flex flex-col justify-center order-2 lg:order-1">
             <div className="space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] text-ethra-dark tracking-tight">
+              <h1 
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] text-ethra-dark tracking-tight max-w-full"
+                style={{ 
+                  wordBreak: 'keep-all',
+                  hyphens: 'none',
+                  textWrap: 'balance'
+                }}
+              >
                 Receba sua análise nutricional em{' '}
                 <span className="text-[#00C851] bg-gradient-to-r from-[#00C851] to-[#00b348] bg-clip-text text-transparent">
                   segundos
@@ -25,7 +32,13 @@ const HeroSection: React.FC = () => {
                 .
               </h1>
               
-              <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 leading-relaxed max-w-2xl font-light">
+              <p 
+                className="text-lg sm:text-xl lg:text-2xl text-gray-600 leading-relaxed max-w-2xl font-light"
+                style={{ 
+                  wordBreak: 'keep-all',
+                  hyphens: 'none'
+                }}
+              >
                 Foco, resultado e praticidade. Deixe a inteligência da{' '}
                 <span className="font-semibold text-[#00C851]">Ethra</span>{' '}
                 cuidar da sua nutrição.
@@ -36,6 +49,10 @@ const HeroSection: React.FC = () => {
               <Button 
                 onClick={scrollToPlans}
                 className="bg-[#00C851] hover:bg-[#00b348] text-white text-lg sm:text-xl lg:text-2xl px-8 sm:px-12 lg:px-16 py-4 sm:py-6 lg:py-8 rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+                style={{ 
+                  wordBreak: 'keep-all',
+                  hyphens: 'none'
+                }}
               >
                 Conheça nossos planos
               </Button>
