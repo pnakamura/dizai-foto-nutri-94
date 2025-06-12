@@ -11,8 +11,8 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="min-h-screen flex items-center px-8 bg-white">
+      <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Imagem da Interface */}
           <div className="flex justify-center lg:justify-end order-1 lg:order-2">
