@@ -12,7 +12,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 md:px-6 lg:px-8 bg-gradient-to-br from-white via-gray-50 to-green-50 relative overflow-hidden">
+    <section className="flex items-start justify-center px-4 md:px-6 lg:px-8 bg-gradient-to-br from-white via-gray-50 to-green-50 relative overflow-hidden pt-8 md:pt-12">
       {/* Elementos decorativos flutuantes */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-16 left-8 animate-float">
@@ -42,10 +42,10 @@ const HeroSection: React.FC = () => {
         <div className="absolute top-1/3 right-1/4 w-20 h-20 bg-red-200 rounded-full opacity-20 animate-pulse-subtle" style={{ animationDelay: '3s' }}></div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full relative z-10 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center">
+      <div className="max-w-7xl mx-auto w-full relative z-10 py-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-start">
           {/* Conteúdo Principal - Texto à Esquerda */}
-          <div className="space-y-4 text-left flex flex-col justify-center order-2 lg:order-1">
+          <div className="space-y-4 text-left flex flex-col justify-start order-2 lg:order-1">
             {/* Badge superior */}
             <div className="inline-flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-medium w-fit">
               🌱 ANÁLISE NUTRICIONAL IA
@@ -107,7 +107,7 @@ const HeroSection: React.FC = () => {
           </div>
           
           {/* Imagem à Direita - Sem espaços extras */}
-          <div className="flex justify-center lg:justify-end order-1 lg:order-2 relative -mt-4 lg:mt-0">
+          <div className="flex justify-center lg:justify-end order-1 lg:order-2 relative">
             <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10">
               <img 
                 src="/lovable-uploads/9eaf6092-dc32-4852-8ba8-4528e00346fc.png"
