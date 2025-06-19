@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, Carrot, Apple, Cherry } from 'lucide-react';
+import { Heart, Carrot, Apple, Cherry, Bell } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const scrollToPlans = () => {
@@ -12,15 +12,31 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="flex items-start justify-center px-4 md:px-6 lg:px-8 bg-gradient-to-br from-white via-gray-50 to-green-50 relative overflow-hidden pt-8 md:pt-12">
+    <section className="flex flex-col items-center justify-center px-4 md:px-6 lg:px-8 bg-gradient-to-br from-white via-gray-50 to-green-50 relative overflow-hidden pt-4 md:pt-6">
+      {/* Bloco de Alerta - Acima da dobra */}
+      <div className="w-full max-w-4xl mx-auto mb-6 md:mb-8 relative z-20">
+        <div className="bg-gradient-to-r from-[#00C851] to-[#00b348] text-white rounded-2xl p-4 md:p-6 shadow-lg border border-[#00C851]/20 text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Bell className="w-5 h-5 text-white animate-pulse" />
+            <span className="font-semibold text-sm md:text-base">ALERTA</span>
+          </div>
+          <h3 className="text-lg md:text-xl font-semibold mb-2 leading-tight">
+            🔔 Descubra o que há no seu prato em segundos com uma simples foto!
+          </h3>
+          <p className="text-sm md:text-base opacity-95 leading-relaxed">
+            Receba a análise nutricional completa via WhatsApp, sem baixar nenhum app.
+          </p>
+        </div>
+      </div>
+
       {/* Elementos decorativos flutuantes */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-16 left-8 animate-float">
+        <div className="absolute top-20 left-8 animate-float">
           <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
             <Heart className="w-3 h-3 text-red-500" />
           </div>
         </div>
-        <div className="absolute top-24 right-16 animate-float" style={{ animationDelay: '1s' }}>
+        <div className="absolute top-32 right-16 animate-float" style={{ animationDelay: '1s' }}>
           <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
             <Carrot className="w-4 h-4 text-orange-500" />
           </div>
@@ -61,11 +77,11 @@ const HeroSection: React.FC = () => {
                   fontWeight: '500'
                 }}
               >
-                Comece uma vida{' '}
+                Comece uma vida mais{' '}
                 <span className="text-[#00C851] bg-gradient-to-r from-[#00C851] to-[#00b348] bg-clip-text text-transparent font-semibold">
-                  saudável
+                  leve e saudável
                 </span>{' '}
-                hoje!
+                com ajuda da IA
               </h1>
               
               <p 
@@ -75,8 +91,9 @@ const HeroSection: React.FC = () => {
                   hyphens: 'none'
                 }}
               >
-                Envie uma foto da sua refeição via WhatsApp e receba análise nutricional instantânea com{' '}
-                <span className="font-medium text-[#00C851]">inteligência artificial</span>.
+                Envie uma foto da sua refeição e descubra{' '}
+                <span className="font-medium text-[#00C851]">calorias, proteínas e muito mais</span>{' '}
+                — direto no WhatsApp, sem complicação.
               </p>
             </div>
 
