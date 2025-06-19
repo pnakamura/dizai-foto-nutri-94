@@ -61,11 +61,11 @@ const HeroSection: React.FC = () => {
           
           {/* Imagem à Direita */}
           <div className="flex justify-center lg:justify-end order-1 lg:order-2">
-            <div className="w-full max-w-lg lg:max-w-xl xl:max-w-2xl">
+            <div className="w-full max-w-2xl lg:max-w-3xl xl:max-w-4xl">
               <img 
                 src="/lovable-uploads/9eaf6092-dc32-4852-8ba8-4528e00346fc.png"
                 alt="Mulher sorrindo com tigela de salada saudável e ícones nutricionais"
-                className="w-full h-auto object-contain rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
+                className="w-full h-auto object-contain transform hover:scale-105 transition-transform duration-500"
               />
             </div>
           </div>
