@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, Heart, Carrot, Apple, Dumbbell } from 'lucide-react';
 
 const PricingSection: React.FC = () => {
   const plans = [
@@ -54,8 +53,206 @@ const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section id="pricing" className="py-16 md:py-24 px-5 md:px-8 bg-gray-50">
-      <div className="container mx-auto">
+    <>
+      {/* Nova seção moderna inspirada nas imagens */}
+      <section className="py-16 md:py-24 px-5 md:px-8 bg-gradient-to-br from-white via-gray-50 to-green-50 relative overflow-hidden">
+        {/* Elementos decorativos flutuantes */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-8 animate-float">
+            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+              <Heart className="w-4 h-4 text-red-500" />
+            </div>
+          </div>
+          <div className="absolute top-32 right-16 animate-float" style={{ animationDelay: '1s' }}>
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+              <Carrot className="w-5 h-5 text-orange-500" />
+            </div>
+          </div>
+          <div className="absolute bottom-40 left-12 animate-float" style={{ animationDelay: '2s' }}>
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <Apple className="w-6 h-6 text-green-600" />
+            </div>
+          </div>
+          <div className="absolute top-1/2 right-8 animate-float" style={{ animationDelay: '0.5s' }}>
+            <div className="w-9 h-9 bg-purple-100 rounded-full flex items-center justify-center">
+              <Dumbbell className="w-5 h-5 text-purple-500" />
+            </div>
+          </div>
+          
+          {/* Círculos decorativos */}
+          <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-green-200 rounded-full opacity-30 animate-pulse-subtle"></div>
+          <div className="absolute bottom-1/3 right-1/3 w-16 h-16 bg-orange-200 rounded-full opacity-40 animate-pulse-subtle" style={{ animationDelay: '1.5s' }}></div>
+          <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-red-200 rounded-full opacity-20 animate-pulse-subtle" style={{ animationDelay: '3s' }}></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto w-full relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Lado esquerdo - Conteúdo principal */}
+            <div className="space-y-6 text-center lg:text-left order-2 lg:order-1">
+              <div className="space-y-4">
+                <h2 
+                  className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-medium leading-tight text-gray-900 tracking-tight"
+                  style={{ 
+                    wordBreak: 'keep-all',
+                    hyphens: 'none',
+                    textWrap: 'balance',
+                    fontWeight: '500'
+                  }}
+                >
+                  Transforme sua{' '}
+                  <span className="text-[#00C851] bg-gradient-to-r from-[#00C851] to-[#00b348] bg-clip-text text-transparent font-semibold">
+                    alimentação
+                  </span>{' '}
+                  com tecnologia e simplicidade
+                </h2>
+                
+                <p 
+                  className="text-sm sm:text-base lg:text-lg text-gray-500 leading-relaxed max-w-lg mx-auto lg:mx-0 font-light"
+                  style={{ 
+                    wordBreak: 'keep-all',
+                    hyphens: 'none'
+                  }}
+                >
+                  De forma simples, eficaz e sem complicações.
+                </p>
+                
+                <p 
+                  className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed max-w-lg mx-auto lg:mx-0 font-light"
+                  style={{ 
+                    wordBreak: 'keep-all',
+                    hyphens: 'none'
+                  }}
+                >
+                  Com a Ethra, uma simples foto vira uma análise completa{' '}
+                  <span className="font-medium text-[#00C851]">precisa, rápida e prática</span>, direto no seu WhatsApp.
+                </p>
+              </div>
+
+              {/* Informações nutricionais */}
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-w-[80px]">
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 relative">
+                      <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="#e5e7eb"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="#00C851"
+                          strokeWidth="2"
+                          strokeDasharray="75, 100"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-gray-900">23g</span>
+                      </div>
+                    </div>
+                    <Badge className="bg-green-100 text-green-700 text-xs px-2 py-1">
+                      Prot.
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-w-[80px]">
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 relative">
+                      <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="#e5e7eb"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="#3b82f6"
+                          strokeWidth="2"
+                          strokeDasharray="60, 100"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-gray-900">250</span>
+                      </div>
+                    </div>
+                    <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1">
+                      Cal.
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 min-w-[80px]">
+                  <div className="text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 relative">
+                      <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="#e5e7eb"
+                          strokeWidth="2"
+                        />
+                        <path
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          fill="none"
+                          stroke="#f59e0b"
+                          strokeWidth="2"
+                          strokeDasharray="25, 100"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xs font-semibold text-gray-900">10g</span>
+                      </div>
+                    </div>
+                    <Badge className="bg-amber-100 text-amber-700 text-xs px-2 py-1">
+                      Fat.
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="pt-4">
+                <Button 
+                  className="bg-[#00C851] hover:bg-[#00b348] text-white text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  style={{ 
+                    wordBreak: 'keep-all',
+                    hyphens: 'none',
+                    fontWeight: '500'
+                  }}
+                >
+                  Comece uma vida saudável hoje!
+                </Button>
+              </div>
+            </div>
+            
+            {/* Lado direito - Imagem do prato */}
+            <div className="flex justify-center lg:justify-end order-1 lg:order-2 relative">
+              <div className="relative">
+                {/* Círculo verde de fundo */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-[#00C851] to-[#00b348] rounded-full opacity-20 blur-xl"></div>
+                <div className="relative w-full max-w-md sm:max-w-lg lg:max-w-xl">
+                  <div className="relative rounded-full overflow-hidden border-4 border-[#00C851] shadow-2xl">
+                    <img 
+                      src="/lovable-uploads/640c77f4-06b3-4859-8ebd-02219f42be29.png"
+                      alt="Prato saudável com carne grelhada, salada e batatas"
+                      className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Seção de planos (mantida) */}
+      <section id="pricing" className="py-16 md:py-24 px-5 md:px-8 bg-gray-50">
+        <div className="container mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <h2 
             className="text-2xl md:text-4xl font-medium mb-4 md:mb-5 text-gray-900 leading-tight tracking-tight"
@@ -166,6 +363,7 @@ const PricingSection: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
