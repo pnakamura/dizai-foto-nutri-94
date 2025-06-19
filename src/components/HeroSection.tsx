@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, Carrot, Avocado, Tomato } from 'lucide-react';
+import { Heart, Carrot, Apple, Cherry } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const scrollToPlans = () => {
@@ -27,12 +27,12 @@ const HeroSection: React.FC = () => {
         </div>
         <div className="absolute bottom-40 left-16 animate-float" style={{ animationDelay: '2s' }}>
           <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-            <Avocado className="w-6 h-6 text-green-600" />
+            <Apple className="w-6 h-6 text-green-600" />
           </div>
         </div>
         <div className="absolute top-1/2 right-10 animate-float" style={{ animationDelay: '0.5s' }}>
           <div className="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center">
-            <Tomato className="w-5 h-5 text-red-500" />
+            <Cherry className="w-5 h-5 text-red-500" />
           </div>
         </div>
         
