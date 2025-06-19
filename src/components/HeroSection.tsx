@@ -63,8 +63,8 @@ const HeroSection: React.FC = () => {
           <div className="flex justify-center lg:justify-end order-1 lg:order-2">
             <div className="w-full max-w-lg lg:max-w-xl xl:max-w-2xl">
               <img 
-                src="/lovable-uploads/3ad11bf0-4844-477e-8c56-e7652567affe.png"
-                alt="Interface do app Ethra mostrando análise nutricional"
+                src="/lovable-uploads/9eaf6092-dc32-4852-8ba8-4528e00346fc.png"
+                alt="Mulher sorrindo com tigela de salada saudável e ícones nutricionais"
                 className="w-full h-auto object-contain rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500"
               />
             </div>
