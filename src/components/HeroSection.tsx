@@ -45,9 +45,9 @@ const HeroSection: React.FC = () => {
       <div className="max-w-7xl mx-auto w-full relative z-10 py-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-start">
           {/* Conteúdo Principal - Texto à Esquerda */}
-          <div className="space-y-4 text-left flex flex-col justify-start order-2 lg:order-1">
+          <div className="space-y-4 text-center lg:text-left flex flex-col justify-start order-2 lg:order-1">
             {/* Badge superior */}
-            <div className="inline-flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-medium w-fit">
+            <div className="inline-flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-medium w-fit mx-auto lg:mx-0">
               🌱 ANÁLISE NUTRICIONAL IA
             </div>
 
@@ -69,7 +69,7 @@ const HeroSection: React.FC = () => {
               </h1>
               
               <p 
-                className="text-sm sm:text-base lg:text-lg text-gray-500 leading-relaxed max-w-lg font-light"
+                className="text-sm sm:text-base lg:text-lg text-gray-500 leading-relaxed max-w-lg mx-auto lg:mx-0 font-light"
                 style={{ 
                   wordBreak: 'keep-all',
                   hyphens: 'none'
@@ -81,7 +81,7 @@ const HeroSection: React.FC = () => {
             </div>
 
             {/* Mini cards de pratos */}
-            <div className="flex gap-3 py-2">
+            <div className="flex gap-3 py-2 justify-center lg:justify-start">
               <div className="flex items-center gap-2 bg-white rounded-lg p-2.5 shadow-sm border border-gray-100">
                 <div className="w-6 h-6 bg-green-500 rounded-full"></div>
                 <span className="text-xs text-gray-600">Saladas</span>
@@ -92,7 +92,7 @@ const HeroSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 flex justify-center lg:justify-start">
               <Button 
                 onClick={scrollToPlans}
                 className="bg-[#00C851] hover:bg-[#00b348] text-white text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
