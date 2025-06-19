@@ -54,7 +54,7 @@ const PricingSection: React.FC = () => {
 
   return (
     <>
-      {/* Nova seção moderna inspirada nas imagens */}
+      {/* Segunda seção - Layout seguindo a imagem de referência */}
       <section className="py-16 md:py-24 px-5 md:px-8 bg-gradient-to-br from-white via-gray-50 to-green-50 relative overflow-hidden">
         {/* Elementos decorativos flutuantes */}
         <div className="absolute inset-0 pointer-events-none">
