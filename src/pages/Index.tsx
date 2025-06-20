@@ -1,7 +1,6 @@
 
 import React from 'react';
 import HeroSection from '@/components/HeroSection';
-import BenefitsSection from '@/components/BenefitsSection';
 import ImpactPhrases from '@/components/ImpactPhrases';
 import HowItWorks from '@/components/HowItWorks';
 import TrackingSection from '@/components/TrackingSection';
@@ -12,7 +11,6 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
-      <BenefitsSection />
       <ImpactPhrases />
       <HowItWorks />
       <TrackingSection />
