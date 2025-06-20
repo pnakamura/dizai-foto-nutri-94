@@ -40,55 +40,16 @@ const DemoSection: React.FC = () => {
 
         {/* Demonstração com Steps */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Mockup do WhatsApp à esquerda */}
+          {/* Imagem do celular à esquerda */}
           <div className="flex justify-center lg:justify-start">
             <div className="relative">
-              {/* Simulação de tela do WhatsApp */}
-              <div className="bg-white rounded-3xl shadow-2xl p-6 max-w-sm w-full border border-gray-200">
-                {/* Header do WhatsApp */}
-                <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-                  <div className="w-10 h-10 bg-[#00C851] rounded-full flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Ethra AI</h3>
-                    <p className="text-xs text-green-500">online</p>
-                  </div>
-                </div>
-                
-                {/* Conversa simulada */}
-                <div className="space-y-4 py-4">
-                  {/* Mensagem do usuário */}
-                  <div className="flex justify-end">
-                    <div className="bg-[#DCF8C6] rounded-2xl rounded-br-md p-3 max-w-xs">
-                      <div className="w-24 h-24 bg-gray-200 rounded-lg mb-2 flex items-center justify-center">
-                        <Camera className="w-6 h-6 text-gray-500" />
-                      </div>
-                      <p className="text-xs text-gray-600">Foto do prato</p>
-                    </div>
-                  </div>
-                  
-                  {/* Resposta da IA */}
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-md p-3 max-w-xs">
-                      <p className="text-sm text-gray-800 mb-2">✨ Análise completa:</p>
-                      <div className="space-y-1 text-xs">
-                        <div className="flex justify-between">
-                          <span>Calorias:</span>
-                          <span className="font-semibold text-blue-600">450 kcal</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Proteínas:</span>
-                          <span className="font-semibold text-green-600">32g</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Carboidratos:</span>
-                          <span className="font-semibold text-orange-600">25g</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              {/* Imagem do celular com a análise */}
+              <div className="max-w-sm w-full">
+                <img 
+                  src="/lovable-uploads/9695ae8d-d965-4cc0-968b-ea7a1facb5c2.png"
+                  alt="Tela do aplicativo Ethra mostrando análise nutricional completa"
+                  className="w-full h-auto object-contain"
+                />
               </div>
 
               {/* Elementos decorativos */}
