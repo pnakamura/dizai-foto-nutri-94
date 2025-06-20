@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Play, MessageSquare, Camera, BarChart3 } from 'lucide-react';
+import { Play, MessageSquare, Camera, BarChart3, Target, TrendingUp } from 'lucide-react';
 
 const DemoSection: React.FC = () => {
   return (
@@ -39,7 +39,7 @@ const DemoSection: React.FC = () => {
         </div>
 
         {/* Demonstração com Steps */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-16">
           {/* Imagem do celular à esquerda */}
           <div className="flex justify-center lg:justify-start">
             <div className="relative">
@@ -108,6 +108,78 @@ const DemoSection: React.FC = () => {
                 <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 Ver demonstração completa
               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Apelo Lógico - Como funciona em etapas completas */}
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 
+              className="text-2xl md:text-3xl font-medium text-gray-900 mb-4"
+              style={{ fontWeight: '500' }}
+            >
+              Escolha o plano ideal e comece a evoluir
+            </h3>
+            <p className="text-gray-600 text-lg">
+              Processo completo em 5 etapas simples para transformar sua alimentação
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {/* Etapa 1 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-[#00C851] rounded-full flex items-center justify-center mx-auto">
+                <Camera className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">1. Envie uma foto do prato</h4>
+                <p className="text-gray-600 text-sm">Tire uma foto da sua refeição e envie pelo WhatsApp</p>
+              </div>
+            </div>
+
+            {/* Etapa 2 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto">
+                <MessageSquare className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">2. Receba a análise nutricional</h4>
+                <p className="text-gray-600 text-sm">Nossa IA calcula calorias, proteínas e todos os nutrientes</p>
+              </div>
+            </div>
+
+            {/* Etapa 3 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto">
+                <BarChart3 className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">3. Veja seu progresso com relatórios semanais</h4>
+                <p className="text-gray-600 text-sm">Acompanhe sua evolução com relatórios detalhados</p>
+              </div>
+            </div>
+
+            {/* Etapa 4 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto">
+                <Target className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">4. Receba sugestões personalizadas</h4>
+                <p className="text-gray-600 text-sm">Dicas customizadas baseadas nos seus objetivos</p>
+              </div>
+            </div>
+
+            {/* Etapa 5 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">5. Comece a evoluir</h4>
+                <p className="text-gray-600 text-sm">Transforme seus hábitos e alcance seus objetivos</p>
+              </div>
             </div>
           </div>
         </div>
