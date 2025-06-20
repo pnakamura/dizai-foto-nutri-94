@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -145,5 +144,27 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }: any) {
+			const newUtilities = {
+				'.glass-card-ethra': {
+					'background': 'rgba(255, 255, 255, 0.95)',
+					'backdrop-filter': 'blur(10px)',
+					'border': '1px solid rgba(255, 255, 255, 0.2)',
+					'box-shadow': '0 8px 32px rgba(0, 0, 0, 0.1)',
+				},
+				'.gradient-text-ethra': {
+					'background': 'linear-gradient(135deg, #00cc66 0%, #333333 100%)',
+					'-webkit-background-clip': 'text',
+					'-webkit-text-fill-color': 'transparent',
+					'background-clip': 'text',
+				},
+				'.border-glow-ethra': {
+					'box-shadow': '0 0 5px rgba(0, 204, 102, 0.3)',
+				}
+			}
+			addUtilities(newUtilities)
+		}
+	],
 } satisfies Config;
