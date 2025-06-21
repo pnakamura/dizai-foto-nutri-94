@@ -3,45 +3,34 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Target } from 'lucide-react';
+import { useNutritionGoals } from '@/hooks/useNutritionGoals';
 
 const NutritionGoals = () => {
-  const goals = [
-    {
-      name: 'Calorias',
-      current: 1850,
-      target: 2000,
-      unit: 'kcal',
-      color: 'bg-blue-500'
-    },
-    {
-      name: 'Proteínas',
-      current: 125,
-      target: 120,
-      unit: 'g',
-      color: 'bg-green-500'
-    },
-    {
-      name: 'Carboidratos',
-      current: 210,
-      target: 200,
-      unit: 'g',
-      color: 'bg-yellow-500'
-    },
-    {
-      name: 'Gorduras',
-      current: 70,
-      target: 65,
-      unit: 'g',
-      color: 'bg-red-500'
-    },
-    {
-      name: 'Água',
-      current: 1.8,
-      target: 2.5,
-      unit: 'L',
-      color: 'bg-cyan-500'
-    }
-  ];
+  const { goals, loading } = useNutritionGoals();
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="h-5 w-5" />
+            Metas Diárias
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            {[...Array(5)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                <div className="h-2 bg-gray-200 rounded mb-1"></div>
+                <div className="h-3 bg-gray-200 rounded"></div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
@@ -75,7 +64,7 @@ const NutritionGoals = () => {
                   </span>
                   {isOverTarget && (
                     <span className="text-red-600 font-medium">
-                      +{goal.current - goal.target}{goal.unit}
+                      +{(goal.current - goal.target).toFixed(1)}{goal.unit}
                     </span>
                   )}
                 </div>

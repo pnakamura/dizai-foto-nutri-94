@@ -5,22 +5,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-const weeklyData = [
-  { day: 'Seg', calories: 1850, protein: 120, carbs: 200, fat: 65 },
-  { day: 'Ter', calories: 1920, protein: 115, carbs: 220, fat: 70 },
-  { day: 'Qua', calories: 1780, protein: 125, carbs: 180, fat: 60 },
-  { day: 'Qui', calories: 2100, protein: 140, carbs: 250, fat: 80 },
-  { day: 'Sex', calories: 1950, protein: 130, carbs: 210, fat: 72 },
-  { day: 'Sáb', calories: 2200, protein: 135, carbs: 280, fat: 85 },
-  { day: 'Dom', calories: 1850, protein: 110, carbs: 200, fat: 68 }
-];
-
-const macroData = [
-  { name: 'Proteínas', value: 125, target: 120, color: '#10b981' },
-  { name: 'Carboidratos', value: 210, target: 200, color: '#3b82f6' },
-  { name: 'Gorduras', value: 70, target: 65, color: '#f59e0b' }
-];
+import { useNutritionChart } from '@/hooks/useNutritionChart';
 
 const chartConfig = {
   calories: {
@@ -42,6 +27,26 @@ const chartConfig = {
 };
 
 const NutritionChart = () => {
+  const { weeklyData, macroData, loading } = useNutritionChart();
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Análise Nutricional
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] flex items-center justify-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-ethra-green"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>

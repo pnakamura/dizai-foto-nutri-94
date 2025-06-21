@@ -3,46 +3,28 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, Target, Zap } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { useDashboardData } from '@/hooks/useDashboardData';
 
 const ProgressOverview = () => {
-  const stats = [
-    {
-      title: 'Calorias Hoje',
-      value: '1,850',
-      target: '2,000',
-      icon: Zap,
-      trend: 'up',
-      percentage: 92,
-      color: 'bg-green-500'
-    },
-    {
-      title: 'Peso Atual',
-      value: '68.5kg',
-      change: '-0.8kg',
-      icon: TrendingDown,
-      trend: 'down',
-      percentage: 88,
-      color: 'bg-blue-500'
-    },
-    {
-      title: 'Meta Semanal',
-      value: '5/7',
-      target: 'dias',
-      icon: Target,
-      trend: 'up',
-      percentage: 71,
-      color: 'bg-orange-500'
-    },
-    {
-      title: 'Sequência',
-      value: '12',
-      target: 'dias',
-      icon: TrendingUp,
-      trend: 'up',
-      percentage: 85,
-      color: 'bg-purple-500'
-    }
-  ];
+  const { stats, loading } = useDashboardData();
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[...Array(4)].map((_, index) => (
+          <Card key={index} className="animate-pulse">
+            <CardHeader>
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            </CardHeader>
+            <CardContent>
+              <div className="h-8 bg-gray-200 rounded mb-3"></div>
+              <div className="h-2 bg-gray-200 rounded"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

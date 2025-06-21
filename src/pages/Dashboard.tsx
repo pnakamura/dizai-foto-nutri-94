@@ -38,8 +38,8 @@ const Dashboard = () => {
           <main className="flex-1 space-y-6">
             <div className="bg-white rounded-xl p-6 shadow-lg border-0 bg-gradient-to-r from-white to-green-50">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-3 h-8 bg-gradient-to-b from-dizai-brand-green to-blue-500 rounded-full"></div>
-                <h1 className="text-2xl font-bold gradient-text">
+                <div className="w-3 h-8 bg-gradient-to-b from-ethra-green to-blue-500 rounded-full"></div>
+                <h1 className="text-2xl font-bold gradient-text-ethra">
                   Bem-vindo, {profile?.nome || user?.email}!
                 </h1>
               </div>

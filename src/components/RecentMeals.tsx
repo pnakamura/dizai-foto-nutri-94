@@ -2,46 +2,46 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Camera, Clock } from 'lucide-react';
+import { Camera, Clock, Plus } from 'lucide-react';
+import { useRecentMeals } from '@/hooks/useRecentMeals';
 
 const RecentMeals = () => {
-  const meals = [
-    {
-      time: '08:00',
-      name: 'Café da Manhã',
-      description: 'Aveia com frutas e castanhas',
-      calories: 320,
-      status: 'completed'
-    },
-    {
-      time: '12:30',
-      name: 'Almoço',
-      description: 'Frango grelhado com arroz integral',
-      calories: 580,
-      status: 'completed'
-    },
-    {
-      time: '15:30',
-      name: 'Lanche',
-      description: 'Iogurte com granola',
-      calories: 180,
-      status: 'pending'
-    },
-    {
-      time: '19:00',
-      name: 'Jantar',
-      description: 'Não registrado',
-      calories: 0,
-      status: 'pending'
-    }
-  ];
+  const { meals, loading } = useRecentMeals();
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Refeições de Hoje
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {[...Array(4)].map((_, index) => (
+              <div key={index} className="animate-pulse">
+                <div className="h-16 bg-gray-200 rounded-lg"></div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Clock className="h-5 w-5" />
-          Refeições de Hoje
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Refeições de Hoje
+          </div>
+          <Button size="sm" variant="outline">
+            <Plus className="h-4 w-4 mr-1" />
+            Nova
+          </Button>
         </CardTitle>
       </CardHeader>
       <CardContent>
