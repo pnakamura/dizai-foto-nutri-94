@@ -12,6 +12,15 @@ interface WeeklyData {
   fat: number;
 }
 
+interface MonthlyData {
+  date: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  meals: number;
+}
+
 interface MacroData {
   name: string;
   value: number;
@@ -21,6 +30,7 @@ interface MacroData {
 
 export const useNutritionChart = () => {
   const [weeklyData, setWeeklyData] = useState<WeeklyData[]>([]);
+  const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
   const [macroData, setMacroData] = useState<MacroData[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
@@ -38,11 +48,23 @@ export const useNutritionChart = () => {
         const weekAgo = new Date(today);
         weekAgo.setDate(today.getDate() - 6);
 
+        // Buscar dados dos últimos 30 dias para o gráfico mensal
+        const monthAgo = new Date(today);
+        monthAgo.setDate(today.getDate() - 29);
+
         const { data: weekMeals } = await supabase
           .from('registros_alimentares')
           .select('data_hora, calorias, proteinas, carboidratos, gorduras')
           .eq('cliente_id', user.id)
           .gte('data_hora', weekAgo.toISOString())
+          .lte('data_hora', today.toISOString())
+          .order('data_hora', { ascending: true });
+
+        const { data: monthMeals } = await supabase
+          .from('registros_alimentares')
+          .select('data_hora, calorias, proteinas, carboidratos, gorduras')
+          .eq('cliente_id', user.id)
+          .gte('data_hora', monthAgo.toISOString())
           .lte('data_hora', today.toISOString())
           .order('data_hora', { ascending: true });
 
@@ -69,6 +91,35 @@ export const useNutritionChart = () => {
           weeklyChartData.push({
             day: weekDays[currentDate.getDay()],
             ...dayTotals
+          });
+        }
+
+        // Processar dados mensais (últimos 30 dias)
+        const monthlyChartData: MonthlyData[] = [];
+
+        for (let i = 0; i < 30; i++) {
+          const currentDate = new Date(monthAgo);
+          currentDate.setDate(monthAgo.getDate() + i);
+          const dateStr = currentDate.toISOString().split('T')[0];
+          
+          const dayMeals = monthMeals?.filter(meal => 
+            meal.data_hora.startsWith(dateStr)
+          ) || [];
+
+          const dayTotals = dayMeals.reduce((acc, meal) => ({
+            calories: acc.calories + (meal.calorias || 0),
+            protein: acc.protein + (meal.proteinas || 0),
+            carbs: acc.carbs + (meal.carboidratos || 0),
+            fat: acc.fat + (meal.gorduras || 0)
+          }), { calories: 0, protein: 0, carbs: 0, fat: 0 });
+
+          monthlyChartData.push({
+            date: `${currentDate.getDate()}/${currentDate.getMonth() + 1}`,
+            calories: dayTotals.calories,
+            protein: dayTotals.protein,
+            carbs: dayTotals.carbs,
+            fat: dayTotals.fat,
+            meals: dayMeals.length
           });
         }
 
@@ -112,6 +163,7 @@ export const useNutritionChart = () => {
         ];
 
         setWeeklyData(weeklyChartData);
+        setMonthlyData(monthlyChartData);
         setMacroData(macroChartData);
       } catch (error) {
         console.error('Erro ao buscar dados do gráfico:', error);
@@ -123,5 +175,5 @@ export const useNutritionChart = () => {
     fetchChartData();
   }, [user, profile]);
 
-  return { weeklyData, macroData, loading };
+  return { weeklyData, monthlyData, macroData, loading };
 };

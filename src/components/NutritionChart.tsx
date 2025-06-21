@@ -27,7 +27,7 @@ const chartConfig = {
 };
 
 const NutritionChart = () => {
-  const { weeklyData, macroData, loading } = useNutritionChart();
+  const { weeklyData, monthlyData, macroData, loading } = useNutritionChart();
 
   if (loading) {
     return (
@@ -59,6 +59,7 @@ const NutritionChart = () => {
         <Tabs defaultValue="weekly" className="space-y-4">
           <TabsList>
             <TabsTrigger value="weekly">Semanal</TabsTrigger>
+            <TabsTrigger value="monthly">Mensal</TabsTrigger>
             <TabsTrigger value="macros">Macronutrientes</TabsTrigger>
           </TabsList>
           
@@ -76,6 +77,51 @@ const NutritionChart = () => {
                     stroke="var(--color-calories)" 
                     strokeWidth={2}
                     dot={{ fill: "var(--color-calories)" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </TabsContent>
+
+          <TabsContent value="monthly">
+            <ChartContainer config={chartConfig} className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={monthlyData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{ fontSize: 10 }}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Line 
+                    type="monotone" 
+                    dataKey="calories" 
+                    stroke="var(--color-calories)" 
+                    strokeWidth={2}
+                    dot={{ fill: "var(--color-calories)", r: 2 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="protein" 
+                    stroke="var(--color-protein)" 
+                    strokeWidth={1.5}
+                    dot={{ fill: "var(--color-protein)", r: 1 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="carbs" 
+                    stroke="var(--color-carbs)" 
+                    strokeWidth={1.5}
+                    dot={{ fill: "var(--color-carbs)", r: 1 }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="fat" 
+                    stroke="var(--color-fat)" 
+                    strokeWidth={1.5}
+                    dot={{ fill: "var(--color-fat)", r: 1 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
