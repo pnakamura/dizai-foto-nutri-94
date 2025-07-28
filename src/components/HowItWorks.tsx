@@ -25,7 +25,7 @@ const HowItWorks: React.FC = () => {
     <section className="py-16 md:py-24 bg-gray-50">
       <div className="max-w-6xl mx-auto px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-ethra-dark">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Veja como é simples usar a <span className="text-[#00C851]">Ethra</span>
           </h2>
         </div>
@@ -38,14 +38,14 @@ const HowItWorks: React.FC = () => {
                   {step.icon}
                 </div>
               </div>
-              <h3 className="text-lg font-semibold text-ethra-dark">{step.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{step.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>
         
         <div className="mt-16 text-center">
-          <p className="text-xl md:text-2xl font-medium text-ethra-dark leading-relaxed max-w-4xl mx-auto">
+          <p className="text-xl md:text-2xl font-medium text-gray-900 leading-relaxed max-w-4xl mx-auto">
             Controle nutricional sem esforço: só tire uma foto e receba tudo. Sem neuras, sem cálculos, sem complicação.
           </p>
         </div>

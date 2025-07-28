@@ -30,7 +30,7 @@ const BenefitsSection: React.FC = () => {
     <section className="py-16 md:py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-ethra-dark">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
             Transforme sua alimentação com tecnologia e simplicidade.
           </h2>
           <h3 className="text-xl md:text-2xl font-semibold mb-4 text-[#00C851]">
@@ -53,7 +53,7 @@ const BenefitsSection: React.FC = () => {
                   {benefit.icon}
                 </div>
               </div>
-              <h3 className="text-lg font-semibold mb-3 text-ethra-dark">{benefit.title}</h3>
+              <h3 className="text-lg font-semibold mb-3 text-gray-900">{benefit.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
             </div>
           ))}
