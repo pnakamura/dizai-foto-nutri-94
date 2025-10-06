@@ -11,7 +11,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="relative overflow-hidden py-16 md:py-24 min-h-[600px] md:min-h-[700px]">
+    <section className="relative overflow-hidden h-screen min-h-[600px]">
       {/* Background image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -19,22 +19,22 @@ const HeroSection: React.FC = () => {
       />
 
       {/* Main content */}
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-6 h-full flex items-center relative z-10">
+        <div className="w-full lg:w-1/2 xl:w-2/5">
           {/* Left content */}
-          <div className="text-white space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
+          <div className="text-white space-y-4 max-w-lg">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight drop-shadow-lg">
               Cuide da sua saúde de forma simples, prática e inteligente
             </h1>
-            <p className="text-lg md:text-xl text-white drop-shadow-md">
+            <p className="text-base md:text-lg text-white drop-shadow-md">
               Com a Ethra, tornar-se uma foto rápida em sua refeição e receba informações nutricionais completas.
             </p>
-            <p className="text-base md:text-lg text-white drop-shadow-md">
+            <p className="text-sm md:text-base text-white drop-shadow-md">
               Não é necessário baixar nenhum aplicativo, tudo é via Whatsapp.
             </p>
             <Button 
               onClick={scrollToPlans}
-              className="bg-white text-[#7CB342] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold shadow-lg"
+              className="bg-white text-[#7CB342] hover:bg-gray-100 text-base md:text-lg px-6 py-5 rounded-full font-semibold shadow-lg mt-2"
             >
               CONHEÇA OS PLANOS
             </Button>

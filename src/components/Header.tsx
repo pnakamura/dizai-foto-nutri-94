@@ -3,8 +3,8 @@ import HeaderLogo from './header/HeaderLogo';
 
 const Header = () => {
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <div className="container mx-auto px-8 py-6">
+    <header className="absolute top-0 left-0 right-0 z-50">
+      <div className="container mx-auto px-8 py-4">
         {/* Header vazio - removido logo e menu */}
       </div>
     </header>
