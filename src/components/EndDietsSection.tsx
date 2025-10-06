@@ -1,9 +1,10 @@
 import React from 'react';
-import { Sparkles, MessageSquare } from 'lucide-react';
 import personEating from '@/assets/person-eating.png';
 import leaf1 from '@/assets/leaf-1.png';
 import leaf2 from '@/assets/leaf-2.png';
 import caloriesIcon from '@/assets/calories-icon.png';
+import weightIcon from '@/assets/weight-icon.png';
+import notesIcon from '@/assets/notes-icon.png';
 
 const EndDietsSection: React.FC = () => {
   return (
@@ -51,16 +52,16 @@ const EndDietsSection: React.FC = () => {
 
               <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
                 <div className="w-12 h-12 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Sparkles className="w-6 h-6 text-white" />
+                  <img src={weightIcon} alt="Weight icon" className="w-6 h-6" />
                 </div>
-                <p className="text-sm font-semibold text-gray-800">Receba a análise</p>
+                <p className="text-sm font-semibold text-gray-800">Pesar alimentos todos os dias</p>
               </div>
 
               <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
                 <div className="w-12 h-12 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <MessageSquare className="w-6 h-6 text-white" />
+                  <img src={notesIcon} alt="Notes icon" className="w-6 h-6" />
                 </div>
-                <p className="text-sm font-semibold text-gray-800">Ajuste sua rotina</p>
+                <p className="text-sm font-semibold text-gray-800">Anotar refeições em aplicativos chatos</p>
               </div>
             </div>
 
