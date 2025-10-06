@@ -19,24 +19,27 @@ const HeroSection: React.FC = () => {
       />
 
       {/* Main content */}
-      <div className="container mx-auto px-6 h-full flex items-center justify-end relative z-10">
-        <div className="w-full lg:w-1/2 xl:w-2/5 lg:ml-auto">
-          {/* Right content - positioned away from hands */}
-          <div className="text-white space-y-5 max-w-xl text-left">
+      <div className="container mx-auto px-6 h-full flex items-center relative z-10">
+        <div className="w-full lg:w-1/2 xl:w-2/5">
+          {/* Left content - positioned on left side */}
+          <div className="text-white space-y-5 max-w-lg text-left">
+            <p className="text-cyan-400 text-xs md:text-sm uppercase tracking-wide font-semibold">
+              INTELIGÊNCIA ARTIFICIAL PARA TRANSFORMAR SUA ALIMENTAÇÃO
+            </p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg text-left">
               Cuide da sua saúde de forma simples, prática e inteligente
             </h1>
-            <p className="text-lg md:text-xl text-white drop-shadow-md text-left">
-              Com a Ethra, tornar-se uma foto rápida em sua refeição e receba informações nutricionais completas.
-            </p>
             <p className="text-base md:text-lg text-white drop-shadow-md text-left">
-              Não é necessário baixar nenhum aplicativo, tudo é via Whatsapp.
+              Com a Ethra, basta enviar uma foto da sua refeição no WhatsApp e receba análises nutricionais completas, relatórios e dicas personalizadas em segundos.
+            </p>
+            <p className="text-base md:text-lg text-white drop-shadow-md text-left font-medium">
+              Sua alimentação inteligente começa hoje.
             </p>
             <Button 
               onClick={scrollToPlans}
-              className="bg-white text-[#7CB342] hover:bg-gray-100 text-lg px-8 py-6 rounded-full font-semibold shadow-lg mt-2"
+              className="bg-white text-gray-700 hover:bg-gray-100 text-sm md:text-base px-8 py-5 rounded-md font-semibold shadow-lg mt-2 uppercase"
             >
-              CONHEÇA OS PLANOS
+              QUERO EXPERIMENTAR AGORA
             </Button>
           </div>
         </div>
