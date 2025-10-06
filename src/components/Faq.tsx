@@ -10,85 +10,69 @@ import {
 const Faq: React.FC = () => {
   const faqs = [
     {
-      question: "Como a Ethra analisa meus alimentos com precisão?",
-      answer: "A Ethra utiliza inteligência artificial avançada para reconhecer alimentos e ingredientes a partir de fotos. Nossa tecnologia é treinada com milhões de imagens diferentes de alimentos para garantir análise nutricional precisa."
+      question: "Como a Ethra analisa meus alimentos sem precisar de um app?",
+      answer: "Nossa IA analisa as fotos enviadas via WhatsApp e retorna informações nutricionais completas em segundos, direto na conversa."
     },
     {
       question: "Preciso pagar para usar a Ethra?",
-      answer: "Oferecemos planos acessíveis com análise avançada. Para acesso a recursos como histórico completo, planos nutricionais personalizados e suporte prioritário, temos planos premium que cabem no seu bolso."
+      answer: "Oferecemos diferentes planos para atender suas necessidades. Confira nossos planos acima e escolha o ideal para você."
     },
     {
-      question: "Quanto tempo leva para receber a análise?",
-      answer: "Na maioria dos casos, você recebe resultados em segundos! Durante horários de tráfego intenso, pode levar até 30 segundos, mas trabalhamos continuamente para garantir a resposta mais rápida possível."
+      question: "Posso mudar meu plano a qualquer momento?",
+      answer: "Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento através do WhatsApp."
     },
     {
       question: "A Ethra funciona com qualquer tipo de comida?",
-      answer: "Sim! A Ethra foi treinada com uma ampla variedade de culinárias e pratos de todo o mundo, incluindo pratos tradicionais brasileiros, fast food, refeições caseiras e muito mais."
+      answer: "Sim! Nossa IA reconhece uma ampla variedade de alimentos e pratos, desde refeições caseiras até fast food."
     },
     {
-      question: "Minhas informações e fotos estão seguras?",
-      answer: "Absolutamente. Sua privacidade é nossa prioridade. Todas as fotos enviadas são processadas com segurança e não compartilhadas com terceiros. Usamos criptografia avançada e seguimos políticas estritas de privacidade."
+      question: "Vocês armazenam minhas informações alimentares?",
+      answer: "Todas as suas informações são armazenadas de forma segura e você tem total controle sobre seus dados."
     },
     {
-      question: "Como profissional de saúde, posso integrar a Ethra ao meu trabalho?",
-      answer: "Sim! Muitos profissionais de nutrição e saúde usam a Ethra como uma ferramenta complementar. Oferecemos um programa especial para profissionais com recursos adicionais para acompanhamento de clientes e pacientes."
+      question: "Como eu começo a usar?",
+      answer: "É simples! Clique em qualquer botão 'Conheça os planos', escolha seu plano e comece a usar imediatamente via WhatsApp."
     },
     {
-      question: "Os dados da Ethra substituem uma consulta com nutricionista?",
-      answer: "A Ethra é uma ferramenta de apoio, não um substituto para aconselhamento profissional. Recomendamos sempre consultar nutricionistas ou médicos para planos alimentares completos e orientações personalizadas para sua saúde."
-    },
+      question: "Posso usar a Ethra para acompanhar meus clientes como nutricionista?",
+      answer: "Sim! Temos um plano profissional especialmente desenvolvido para nutricionistas e profissionais da saúde gerenciarem seus clientes."
+    }
   ];
 
   return (
-    <section id="faq" className="py-12 md:py-24 px-4 md:px-8 bg-white">
-      <div className="text-center mb-10 md:mb-16">
-        <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4 text-gray-900">
-          Perguntas <span className="text-[#00C851]">Frequentes</span>
+    <section className="py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+          Perguntas Frequentes
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
-          Obtenha respostas sobre a Ethra e comece a usá-la hoje.
-        </p>
-      </div>
-      
-      <div className="max-w-3xl mx-auto">
-        <Accordion type="single" collapsible className="w-full">
+        
+        <Accordion type="single" collapsible className="space-y-4 max-w-4xl mx-auto">
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="border-b border-gray-200 bg-white">
-              <AccordionTrigger className="text-left py-3 md:py-4 hover:text-[#00C851] transition-colors text-sm md:text-base pr-2 text-gray-900">
+            <AccordionItem
+              key={index}
+              value={`item-${index}`}
+              className="bg-[#7CB342] text-white rounded-xl overflow-hidden"
+            >
+              <AccordionTrigger className="text-left font-semibold px-6 py-5 hover:no-underline hover:opacity-90">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-gray-600 pb-3 md:pb-4 text-xs md:text-sm">
+              <AccordionContent className="px-6 pb-5 leading-relaxed text-white/90">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
-      </div>
-      
-      <div className="mt-10 md:mt-16 text-center">
-        <p className="text-gray-500 mb-3 md:mb-4 text-sm md:text-base">
-          Ainda tem dúvidas? Entre em contato com nosso suporte
-        </p>
-        <a 
-          href="#" 
-          className="inline-flex items-center text-[#00C851] hover:underline text-sm md:text-base font-medium"
-        >
-          Fale Conosco
-          <svg 
-            className="ml-1 md:ml-2 w-4 h-4" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24" 
-            xmlns="http://www.w3.org/2000/svg"
+
+        <div className="mt-12 text-center">
+          <a 
+            href="https://wa.me/555189457133" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block bg-[#7CB342] hover:bg-[#689F38] text-white font-semibold px-8 py-4 rounded-full transition-all"
           >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M14 5l7 7m0 0l-7 7m7-7H3" 
-            />
-          </svg>
-        </a>
+            CONHEÇA OS PLANOS
+          </a>
+        </div>
       </div>
     </section>
   );

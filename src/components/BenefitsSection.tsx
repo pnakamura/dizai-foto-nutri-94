@@ -1,62 +1,72 @@
-
 import React from 'react';
-import { Camera, ChartBar, Lightbulb, Smartphone } from 'lucide-react';
+import { Clock, Heart, Award, TrendingUp, Target } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const BenefitsSection: React.FC = () => {
+  const scrollToPlans = () => {
+    const plansSection = document.getElementById('pricing');
+    if (plansSection) {
+      plansSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const benefits = [
     {
-      icon: <Camera className="h-8 w-8 text-[#00C851]" />,
-      title: "Análise instantânea",
-      description: "Tire uma foto e receba a análise completa da sua refeição em segundos sem precisar digitar nada."
+      icon: Clock,
+      title: 'Controle Imediato',
+      description: 'Saiba na hora o que está comendo'
     },
     {
-      icon: <ChartBar className="h-8 w-8 text-[#00C851]" />,
-      title: "Dados precisos e mensuráveis",
-      description: "Descubra tudo sobre sua refeição: calorias, macronutrientes e composição, com alta precisão."
+      icon: Heart,
+      title: 'Equilíbrio Personalizado',
+      description: 'Recomendações feitas para você'
     },
     {
-      icon: <Lightbulb className="h-8 w-8 text-[#00C851]" />,
-      title: "Recomendações inteligentes",
-      description: "Receba dicas personalizadas com base no seu prato e metas direto no WhatsApp."
+      icon: Award,
+      title: 'Resultados Claros',
+      description: 'Veja seu progresso de forma visual'
     },
     {
-      icon: <Smartphone className="h-8 w-8 text-[#00C851]" />,
-      title: "Sem downloads",
-      description: "Sem apps, sem complicações. Toda a experiência acontece via WhatsApp, com segurança e agilidade."
+      icon: TrendingUp,
+      title: 'Motivação + Foco',
+      description: 'Mantenha-se no caminho certo'
+    },
+    {
+      icon: Target,
+      title: 'Tecnologia + Saúde',
+      description: 'IA a seu favor todos os dias'
     }
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
-            Transforme sua alimentação com tecnologia e simplicidade.
-          </h2>
-          <h3 className="text-xl md:text-2xl font-semibold mb-4 text-[#00C851]">
-            De forma simples, eficaz e sem complicações.
-          </h3>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Com a <span className="text-[#00C851] font-semibold">Ethra</span>, uma simples foto vira uma análise completa precisa, rápida e prática, direto no seu WhatsApp.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="py-16 md:py-24 bg-white">
+      <div className="container mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">
+          O que você ganha com a Ethra
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
           {benefits.map((benefit, index) => (
             <div 
-              key={index} 
-              className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              key={index}
+              className="bg-white border-2 border-gray-200 rounded-2xl p-6 text-center hover:border-[#7CB342] transition-all hover:shadow-lg"
             >
-              <div className="flex justify-center mb-4">
-                <div className="p-3 bg-[#00C851]/10 rounded-full transition-all duration-300 hover:bg-[#00C851]/20">
-                  {benefit.icon}
-                </div>
+              <div className="w-16 h-16 bg-[#E8F5E9] rounded-full flex items-center justify-center mx-auto mb-4">
+                <benefit.icon className="w-8 h-8 text-[#7CB342]" />
               </div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-900">{benefit.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
+              <h3 className="font-bold text-gray-800 mb-2">{benefit.title}</h3>
+              <p className="text-sm text-gray-600">{benefit.description}</p>
             </div>
           ))}
+        </div>
+
+        <div className="text-center">
+          <Button 
+            onClick={scrollToPlans}
+            className="bg-[#7CB342] hover:bg-[#689F38] text-white text-lg px-8 py-6 rounded-full font-semibold"
+          >
+            CONHEÇA OS PLANOS
+          </Button>
         </div>
       </div>
     </section>

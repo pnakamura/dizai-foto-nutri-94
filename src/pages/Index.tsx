@@ -1,11 +1,10 @@
 
 import React from 'react';
 import HeroSection from '@/components/HeroSection';
+import EndDietsSection from '@/components/EndDietsSection';
+import ThreeStepsSection from '@/components/ThreeStepsSection';
 import BenefitsSection from '@/components/BenefitsSection';
-import HowItWorks from '@/components/HowItWorks';
-import DemoSection from '@/components/DemoSection';
-import TransformSection from '@/components/TransformSection';
-import FeaturesSection from '@/components/FeaturesSection';
+import TargetAudienceSection from '@/components/TargetAudienceSection';
 import Testimonials from '@/components/Testimonials';
 import PricingSection from '@/components/PricingSection';
 import Faq from '@/components/Faq';
@@ -15,11 +14,10 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <EndDietsSection />
+      <ThreeStepsSection />
       <BenefitsSection />
-      <HowItWorks />
-      <DemoSection />
-      <TransformSection />
-      <FeaturesSection />
+      <TargetAudienceSection />
       <Testimonials />
       <PricingSection />
       <Faq />

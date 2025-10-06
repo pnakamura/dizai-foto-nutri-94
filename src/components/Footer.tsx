@@ -5,11 +5,11 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-white border-t border-gray-200 py-8">
-      <div className="max-w-7xl mx-auto px-8">
+    <footer className="bg-[#7CB342] py-8">
+      <div className="container mx-auto px-6">
         <div className="text-center">
-          <p className="text-gray-600 text-sm">
-            © {currentYear} Ethra. Todos os direitos reservados.
+          <p className="text-white text-sm">
+            Ethra - {currentYear}
           </p>
         </div>
       </div>
