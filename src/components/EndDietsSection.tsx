@@ -1,6 +1,8 @@
 import React from 'react';
 import { Sparkles, MessageSquare } from 'lucide-react';
-import dietImage from '@/assets/diet-image.jpg';
+import personEating from '@/assets/person-eating.png';
+import leaf1 from '@/assets/leaf-1.png';
+import leaf2 from '@/assets/leaf-2.png';
 import caloriesIcon from '@/assets/calories-icon.png';
 
 const EndDietsSection: React.FC = () => {
@@ -9,12 +11,24 @@ const EndDietsSection: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left image */}
-          <div className="flex justify-center">
-            <img 
-              src={dietImage}
-              alt="Pessoa preparando comida saudável"
-              className="w-full max-w-md rounded-lg"
-            />
+          <div className="flex justify-center relative">
+            <div className="relative">
+              <img 
+                src={personEating}
+                alt="Pessoa preparando comida saudável"
+                className="w-full max-w-md"
+              />
+              <img 
+                src={leaf1}
+                alt=""
+                className="absolute -top-8 -left-8 w-24 h-24 opacity-80"
+              />
+              <img 
+                src={leaf2}
+                alt=""
+                className="absolute -bottom-8 -right-8 w-20 h-20 opacity-80"
+              />
+            </div>
           </div>
 
           {/* Right content */}
