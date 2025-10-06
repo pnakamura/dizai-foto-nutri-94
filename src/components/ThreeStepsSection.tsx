@@ -73,7 +73,7 @@ const ThreeStepsSection: React.FC = () => {
             <img 
               src={phoneWhatsapp}
               alt="Mockup do WhatsApp mostrando análise"
-              className="w-full max-w-sm"
+              className="w-full max-w-lg"
             />
           </div>
         </div>
