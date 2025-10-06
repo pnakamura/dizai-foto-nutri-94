@@ -11,7 +11,7 @@ const ThreeStepsSection: React.FC = () => {
   };
 
   return (
-    <section className="relative py-16 md:py-24 bg-[#7CB342] overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-[#8BA675] overflow-hidden">
       {/* Decorative leaves */}
       <div className="absolute bottom-0 right-0 w-64 h-64 opacity-30">
         <div className="w-full h-full bg-green-900/20 rounded-full"></div>
