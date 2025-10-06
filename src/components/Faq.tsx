@@ -40,9 +40,9 @@ const Faq: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-[#8BA675]">
       <div className="container mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
           Perguntas Frequentes
         </h2>
         
@@ -51,12 +51,12 @@ const Faq: React.FC = () => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-[#7CB342] text-white rounded-xl overflow-hidden"
+              className="bg-white rounded-xl overflow-hidden"
             >
-              <AccordionTrigger className="text-left font-semibold px-6 py-5 hover:no-underline hover:opacity-90">
+              <AccordionTrigger className="text-left font-semibold px-6 py-5 hover:no-underline hover:opacity-90 text-[#5A7D3C]">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="px-6 pb-5 leading-relaxed text-white/90">
+              <AccordionContent className="px-6 pb-5 leading-relaxed text-gray-700">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
@@ -68,7 +68,7 @@ const Faq: React.FC = () => {
             href="https://wa.me/555189457133" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block bg-[#7CB342] hover:bg-[#689F38] text-white font-semibold px-8 py-4 rounded-full transition-all"
+            className="inline-block bg-white text-[#5A7D3C] hover:bg-gray-100 font-semibold px-8 py-4 rounded-full transition-all"
           >
             CONHEÇA OS PLANOS
           </a>
