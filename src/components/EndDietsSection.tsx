@@ -8,7 +8,7 @@ import notesIcon from '@/assets/notes-icon.png';
 
 const EndDietsSection: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-[#F5F5F5]">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left image */}
@@ -22,51 +22,51 @@ const EndDietsSection: React.FC = () => {
               <img 
                 src={leaf1}
                 alt=""
-                className="absolute -top-8 -left-8 w-24 h-24 opacity-80"
+                className="absolute -top-12 -left-12 w-32 h-32 opacity-90"
               />
               <img 
                 src={leaf2}
                 alt=""
-                className="absolute -bottom-8 -right-8 w-20 h-20 opacity-80"
+                className="absolute -bottom-12 -right-12 w-28 h-28 opacity-90"
               />
             </div>
           </div>
 
           {/* Right content */}
-          <div className="space-y-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center lg:text-left">
+          <div className="space-y-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#5A7D3C]">
               O fim das dietas complicadas
             </h2>
-            <p className="text-lg text-gray-600 text-center lg:text-left">
-              Já tentou contar calorias e não sabia por onde começar ou até mesmo não obteve os resultados?
+            <p className="text-base text-gray-700">
+              Já tentou seguir uma dieta e desistiu no meio do caminho porque era difícil demais?
             </p>
 
             {/* Feature cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
-                <div className="w-12 h-12 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <img src={caloriesIcon} alt="Calories icon" className="w-6 h-6" />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="bg-white rounded-2xl p-5 text-center shadow-sm flex-1">
+                <div className="w-14 h-14 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <img src={caloriesIcon} alt="Calories icon" className="w-7 h-7" />
                 </div>
-                <p className="text-sm font-semibold text-gray-800">Contar calorias manualmente</p>
+                <p className="text-xs font-semibold text-gray-800">Contar calorias<br/>manualmente</p>
               </div>
 
-              <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
-                <div className="w-12 h-12 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <img src={weightIcon} alt="Weight icon" className="w-6 h-6" />
+              <div className="bg-white rounded-2xl p-5 text-center shadow-sm flex-1">
+                <div className="w-14 h-14 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <img src={weightIcon} alt="Weight icon" className="w-7 h-7" />
                 </div>
-                <p className="text-sm font-semibold text-gray-800">Pesar alimentos todos os dias</p>
+                <p className="text-xs font-semibold text-gray-800">Pesar alimentos<br/>todos os dias</p>
               </div>
 
-              <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
-                <div className="w-12 h-12 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <img src={notesIcon} alt="Notes icon" className="w-6 h-6" />
+              <div className="bg-white rounded-2xl p-5 text-center shadow-sm flex-1">
+                <div className="w-14 h-14 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <img src={notesIcon} alt="Notes icon" className="w-7 h-7" />
                 </div>
-                <p className="text-sm font-semibold text-gray-800">Anotar refeições em aplicativos chatos</p>
+                <p className="text-xs font-semibold text-gray-800">Anotar refeições em<br/>aplicativos chatos</p>
               </div>
             </div>
 
-            <p className="text-center lg:text-left text-gray-600">
-              Com a Ethra, você torna a nutrição em algo simples. Com o Ethra, você sabe exatamente o que está comendo. A IA da Ethra é sua aliada no seu dia a dia. Simples, rápido e sem enrolação.
+            <p className="text-sm text-gray-700 leading-relaxed">
+              Com a Ethra, nada disso é necessário! A IA faz o trabalho pesado por você e entrega informações claras e úteis, direto no seu WhatsApp.
             </p>
           </div>
         </div>
