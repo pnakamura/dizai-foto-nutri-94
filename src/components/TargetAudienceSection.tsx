@@ -9,22 +9,22 @@ const TargetAudienceSection: React.FC = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left image with decorative leaves */}
-          <div className="flex justify-center relative">
-            <div className="relative">
+          <div className="flex justify-center lg:justify-start relative">
+            <div className="relative w-full max-w-lg">
               <img 
                 src={coupleLookingPhone}
                 alt="Casal feliz com comida saudável"
-                className="w-full max-w-md relative z-10"
+                className="w-full h-auto relative z-10"
               />
               <img 
                 src={leaf3}
                 alt=""
-                className="absolute -top-12 -left-12 w-32 h-32 opacity-90 z-0"
+                className="absolute -top-16 -left-16 w-40 h-40 opacity-90 z-0"
               />
               <img 
                 src={leaf4}
                 alt=""
-                className="absolute -bottom-8 -right-8 w-28 h-28 opacity-90 z-0"
+                className="absolute -bottom-12 -right-12 w-32 h-32 opacity-90 z-0"
               />
             </div>
           </div>
