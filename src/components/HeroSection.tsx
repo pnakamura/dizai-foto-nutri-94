@@ -22,14 +22,14 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto px-6 h-full flex items-center justify-end relative z-10">
         <div className="w-full lg:w-1/2 xl:w-2/5 lg:ml-auto">
           {/* Right content - positioned away from hands */}
-          <div className="text-white space-y-5 max-w-xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg">
+          <div className="text-white space-y-5 max-w-xl text-left">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-lg text-left">
               Cuide da sua saúde de forma simples, prática e inteligente
             </h1>
-            <p className="text-lg md:text-xl text-white drop-shadow-md">
+            <p className="text-lg md:text-xl text-white drop-shadow-md text-left">
               Com a Ethra, tornar-se uma foto rápida em sua refeição e receba informações nutricionais completas.
             </p>
-            <p className="text-base md:text-lg text-white drop-shadow-md">
+            <p className="text-base md:text-lg text-white drop-shadow-md text-left">
               Não é necessário baixar nenhum aplicativo, tudo é via Whatsapp.
             </p>
             <Button 
