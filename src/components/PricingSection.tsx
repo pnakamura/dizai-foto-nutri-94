@@ -71,44 +71,44 @@ const PricingSection: React.FC = () => {
       />
 
       <div className="container mx-auto px-6 relative z-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-16">
           Planos para cada necessidade
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
           {plans.map((plan, index) => (
             <div key={index} className="relative">
               {plan.badge && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                  <span className="bg-[#5A7D3C] text-white px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap">
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                  <span className="bg-[#5A7D3C] text-white px-6 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
                     {plan.badge}
                   </span>
                 </div>
               )}
               <div
-                className={`rounded-2xl p-6 bg-white shadow-lg transition-all duration-300 ${
-                  plan.highlighted ? 'mt-4' : ''
+                className={`rounded-3xl p-10 bg-white shadow-lg transition-all duration-300 ${
+                  plan.highlighted ? 'mt-6' : ''
                 }`}
               >
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold mb-3 text-[#5A7D3C]">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold mb-4 text-[#5A7D3C]">
                     {plan.name}
                   </h3>
-                  <div className="flex items-baseline justify-center mb-3">
-                    <span className="text-xs text-gray-600 mr-1">POR</span>
-                    <span className="text-4xl font-bold text-[#5A7D3C]">{plan.price}</span>
-                    <span className="text-gray-600 ml-1 text-sm">/mês</span>
+                  <div className="flex items-baseline justify-center mb-4">
+                    <span className="text-sm text-gray-600 mr-2">POR</span>
+                    <span className="text-6xl font-bold text-[#5A7D3C]">{plan.price}</span>
+                    <span className="text-gray-600 ml-2 text-base">/mês</span>
                   </div>
-                  <p className="text-xs text-gray-600 px-2">
+                  <p className="text-sm text-gray-600 px-3">
                     {plan.description}
                   </p>
                 </div>
                 
-                <ul className="space-y-2 mb-6">
+                <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-2">
-                      <span className="text-gray-500 text-sm mt-0.5">//</span>
-                      <span className="text-xs text-gray-700 italic">
+                    <li key={featureIndex} className="flex items-start gap-3">
+                      <span className="text-gray-500 text-base mt-1">//</span>
+                      <span className="text-sm text-gray-700 italic">
                         {feature}
                       </span>
                     </li>
@@ -118,7 +118,7 @@ const PricingSection: React.FC = () => {
                 <WhatsAppButton
                   buttonText={plan.buttonText}
                   fullWidth
-                  className="bg-[#8BA675] hover:bg-[#7CA565] text-white text-xs py-3"
+                  className="bg-[#8BA675] hover:bg-[#7CA565] text-white text-sm py-4"
                 />
               </div>
             </div>
