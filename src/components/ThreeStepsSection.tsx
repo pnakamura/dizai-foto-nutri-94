@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import phoneMockup from '@/assets/phone-mockup.jpg';
+import phoneWhatsapp from '@/assets/phone-whatsapp.png';
 
 const ThreeStepsSection: React.FC = () => {
   const scrollToPlans = () => {
@@ -71,7 +71,7 @@ const ThreeStepsSection: React.FC = () => {
           {/* Right phone mockup */}
           <div className="flex justify-center">
             <img 
-              src={phoneMockup}
+              src={phoneWhatsapp}
               alt="Mockup do WhatsApp mostrando análise"
               className="w-full max-w-sm"
             />
