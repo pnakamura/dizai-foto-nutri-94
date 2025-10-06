@@ -1,6 +1,7 @@
 import React from 'react';
-import { Camera, Sparkles, MessageSquare } from 'lucide-react';
+import { Sparkles, MessageSquare } from 'lucide-react';
 import dietImage from '@/assets/diet-image.jpg';
+import caloriesIcon from '@/assets/calories-icon.png';
 
 const EndDietsSection: React.FC = () => {
   return (
@@ -29,9 +30,9 @@ const EndDietsSection: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
                 <div className="w-12 h-12 bg-[#7CB342] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Camera className="w-6 h-6 text-white" />
+                  <img src={caloriesIcon} alt="Calories icon" className="w-6 h-6" />
                 </div>
-                <p className="text-sm font-semibold text-gray-800">Tire uma foto</p>
+                <p className="text-sm font-semibold text-gray-800">Contar calorias manualmente</p>
               </div>
 
               <div className="bg-[#E8F5E9] rounded-2xl p-6 text-center">
