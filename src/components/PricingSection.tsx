@@ -48,67 +48,67 @@ const PricingSection: React.FC = () => {
 
   return (
     <section id="pricing" className="py-16 md:py-24 bg-[#8BA675] relative overflow-hidden">
-      {/* Decorative leaves */}
+      {/* Decorative leaves - hidden on mobile to avoid clutter */}
       <img 
         src={leafPricing1}
         alt=""
-        className="absolute top-8 left-8 w-32 h-32 md:w-48 md:h-48 opacity-80"
+        className="hidden md:block absolute top-8 left-8 w-32 h-32 md:w-48 md:h-48 opacity-80"
       />
       <img 
         src={leafPricing2}
         alt=""
-        className="absolute bottom-8 right-8 w-24 h-24 md:w-40 md:h-40 opacity-80"
+        className="hidden md:block absolute bottom-8 right-8 w-24 h-24 md:w-40 md:h-40 opacity-80"
       />
       <img 
         src={leafPricing1}
         alt=""
-        className="absolute top-1/2 right-16 w-28 h-28 md:w-36 md:h-36 opacity-70"
+        className="hidden lg:block absolute top-1/2 right-16 w-28 h-28 md:w-36 md:h-36 opacity-70"
       />
       <img 
         src={leafPricing2}
         alt=""
-        className="absolute bottom-1/3 left-16 w-20 h-20 md:w-32 md:h-32 opacity-70"
+        className="hidden lg:block absolute bottom-1/3 left-16 w-20 h-20 md:w-32 md:h-32 opacity-70"
       />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-16">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-white mb-12 md:mb-16">
           Planos para cada necessidade
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto items-start">
           {plans.map((plan, index) => (
             <div key={index} className="relative">
               {plan.badge && (
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
-                  <span className="bg-[#5A7D3C] text-white px-6 py-3 rounded-full text-sm font-semibold whitespace-nowrap">
+                <div className="absolute -top-4 md:-top-6 left-1/2 transform -translate-x-1/2 z-20">
+                  <span className="bg-[#5A7D3C] text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-semibold whitespace-nowrap">
                     {plan.badge}
                   </span>
                 </div>
               )}
               <div
-                className={`rounded-3xl p-10 bg-white shadow-lg transition-all duration-300 ${
-                  plan.highlighted ? 'mt-6' : ''
+                className={`rounded-2xl md:rounded-3xl p-6 md:p-10 bg-white shadow-lg transition-all duration-300 ${
+                  plan.highlighted ? 'mt-6 md:mt-6' : ''
                 }`}
               >
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold mb-4 text-[#5A7D3C]">
+                <div className="text-center mb-6 md:mb-8">
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4 text-[#5A7D3C]">
                     {plan.name}
                   </h3>
-                  <div className="flex items-baseline justify-center mb-4">
-                    <span className="text-sm text-gray-600 mr-2">POR</span>
-                    <span className="text-6xl font-bold text-[#5A7D3C]">{plan.price}</span>
-                    <span className="text-gray-600 ml-2 text-base">/mês</span>
+                  <div className="flex items-baseline justify-center mb-3 md:mb-4">
+                    <span className="text-xs md:text-sm text-gray-600 mr-2">POR</span>
+                    <span className="text-4xl md:text-6xl font-bold text-[#5A7D3C]">{plan.price}</span>
+                    <span className="text-gray-600 ml-2 text-sm md:text-base">/mês</span>
                   </div>
-                  <p className="text-sm text-gray-600 px-3">
+                  <p className="text-xs md:text-sm text-gray-600 px-2 md:px-3">
                     {plan.description}
                   </p>
                 </div>
                 
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
-                      <span className="text-gray-500 text-base mt-1">//</span>
-                      <span className="text-sm text-gray-700 italic">
+                    <li key={featureIndex} className="flex items-start gap-2 md:gap-3">
+                      <span className="text-gray-500 text-sm md:text-base mt-0.5 md:mt-1">//</span>
+                      <span className="text-xs md:text-sm text-gray-700 italic">
                         {feature}
                       </span>
                     </li>
@@ -118,7 +118,7 @@ const PricingSection: React.FC = () => {
                 <WhatsAppButton
                   buttonText={plan.buttonText}
                   fullWidth
-                  className="bg-[#8BA675] hover:bg-[#7CA565] text-white text-sm py-4"
+                  className="bg-[#8BA675] hover:bg-[#7CA565] text-white text-xs md:text-sm py-3 md:py-4"
                 />
               </div>
             </div>

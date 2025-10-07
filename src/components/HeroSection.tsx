@@ -26,9 +26,6 @@ const HeroSection: React.FC = () => {
         <div className="w-full md:w-3/4 lg:w-1/2 xl:w-2/5">
           {/* Content - positioned on left side */}
           <div className="text-white space-y-3 md:space-y-5 max-w-lg text-left">
-            <p className="text-cyan-400 text-[10px] md:text-xs uppercase tracking-wide font-semibold">
-              INTELIGÊNCIA ARTIFICIAL PARA TRANSFORMAR SUA ALIMENTAÇÃO
-            </p>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight drop-shadow-lg">
               Cuide da sua saúde de forma simples, prática e inteligente
             </h1>
